@@ -52,16 +52,16 @@ verbose = True if verbosity > 0 else False
 # Number of perturbations and their strength
 perturbation_params = { # length 3
     "None": {"range": None, "scale": None},
-    # "Small": {"range": 1, "scale": 0.5},
-    # "Big": {"range": 3, "scale": 1},
+    "Small": {"range": 1, "scale": 0.5},
+    "Big": {"range": 3, "scale": 1},
 }
 num_perturbations = len(perturbation_params)
 
 # Test configurations: iterate through eps_array and T_max_array separately
-# eps_array = np.array([0.5, 0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001])
-T_max_array = np.array([300, 400, 500, 750, 1000]) #
+eps_array = np.array([0.5, 0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001])
+T_max_array = np.array([200, 400, 800, 1600, 3200, 6400, 12800]) #
 test_configs = {
-    # "eps": {"array": eps_array, "name": "eps"},
+    "eps": {"array": eps_array, "name": "eps"},
     "T_max": {"array": T_max_array, "name": "T_max"}
 }
 

@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .mypy_cache
+poetry.toml
 
 # Local editor settings
 .vscode/
@@ -10,3 +11,6 @@ __pycache__/
 # Ignore generated Z-tensor data
 data/Ztensors/*
 !data/Ztensors/.gitkeep
+
+# Terminal utput files
+output.txt
