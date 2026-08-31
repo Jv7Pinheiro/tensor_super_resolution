@@ -1,5 +1,4 @@
 import time
-
 import algorithms
 
 import qiskit as qk
@@ -16,7 +15,7 @@ def is_matrix_unitary(matrix):
     
     # Multiply matrix by its conjugate transpose
     product = np.dot(matrix, hermitian_adjoint)
-    
+
     # Create an identity matrix of the same size
     identity = np.eye(matrix.shape[0])
     
@@ -119,7 +118,7 @@ def generate_Z_tensor(M, N, U_list, V_list, L, R, t_list, is_unitary=True, shots
     if verbose: print(f"Total time to generate Z was {Zend - Zstart:.6f} seconds")
     return Z_tensor
 
-def generate_multiple_Z_tensors(M, N, U_list, V_list, L, R, t_list, is_unitary=True, shots=750, verbose=True):
+def generate_multiple_Z_tensors(M, N, U_list, V_list, L, R, t_list, is_unitary=True, shots=750, verbose=False):
     Z_tensor_single = np.zeros((L, R, N), dtype=complex)
     Z_tensor_poly = np.zeros((L, R, N), dtype=complex)
 
@@ -235,6 +234,4 @@ def QFAMES_setup(M, U_list, V_list, eps=None, T_max=None, is_unitary=True, shots
     t_list = generate_t_list(N, T_max, sigma)
     T_total = L*R*sum(np.abs(t_list))
 
-    Z_single, Z_poly = generate_multiple_Z_tensors(M, N, U_list, U_list, L, R, t_list, is_unitary=is_unitary, verbose=verbose)
-
-    return Z_single, Z_poly, dx, tau, t_list, K, T_max, T_total, N
+    return dx, tau, t_list, K, T_max, T_total, N
