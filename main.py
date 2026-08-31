@@ -20,6 +20,58 @@ def parse_args():
     )
     return parser.parse_args()
 
+def get_errors(true, estimate, target):
+    true = np.asarray(true, dtype=float).ravel()
+    estimate = np.asarray(estimate, dtype=float).ravel()
+
+    # Single estimate case: keep the original behavior for scalar outputs.
+    if estimate.size == 1:
+        if true[target] < 0:
+            return abs(true[target] + estimate[0])
+        else:
+            return abs(true[target] - estimate[0])
+
+    # Pairwise absolute errors: cost[i, j] = |estimate_i - true_j|
+    cost = np.abs(estimate[:, None] - true[None, :])
+
+    n_est = estimate.size
+    n_true = true.size
+
+    used_est = np.zeros(n_est, dtype=bool)
+    used_true = np.zeros(n_true, dtype=bool)
+    estimate_index_for_true = {}
+
+    # Greedy matching: repeatedly choose the smallest remaining pair while
+    # excluding already-used estimates and true eigenvalues.
+    for _ in range(min(n_est, n_true)):
+        best_cost = np.inf
+        best_i = None
+        best_j = None
+
+        for i in range(n_est):
+            if used_est[i]:
+                continue
+            for j in range(n_true):
+                if used_true[j]:
+                    continue
+                if cost[i, j] < best_cost:
+                    best_cost = cost[i, j]
+                    best_i = i
+                    best_j = j
+
+        if best_i is None or best_j is None:
+            break
+
+        used_est[best_i] = True
+        used_true[best_j] = True
+        estimate_index_for_true[best_j] = best_i
+
+    # Return errors in the SAME ORDER as the true eigenvalues array.
+    errors = np.full(n_true, np.nan, dtype=float)
+    for j, i in estimate_index_for_true.items():
+        errors[j] = abs(estimate[i] - true[j])
+
+    return errors
 
 def main():
     args = parse_args()
@@ -40,19 +92,20 @@ def main():
 
     # Obtain information about matrix
     is_unitary = aux_functions.is_matrix_unitary(M)
-    num_eigenvalues = len(M)
     eigenvalues, eigenvectors = np.linalg.eig(M)
 
+    # Choose Init State: Targeted eigenvalue for QPE, KQPE, and QMEGS
+    lambda_i = 0 # This is the index of the INIT state, # If 1 then QPE and KQPE need a scaling factor greater than ||M||
+    eigenvalue = np.real(eigenvalues[lambda_i])
+    
     # Print Information about my matrix
     print(f"My Matrix: \n{M}\n")
     print(f"is_unitary: {is_unitary}")
     print(f"Norm of my matrix: {np.linalg.norm(M)}")
     print(f"Eigenvalues: {eigenvalues}")
+    print(f"Target eigenvalue: {eigenvalue}")
     print(f"Eigenvectors: \n{eigenvectors}\n")
 
-    # Choose Init State: Targeted eigenvalue for QPE, KQPE, and QMEGS
-    lambda_i = 0 # This is the index of the INIT state, # If 1 then QPE and KQPE need a scaling factor greater than ||M||
-    eigenvalue = abs(np.real(eigenvalues[lambda_i]))
 
     #########################
     ## Set Test Parameters ##
@@ -60,7 +113,7 @@ def main():
     # Choose which algorithms to test
     # Options are "QPE", "KQPE", "QMEGS", "QFAMES"
     # Having QFAMES on also tests TSRHSE
-    algorithms_array = ["QPE", "KQPE", "QMEGS", "QFAMES"] # "TSRHSE"
+    algorithms_array = ["QPE", "KQPE", "QMEGS"] # "TSRHSE"
 
     # Verbosity parameters
     verbosity = 0
@@ -72,11 +125,10 @@ def main():
         # "Small": {"range": 1, "scale": 0.5},
         # "Big": {"range": 3, "scale": 1},
     }
-    num_perturbations = len(perturbation_params)
 
     # Test configurations: iterate through eps_array and T_max_array separately
     # eps_array = np.array([0.5, 0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001])
-    T_max_array = np.array([200]) #
+    T_max_array = np.array([500]) #
     test_configs = {
         # "eps": {"array": eps_array, "name": "eps"},
         "T_max": {"array": T_max_array, "name": "T_max"}
@@ -97,7 +149,7 @@ def main():
         "t or N": None,
         "T_max": None,
         "T_total": None,
-        "eval(s)": str(np.real(eigenvalues).tolist())
+        "eval(s)": np.real(eigenvalues).tolist()
     }
     results_df = pd.concat([results_df, pd.DataFrame([true_evals_row])], ignore_index=True)
 
@@ -154,12 +206,11 @@ def main():
                         data_end_time = time.perf_counter()
                         print(f"\tfinished Z array creation in {data_end_time - data_start_time:.6f} seconds")
 
-
                         start_time = time.perf_counter()
                         output_energy = function(Z, dx, t_list, K, T_max_alg)
                         end_time = time.perf_counter()
 
-                        my_eigenvalue = str(np.real(sorted(output_energy)).tolist())
+                        my_eigenvalue = np.real(sorted(output_energy)).tolist()
                     else:
                         aux_function = getattr(aux_functions, alg+"_setup")
 
@@ -172,7 +223,7 @@ def main():
                         start_time = time.perf_counter()
                         output_energy = algorithms.TSRHSE(Z_tsrhse, t_list)
                         end_time = time.perf_counter()
-                        my_eigenvalue = str(np.real(sorted(output_energy)).tolist())
+                        my_eigenvalue = np.real(sorted(output_energy)).tolist()
                         print(f"\tfinished TSRHSE in {end_time - start_time:.6f} seconds")
 
                         results_row = {
@@ -184,6 +235,7 @@ def main():
                             "T_max": T_max_alg,
                             "T_total": T_total,
                             "eval(s)": my_eigenvalue,
+                            "errors": get_errors(eigenvalues, my_eigenvalue, lambda_i),
                             "multiplicities": multiplicities
                         }
                         results_df = pd.concat([results_df, pd.DataFrame([results_row])], ignore_index=True)
@@ -201,7 +253,7 @@ def main():
                             print(f"\tQFAMES failed: {e}")
                         end_time = time.perf_counter()
 
-                        my_eigenvalue = str(np.real(sorted(output_energy)).tolist())
+                        my_eigenvalue = np.real(output_energy).tolist()
 
                     print(f"\tfinished {alg} in {end_time - start_time:.6f} seconds")
                     results_row = {
@@ -213,6 +265,7 @@ def main():
                         "T_max": T_max_alg,
                         "T_total": T_total,
                         "eval(s)": my_eigenvalue,
+                        "errors": get_errors(eigenvalues, my_eigenvalue, lambda_i),
                         "multiplicities": multiplicities
                     }
                     results_df = pd.concat([results_df, pd.DataFrame([results_row])], ignore_index=True)
