@@ -1,5 +1,6 @@
 import argparse
 import os
+import sys
 import time
 
 import numpy as np
@@ -7,6 +8,7 @@ import pandas as pd
 
 import algorithms
 import aux_functions
+import hamiltonians
 import par_comp
 
 
@@ -17,6 +19,12 @@ def parse_args():
         type=int,
         default=4,
         help="Number of worker processes for parallel Z-tensor generation (default: 4)",
+    )
+    parser.add_argument(
+        "--H",
+        type=str,
+        default="belldiagonal4x4",
+        help="Hamiltonian name to use for benchmarking (default: belldiagonal4x4)",
     )
     return parser.parse_args()
 
@@ -77,18 +85,19 @@ def main():
     args = parse_args()
     workers = args.workers
     print(f"Using {workers} worker(s) for parallel Z-tensor generation")
+
+    try:
+        Ham = hamiltonians.get_hamiltonian(args.H)
+    except ValueError as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        raise SystemExit(1)
+
     ############################
     ## Initialize Hamiltonian ##
     ############################
     # Name, initialize, and normalize hamiltonian
-    name = "belldiagonal"
-    Ham = np.array([
-        [-2, 0, 0, -1],
-        [0, 3, -1, 0],
-        [0, -1, 3, 0],
-        [-1, 0, 0, -2]
-    ])
-    M = (np.pi/(4*np.linalg.norm(Ham))) * Ham
+    name = args.H
+    M = (np.pi / (4 * np.linalg.norm(Ham))) * Ham
 
     # Obtain information about matrix
     is_unitary = aux_functions.is_matrix_unitary(M)
@@ -122,13 +131,13 @@ def main():
     # Number of perturbations and their strength
     perturbation_params = { # length 3
         "None": {"range": None, "scale": None},
-        # "Small": {"range": 1, "scale": 0.5},
+        "Small": {"range": 1, "scale": 0.5},
         # "Big": {"range": 3, "scale": 1},
     }
 
     # Test configurations: iterate through eps_array and T_max_array separately
     # eps_array = np.array([0.5, 0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001])
-    T_max_array = np.array([500]) #
+    T_max_array = np.array([200]) #
     test_configs = {
         # "eps": {"array": eps_array, "name": "eps"},
         "T_max": {"array": T_max_array, "name": "T_max"}
