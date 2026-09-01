@@ -1,3 +1,4 @@
+
 import ast
 import os
 
@@ -9,33 +10,6 @@ os.makedirs("data/plots", exist_ok=True)
 
 use_y_axis_log_scale = True  # Toggle this to switch between log and linear scale
 use_x_axis_log_scale = True  # Toggle this to switch between log and linear scale
-
-def parse_eigenvalues(value):
-    if pd.isna(value) or str(value).strip() in {"", "None"}:
-        return np.array([], dtype=float)
-
-    value_text = str(value).strip()
-
-    try:
-        parsed_value = ast.literal_eval(value_text)
-        return np.atleast_1d(np.asarray(parsed_value, dtype=float))
-    except (SyntaxError, ValueError):
-        if value_text.startswith("[") and value_text.endswith("]"):
-            value_text = value_text[1:-1]
-        return np.fromstring(value_text, sep=" ", dtype=float)
-
-def calculate_error_to_target(row):
-    found_eigenvalues = parse_eigenvalues(row["eval(s)"])
-    if found_eigenvalues.size == 0:
-        return np.nan
-
-    if row["algorithm"] in {"QPE", "KQPE"}:
-        found_eigenvalue = found_eigenvalues[0]
-        if target_eigenvalue < 0:
-            found_eigenvalue = -found_eigenvalue
-        return abs(target_eigenvalue - found_eigenvalue)
-
-    return np.min(np.abs(found_eigenvalues - target_eigenvalue))
     
 perturbation_params = { # length 3
     "None": None,
@@ -44,14 +18,20 @@ perturbation_params = { # length 3
 }
 Hamiltonian_name = "belldiagonal"
 df = pd.read_csv(f"data/dataframes/{Hamiltonian_name}.csv")
+algo_order = df["algorithm"].unique().dropna()
 
 target_eigenvalue_index = 0
-true_eigenvalues = parse_eigenvalues(df.loc[df["test_type"] == "true eigenvalues", "eval(s)"].iloc[0])
-target_eigenvalue = true_eigenvalues[target_eigenvalue_index]
 
-df["error_to_target"] = df.apply(calculate_error_to_target, axis=1)
-df.to_csv(f"data/dataframes/{Hamiltonian_name}.csv", index=False)
-algo_order = df["algorithm"].unique().dropna()
+
+def get_target_error(value):
+    if isinstance(value, str):
+        value = ast.literal_eval(value)
+    if isinstance(value, (list, tuple, np.ndarray)):
+        value = value[target_eigenvalue_index]
+    return float(value)
+
+
+df["error_to_target"] = df["errors"].map(get_target_error)
 
 for test_type in df["test_type"].unique():
     # if test_type == "true eigenvalues": continue
@@ -72,8 +52,8 @@ for test_type in df["test_type"].unique():
                 else:
                     df_filtered_with_true = df[df["perturb"] == perturb]
                 
-                # Filter out true eigenvalues for plotting
-                df_filtered = df_filtered_with_true[df_filtered_with_true["test_type"] != "true eigenvalues"]
+                # Keep this figure focused on the current experiment type.
+                df_filtered = df_filtered_with_true[df_filtered_with_true["test_type"] == "eps"]
                 
                 # Plot each algorithm in specified order
                 for algo in algo_order:
@@ -119,8 +99,8 @@ for test_type in df["test_type"].unique():
                 else:
                     df_filtered_with_true = df[df["perturb"] == perturb]
                 
-                # Filter out true eigenvalues for plotting
-                df_filtered = df_filtered_with_true[df_filtered_with_true["test_type"] != "true eigenvalues"]
+                # Keep this figure focused on the current experiment type.
+                df_filtered = df_filtered_with_true[df_filtered_with_true["test_type"] == "T_max"]
                 
                 # Plot each algorithm in specified order
                 for algo in algo_order:

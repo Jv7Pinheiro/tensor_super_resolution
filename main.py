@@ -122,7 +122,7 @@ def main():
     # Choose which algorithms to test
     # Options are "QPE", "KQPE", "QMEGS", "QFAMES"
     # Having QFAMES on also tests TSRHSE
-    algorithms_array = ["QPE", "KQPE", "QMEGS"] # "TSRHSE"
+    algorithms_array = ["QPE", "KQPE", "QMEGS", "QFAMES"] # "TSRHSE"
 
     # Verbosity parameters
     verbosity = 0
@@ -131,7 +131,7 @@ def main():
     # Number of perturbations and their strength
     perturbation_params = { # length 3
         "None": {"range": None, "scale": None},
-        "Small": {"range": 1, "scale": 0.5},
+        # "Small": {"range": 1, "scale": 0.5},
         # "Big": {"range": 3, "scale": 1},
     }
 
