@@ -11,7 +11,6 @@ import aux_functions
 import hamiltonians
 import par_comp
 
-
 def parse_args():
     parser = argparse.ArgumentParser(description="Run TSR/QFAMES benchmark suite")
     parser.add_argument(
@@ -225,7 +224,7 @@ def main():
 
                         dx, tau, t_list, K, T_max_alg, T_total, torN = aux_function(M, U_list, U_list, eps=eps, T_max=T_max, is_unitary=is_unitary, verbose=verbose)
                         data_start_time = time.perf_counter()
-                        Z_qfames, Z_tsrhse = aux_functions.generate_multiple_Z_tensors(M, torN, U_list, U_list, len(M), len(M), t_list, is_unitary=is_unitary)
+                        Z_qfames, Z_tsrhse = par_comp.generate_multiple_Z_tensors(M, torN, U_list, U_list, len(M), len(M), t_list, is_unitary=is_unitary, workers=workers)
                         data_end_time = time.perf_counter()
                         print(f"\tfinished Z tensor creation in {data_end_time - data_start_time:.6f} seconds")
 

@@ -6,6 +6,13 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+def get_target_error(value):
+    if isinstance(value, str):
+        value = ast.literal_eval(value)
+    if isinstance(value, (list, tuple, np.ndarray)):
+        value = value[target_eigenvalue_index]
+    return float(value)
+
 os.makedirs("data/plots", exist_ok=True)
 
 use_y_axis_log_scale = True  # Toggle this to switch between log and linear scale
@@ -21,16 +28,6 @@ df = pd.read_csv(f"data/dataframes/{Hamiltonian_name}.csv")
 algo_order = df["algorithm"].unique().dropna()
 
 target_eigenvalue_index = 0
-
-
-def get_target_error(value):
-    if isinstance(value, str):
-        value = ast.literal_eval(value)
-    if isinstance(value, (list, tuple, np.ndarray)):
-        value = value[target_eigenvalue_index]
-    return float(value)
-
-
 df["error_to_target"] = df["errors"].map(get_target_error)
 
 for test_type in df["test_type"].unique():
