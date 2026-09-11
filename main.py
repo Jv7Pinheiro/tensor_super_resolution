@@ -78,7 +78,8 @@ def get_errors(true, estimate, target):
     for j, i in estimate_index_for_true.items():
         errors[j] = abs(estimate[i] - true[j])
 
-    return errors
+    return errors.tolist()
+
 
 def main():
     args = parse_args()
