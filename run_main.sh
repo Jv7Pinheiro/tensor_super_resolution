@@ -17,8 +17,7 @@ conda activate tensor-super-resolution
 
 cd "$HOME/tensor_super_resolution" || exit 1
 
-status=0
-python3 main.py --workers 64 --H belldiagonal16x16 >> output2.txt 2>&1
+python3 main.py --workers 64 --H XXZ_8x8 > XXZ.txt 2>&1
 
 # # Auto-save repo state only after a successful test run.
 # if [ "$status" -eq 0 ] && git rev-parse --is-inside-work-tree >/dev/null 2>&1; then

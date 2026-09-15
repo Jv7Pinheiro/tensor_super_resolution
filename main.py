@@ -80,6 +80,13 @@ def get_errors(true, estimate, target):
 
     return errors.tolist()
 
+def normalize_output_energy(output_energy, algorithm, sort=False):
+    values = np.asarray(output_energy, dtype=object).ravel().tolist()
+    missing_count = sum(value is None for value in values)
+    values = [value for value in values if value is not None]
+    energies = np.real(np.asarray(values)).tolist()
+    return sorted(energies) if sort else energies
+
 
 def main():
     args = parse_args()
@@ -131,13 +138,13 @@ def main():
     # Number of perturbations and their strength
     perturbation_params = { # length 3
         "None": {"range": None, "scale": None},
-        # "Small": {"range": 1, "scale": 0.5},
-        # "Big": {"range": 3, "scale": 1},
+        "Small": {"range": 1, "scale": 0.5},
+        "Big": {"range": 3, "scale": 1},
     }
 
     # Test configurations: iterate through eps_array and T_max_array separately
     # eps_array = np.array([0.5, 0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001])
-    T_max_array = np.array([200]) #
+    T_max_array = np.array([100, 200, 400, 800, 1200, 1600, 2400, 3200]) #
     test_configs = {
         # "eps": {"array": eps_array, "name": "eps"},
         "T_max": {"array": T_max_array, "name": "T_max"}
@@ -219,7 +226,7 @@ def main():
                         output_energy = function(Z, dx, t_list, K, T_max_alg)
                         end_time = time.perf_counter()
 
-                        my_eigenvalue = np.real(sorted(output_energy)).tolist()
+                        my_eigenvalue = normalize_output_energy(output_energy, alg, sort=True)
                     else:
                         aux_function = getattr(aux_functions, alg+"_setup")
 
@@ -232,7 +239,7 @@ def main():
                         start_time = time.perf_counter()
                         output_energy = algorithms.TSRHSE(Z_tsrhse, t_list)
                         end_time = time.perf_counter()
-                        my_eigenvalue = np.real(sorted(output_energy)).tolist()
+                        my_eigenvalue = normalize_output_energy(output_energy, "TSRHSE", sort=True)
                         print(f"\tfinished TSRHSE in {end_time - start_time:.6f} seconds")
 
                         results_row = {
@@ -251,6 +258,7 @@ def main():
                         results_df.to_csv(f"data/dataframes/{name}.csv", index=False)
 
                         start_time = time.perf_counter()
+                        output_energy = None
                         try:
                             if verbose:
                                 output_energy, output_num, output_vector = algorithms.QFAMES(Z_qfames, dx, t_list, K, T_max_alg, tau, verbose=verbose)
@@ -262,7 +270,7 @@ def main():
                             print(f"\tQFAMES failed: {e}")
                         end_time = time.perf_counter()
 
-                        my_eigenvalue = np.real(output_energy).tolist()
+                        my_eigenvalue = normalize_output_energy(output_energy, alg)
 
                     print(f"\tfinished {alg} in {end_time - start_time:.6f} seconds")
                     results_row = {

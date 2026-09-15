@@ -7,11 +7,37 @@ def _belldiagonal_4x4():
         [0, 3, -1, 0],
         [0, -1, 3, 0],
         [-1, 0, 0, -2],
-    ],dtype=float,)
+    ],dtype=float)
 
 
 def _belldiagonal_16x16():
     return np.kron(_belldiagonal_4x4(), _belldiagonal_4x4())
+
+
+def _TFIM_8x8():
+    return np.array([
+        [-2, -1, -1,  0, -1,  0,  0,  0],
+        [-1,  0,  0, -1,  0, -1,  0,  0],
+        [-1,  0,  2, -1,  0,  0, -1,  0],
+        [0,  -1, -1,  0,  0,  0,  0, -1],
+        [-1,  0,  0,  0,  0, -1, -1,  0],
+        [0,  -1,  0,  0, -1,  2,  0, -1],
+        [0,   0, -1,  0, -1,  0,  0, -1],
+        [0,   0,  0, -1,  0, -1, -1, -2]
+    ], dtype=float)
+
+
+def _XXZ_8x8():
+    return np.array([
+        [1, 0, 0,  0, 0,  0, 0, 0],
+        [0, 0, 2,  0, 0,  0, 0, 0],
+        [0, 2, -1, 0, 2,  0, 0, 0],
+        [0, 0, 0,  0, 0,  2, 0, 0],
+        [0, 0, 2,  0, -1, 0, 0, 0],
+        [0, 0, 0,  2, 0,  0, 2, 0],
+        [0, 0, 0,  0, 0,  2, 0, 0],
+        [0, 0, 0,  0, 0,  0, 0, 1]
+    ], dtype=float)
 
 
 def _diagonal_8x8():
@@ -52,6 +78,10 @@ HAMILTONIANS = {
     "belldiagonal4x4": _belldiagonal_4x4,
     "diagonal8x8": _diagonal_8x8,
     "diagonal_8x8": _diagonal_8x8,
+    "TFIM_8x8": _TFIM_8x8,
+    "TFIM8x8": _TFIM_8x8,
+    "XXZ_8x8": _XXZ_8x8,
+    "XXZ8x8": _XXZ_8x8,
     "belldiagonal16x16": _belldiagonal_16x16,
     "belldiagonal_16x16": _belldiagonal_16x16,
     "diagonal16x16": _diagonal_16x16,
@@ -73,6 +103,10 @@ def get_hamiltonian(name):
         "belldiagonal4x4": "belldiagonal4x4",
         "diagonal8x8": "diagonal8x8",
         "diagonal_8x8": "diagonal8x8",
+        "tfim_8x8": "TFIM8x8",
+        "tfim8x8": "TFIM8x8",
+        "xxz_8x8": "XXZ8x8",
+        "xxz8x8": "XXZ8x8",
         "belldiagonal16x16": "belldiagonal16x16",
         "belldiagonal_16x16": "belldiagonal16x16",
         "diagonal16x16": "diagonal16x16",

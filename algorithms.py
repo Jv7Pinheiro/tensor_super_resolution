@@ -669,13 +669,18 @@ def TSRHSE(Z, t_list, verbosity = 0):
     N = len(t_list)
     Q = np.shape(Z)[0]
 
+    # Sort t_list so we can later obtain consecutive pairs of T's 
     sorted_idx = np.argsort(t_list)
+
+    # Now that t_list is sorted, each consecutive index contains the closest T_max to each other
     pairs = [(int(sorted_idx[i]), int(sorted_idx[i+1])) for i in range(N-1)]
+    
+    # Sort pairs based on distance to each other
     pairs = sorted(pairs, key=lambda p: abs(t_list[p[0]] - t_list[p[1]]))
 
-    # Scale ladder: double dt each step
-    dt_min = abs(t_list[pairs[0][0]] - t_list[pairs[0][1]])
-    dt_max = abs(t_list[pairs[-1][0]] - t_list[pairs[-1][1]])
+    # Scale ladder: double change in t (dt) at each step
+    dt_min = abs(t_list[pairs[0][0]] - t_list[pairs[0][1]]) # Since pairs is sorted, the minimum dt sits is in the beginning
+    dt_max = abs(t_list[pairs[-1][0]] - t_list[pairs[-1][1]]) # The maximum dt is at the end
     if verbosity > 0: print(f"dt_min = {dt_min}, dt_max = {dt_max}")
 
     scales = []
@@ -713,7 +718,7 @@ def TSRHSE(Z, t_list, verbosity = 0):
         if current_est is None:
             current_est = raw
         else:
-            # Unwap: find the integer k that brings raw closest to current_est
+            # Unwrap: find the integer k that brings raw closest to current_est
             k = np.round((current_est - raw) * target_dt / (2 * np.pi))
             current_est = raw + 2 * np.pi * k / target_dt
 
