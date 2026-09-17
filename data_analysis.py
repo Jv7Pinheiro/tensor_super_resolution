@@ -84,7 +84,7 @@ Hamiltonian_name = "XXZ_8x8"
 df = pd.read_csv(f"data/dataframes/{Hamiltonian_name}.csv")
 algo_order = df["algorithm"].unique().dropna()
 
-target_eigenvalue_index = 2
+target_eigenvalue_index = 0
 df["error_to_target"] = df["errors"].map(get_target_error)
 df["average_error"] = df["errors"].map(get_average_error)
 
@@ -93,7 +93,7 @@ for test_type in df["test_type"].unique():
     if test_type == "eps":
         # 3x3 grid for eps tests
         fig, axes = plt.subplots(3, 3, figsize=(15, 12))
-        fig.suptitle(f"Eps scaling tests for {Hamiltonian_name} eigenvalue {target_eigenvalue_index}", fontsize=32)
+        fig.suptitle(f"Eps scaling tests for {Hamiltonian_name} eigenvalue {target_eigenvalue_index}", fontsize=20)
 
         x_labels = ["eps", "T_max", "T_total"]
         x_cols = ["param_value", "T_max", "T_total"]
@@ -141,7 +141,7 @@ for test_type in df["test_type"].unique():
 
         # Average error across all eigenvalues
         fig_avg, axes_avg = plt.subplots(3, 3, figsize=(15, 12))
-        fig_avg.suptitle(f"Average error across all eigenvalues for {Hamiltonian_name} (eps)", fontsize=32)
+        fig_avg.suptitle(f"Average error across all eigenvalues for {Hamiltonian_name} (eps)", fontsize=20)
 
         for row, perturb in enumerate(perturbation_params.keys()):
             for col, (x_label, x_col) in enumerate(zip(x_labels, x_cols)):
@@ -182,7 +182,7 @@ for test_type in df["test_type"].unique():
     elif test_type == "T_max":
         # 3x2 grid for T_max tests
         fig, axes = plt.subplots(3, 2, figsize=(12, 12))
-        fig.suptitle(f"T_max scaling tests for {Hamiltonian_name} eigenvalue {target_eigenvalue_index}", fontsize=32)
+        fig.suptitle(f"T_max scaling tests for {Hamiltonian_name} eigenvalue {target_eigenvalue_index}", fontsize=20)
 
         x_labels = ["T_max", "T_total"]
         x_cols = ["T_max", "T_total"]
@@ -226,7 +226,7 @@ for test_type in df["test_type"].unique():
 
         # Average error across all eigenvalues
         fig_avg, axes_avg = plt.subplots(3, 2, figsize=(12, 12))
-        fig_avg.suptitle(f"Average error across all eigenvalues for {Hamiltonian_name} (T_max)", fontsize=32)
+        fig_avg.suptitle(f"Average error across all eigenvalues for {Hamiltonian_name} (T_max)", fontsize=20)
 
         for row, perturb in enumerate(perturbation_params.keys()):
             for col, (x_label, x_col) in enumerate(zip(x_labels, x_cols)):
