@@ -25,6 +25,18 @@ def parse_args():
         default="belldiagonal4x4",
         help="Hamiltonian name to use for benchmarking (default: belldiagonal4x4)",
     )
+    parser.add_argument(
+        "--L",
+        type=int,
+        default=0,
+        help="Number of left coefficients for QFAMES and TSRHSE (default: 0 => same length as Hamiltonian)",
+    )
+    parser.add_argument(
+        "--R",
+        type=int,
+        default=0,
+        help="Number of right coefficients for QFAMES and TSRHSE (default: 0 => same length as Hamiltonian)",
+    )
     return parser.parse_args()
 
 def get_errors(true, estimate, target):
@@ -93,18 +105,27 @@ def main():
     workers = args.workers
     print(f"Using {workers} worker(s) for parallel Z-tensor generation")
 
+    ############################
+    ## Initialize Hamiltonian ##
+    ############################
     try:
         Ham = hamiltonians.get_hamiltonian(args.H)
     except ValueError as exc:
         print(f"Error: {exc}", file=sys.stderr)
         raise SystemExit(1)
-
-    ############################
-    ## Initialize Hamiltonian ##
-    ############################
+    
     # Name, initialize, and normalize hamiltonian
     name = args.H
     M = (np.pi / (4 * np.linalg.norm(Ham))) * Ham
+
+    # Set length of L and R parameters
+    L = args.L
+    R = args.R
+    rows, cols = M.shape
+    if (L > rows or R > cols) or (L < 0 or R < 0):
+        raise ValueError(f"Inputs L ({L}) and R ({R}) must be positive integers less than or equal to matrix size [{rows}, {cols}]")
+    if L == 0: L = M.shape[0]
+    if R == 0: R = M.shape[1]
 
     # Obtain information about matrix
     is_unitary = aux_functions.is_matrix_unitary(M)
@@ -116,6 +137,7 @@ def main():
     
     # Print Information about my matrix
     print(f"My Matrix: \n{M}\n")
+    print(f"L = {L}, R = {R}")
     print(f"is_unitary: {is_unitary}")
     print(f"Norm of my matrix: {np.linalg.norm(M)}")
     print(f"Eigenvalues: {eigenvalues}")
@@ -144,10 +166,10 @@ def main():
 
     # Test configurations: iterate through eps_array and T_max_array separately
     # eps_array = np.array([0.5, 0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001])
-    T_max_array = np.array([100, 200, 400, 800, 1200, 1600, 2400, 3200]) #
+    T_max_array = np.array([100])
     test_configs = {
         # "eps": {"array": eps_array, "name": "eps"},
-        "T_max": {"array": T_max_array, "name": "T_max"}
+        # "T_max": {"array": T_max_array, "name": "T_max"}
     }
 
     ################
@@ -187,7 +209,8 @@ def main():
             # In each test_type and parameter we want to study the different perturbations
             for perturb in perturbation_params.keys():
                 Init = eigenvectors[:, lambda_i]
-                U_list = eigenvectors
+                U_list = eigenvectors[:, 0:L]
+                V_list = eigenvectors[:, 0:R]
 
                 # Obtain current test's perturbation 
                 params = perturbation_params[perturb]
@@ -198,7 +221,8 @@ def main():
                 if perturb != "None":
                     # Create the new Init state and U_list unitaries
                     PHI = eigenvectors + np.random.uniform(-perturb_range, perturb_range) * perturb_scale
-                    U_list = PHI
+                    U_list = PHI[:, 0:L]
+                    V_list = PHI[:, 0:R]
                     Init = PHI[:, lambda_i]
 
                 # Print information about current test
@@ -232,7 +256,7 @@ def main():
 
                         dx, tau, t_list, K, T_max_alg, T_total, torN = aux_function(M, U_list, U_list, eps=eps, T_max=T_max, is_unitary=is_unitary, verbose=verbose)
                         data_start_time = time.perf_counter()
-                        Z_qfames, Z_tsrhse = par_comp.generate_multiple_Z_tensors(M, torN, U_list, U_list, len(M), len(M), t_list, is_unitary=is_unitary, workers=workers)
+                        Z_qfames, Z_tsrhse = par_comp.generate_multiple_Z_tensors(M, torN, U_list, V_list, L, R, t_list, is_unitary=is_unitary, workers=workers)
                         data_end_time = time.perf_counter()
                         print(f"\tfinished Z tensor creation in {data_end_time - data_start_time:.6f} seconds")
 
