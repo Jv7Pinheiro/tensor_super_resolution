@@ -665,6 +665,9 @@ def QFAMES(Z, dx, t_list, K, T, tau, alpha=5, verbose=False):
     else:
         return Dominant_freq, Dominant_num
 
+def CP_TSRHSE(Z, t_list, verbosity = 0):
+    return 0
+
 def TSRHSE(Z, t_list, verbosity = 0):
     N = len(t_list)
     Q = np.shape(Z)[0]
