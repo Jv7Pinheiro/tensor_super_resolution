@@ -106,6 +106,26 @@ def normalize_output_energy(output_energy, sort=False):
     energies = np.real(np.asarray(values)).tolist()
     return sorted(energies) if sort else energies
 
+def record_result(name, df, test_type, param_value, perturb, algorithm, shots, torN, T_max, T_total, eval_estimate, errors, multiplicities):
+    results_row = {
+        "test_type": test_type,
+        "param_value": param_value,
+        "perturb": perturb,
+        "algorithm": algorithm,
+        "shots": shots,
+        "t or N": torN,
+        "T_max": T_max,
+        "T_total": T_total,
+        "eval(s)": eval_estimate,
+        "errors": errors,
+        "multiplicities": multiplicities
+    }
+
+    df = pd.concat([df, pd.DataFrame([results_row])], ignore_index=True)
+    df.to_csv(f"data/dataframes/{name}.csv", index=False)
+
+    return df
+
 
 def main():
     args = parse_args()
@@ -124,6 +144,7 @@ def main():
     
     # Name, initialize, and normalize hamiltonian
     name = args.H
+    name = f"{name}_{method}"
     M = (np.pi / (4 * np.linalg.norm(Ham))) * Ham
 
     # Set length of L and R parameters
@@ -140,7 +161,7 @@ def main():
     eigenvalues, eigenvectors = np.linalg.eig(M)
 
     # Choose Init State: Targeted eigenvalue for QPE, KQPE, and QMEGS
-    lambda_i = 0 # This is the index of the INIT state, # If 1 then QPE and KQPE need a scaling factor greater than ||M||
+    lambda_i = 1 # This is the index of the INIT state, # If 1 then QPE and KQPE need a scaling factor greater than ||M||
     eigenvalue = np.real(eigenvalues[lambda_i])
     
     # Print Information about my matrix
@@ -157,9 +178,10 @@ def main():
     ## Set Test Parameters ##
     #########################
     # Choose which algorithms to test
-    # Options are "QPE", "KQPE", "QMEGS", "QFAMES"
-    # Having QFAMES on also tests TSRHSE
-    algorithms_array = ["QFAMES"] # "TSRHSE"
+    # Options are "QPE", "KQPE", "QMEGS", "Z_Tensor_Methods"
+    # Four variants for Z_Tensor_Methods are "Jenrich_V1", "Jenrich_V2", "CP_ALS" (all three are TSRHSE) and "QFAMES"
+    algorithms_array = ["QPE", "KQPE", "QMEGS", "Z_tensor_methods"]
+    Z_tensor_methods = ["Jenrich_V1", "Jenrich_V2", "CP_ALS", "QFAMES"]
 
     # Verbosity parameters
     verbosity = 0
@@ -174,13 +196,19 @@ def main():
 
     # Test configurations: iterate through eps_array and T_max_array separately
     # eps_array = np.array([0.5, 0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001])
-    T_max_array = np.array([100, 200, 400, 800, 1000, 1200, 1600, 2000, 3200])
+    T_max_array = np.array([100, 200, 400, 800, 1200, 1600, 2000, 3200])
     test_configs = {
         # "eps": {"array": eps_array, "name": "eps"},
         "T_max": {"array": T_max_array, "name": "T_max"}
     }
 
-    shots_array = np.array([1, 2, 10, 100, 500, 750, 1000, 1250])
+    # Number of shots for each main category of algorithm
+    # Z_tensor_shots_array is not applicable when command line argument --method is set to "numeric"
+    # TODO: Edit QMEGS framework such that it can create numeric Z array
+    qpe_shots = 1000 # Applies to QPE and KQPE
+    Z_array_shots_array = np.array([1500]) # Applies to QMEGS
+    Z_tensor_shots_array = np.array([500, 750, 1000, 1500, 2000]) # Applies to QFAMES and TSRHSE
+
 
     ################
     ## Begin Test ##
@@ -194,6 +222,7 @@ def main():
         "param_value": None,
         "perturb": None,
         "algorithm": None,
+        "shots": None,
         "t or N": None,
         "T_max": None,
         "T_total": None,
@@ -240,189 +269,134 @@ def main():
 
                 # Perform the above test for each selected algorithm
                 for alg in algorithms_array:
-                    function = getattr(algorithms, alg)
-                    multiplicities = None
+                    ##################
+                    ## QPE and KQPE ##
+                    ##################
+                    if alg == "QPE" or alg == "KQPE":
+                        function = getattr(algorithms, alg)
 
-                    if alg != "QFAMES":
-                        if alg == "QPE" or alg == "KQPE":
-                            start_time = time.perf_counter()
-                            _, phases, my_eigenvalue, _, T_max_alg, T_total, torN = function(M, Init=Init, eps=eps, T_max=T_max, is_unitary=is_unitary, verbosity=verbosity)
-                            end_time = time.perf_counter()
-                        elif alg == "QMEGS":
-                            aux_function = getattr(aux_functions, alg+"_setup")
+                        # Run Algorithm
+                        start_time = time.perf_counter()
+                        _, phases, my_eigenvalue, _, T_max_alg, T_total, torN = function(M, Init=Init, eps=eps, T_max=T_max, shots=qpe_shots, is_unitary=is_unitary, verbosity=verbosity)
+                        end_time = time.perf_counter()
+                        print(f"\tfinished {alg} in {end_time - start_time:.6f} seconds")
 
+                        # Update Data Frame
+                        results_df = record_result(name, results_df, test_type, param_value, perturb, alg, qpe_shots, torN, T_max_alg, T_total, my_eigenvalue, get_errors(eigenvalues, my_eigenvalue, lambda_i), None)
+                    
+
+                    ###########
+                    ## QMEGS ##
+                    ###########
+                    elif alg == "QMEGS":
+                        for shots in Z_array_shots_array:
+                            # Generate Z_array and other QMEGS required arguments
                             data_start_time = time.perf_counter()
-                            Z, dx, t_list, K, T_max_alg, T_total, torN = aux_function(M, Init, eps=eps, T_max=T_max, is_unitary=is_unitary)
+                            Z, dx, t_list, K, T_max_alg, T_total, torN = aux_functions.QMEGS_setup(M, Init, shots=shots, eps=eps, T_max=T_max, is_unitary=is_unitary)
                             data_end_time = time.perf_counter()
                             print(f"\tfinished Z array creation in {data_end_time - data_start_time:.6f} seconds")
 
+                            # Run Algorithm
                             start_time = time.perf_counter()
-                            output_energy = function(Z, dx, t_list, K, T_max_alg)
+                            output_energy = algorithms.QMEGS(Z, dx, t_list, K, T_max_alg)
                             end_time = time.perf_counter()
+                            print(f"\tfinished {alg} in {end_time - start_time:.6f} seconds")
 
+                            # Update Data Frame
                             my_eigenvalue = normalize_output_energy(output_energy, sort=True)
+                            results_df = record_result(name, results_df, test_type, param_value, perturb, alg, shots, torN, T_max_alg, T_total, my_eigenvalue, get_errors(eigenvalues, my_eigenvalue, lambda_i), None)
 
-                        print(f"\tfinished {alg} in {end_time - start_time:.6f} seconds")
-                        results_row = {
-                            "test_type": test_type,
-                            "param_value": param_value,
-                            "perturb": perturb,
-                            "algorithm": alg,
-                            "t or N": torN,
-                            "T_max": T_max_alg,
-                            "T_total": T_total,
-                            "eval(s)": my_eigenvalue,
-                            "errors": get_errors(eigenvalues, my_eigenvalue, lambda_i),
-                            "multiplicities": multiplicities
-                        }
 
-                        results_df = pd.concat([results_df, pd.DataFrame([results_row])], ignore_index=True)
-                        results_df.to_csv(f"data/dataframes/{name}.csv", index=False)
-
+                    ####################################
+                    ## QFAMES and all TSRHSE variants ##
+                    ####################################
                     else:
-                        aux_function = getattr(aux_functions, alg+"_setup")
+                        # Obtain t_list and other QFAMES required arguments
+                        dx, tau, t_list, K, T_max_alg, T_total, torN = aux_functions.QFAMES_setup(M, U_list, V_list, eps=eps, T_max=T_max, is_unitary=is_unitary, verbose=verbose)
 
-                        dx, tau, t_list, K, T_max_alg, T_total, torN = aux_function(M, U_list, U_list, eps=eps, T_max=T_max, is_unitary=is_unitary, verbose=verbose)
+                        # This function runs all selected Z_tensor_methods
+                        def run_Z_tensor_methods(shots):
+                            nonlocal results_df
+
+                            ###############################
+                            ## TSRHSE Jennrich version 1 ##
+                            ###############################
+                            if "Jenrich_V1" in Z_tensor_methods:
+                                # Run Algorithm
+                                start_time = time.perf_counter()
+                                output_energy = algorithms.TSRHSE(Z, t_list)
+                                end_time = time.perf_counter()
+                                print(f"\tfinished TSRHSE Jennrich version 1 in {end_time - start_time:.6f} seconds")
+                                
+                                # Update Data Frame
+                                my_eigenvalue = normalize_output_energy(output_energy, sort=True)
+                                results_df = record_result(name, results_df, test_type, param_value, perturb, "Jennrich_V1", shots, torN, T_max_alg, T_total, my_eigenvalue, get_errors(eigenvalues, my_eigenvalue, lambda_i), None)
+                            
+
+                            ###############################
+                            ## TSRHSE Jennrich version 2 ##
+                            ###############################
+                            if "Jenrich_V2" in Z_tensor_methods:
+                                # Run Algorithm
+                                start_time = time.perf_counter()
+                                output_energy = TSRHSE.jennrich_ladder(Z, t_list, min(L, R))
+                                end_time = time.perf_counter()
+                                
+                                # Update Data Frame
+                                my_eigenvalue = normalize_output_energy(output_energy, sort=True)
+                                print(f"\tfinished TSRHSE Jennrich version 2 in {end_time - start_time:.6f} seconds")
+                                results_df = record_result(name, results_df, test_type, param_value, perturb, "Jenrich_V2", shots, torN, T_max_alg, T_total, my_eigenvalue, get_errors(eigenvalues, my_eigenvalue, lambda_i), None)
+
+
+                            ###################
+                            ## TSRHSE CP ALS ##
+                            ###################
+                            if "CP_ALS" in Z_tensor_methods:
+                                # Run Algorithm
+                                start_time = time.perf_counter()
+                                output_energy, _, _ = TSRHSE.cp_eigenphases(Z, t_list, min(L, R), verbosity=2)
+                                end_time = time.perf_counter()
+                                print(f"\tfinished TSRHSE CP ALS in {end_time - start_time:.6f} seconds")
+                                
+                                # Update Data Frame
+                                my_eigenvalue = normalize_output_energy(output_energy, sort=True)
+                                results_df = record_result(name, results_df, test_type, param_value, perturb, "CP_ALS", shots, torN, T_max_alg, T_total, my_eigenvalue, get_errors(eigenvalues, my_eigenvalue, lambda_i), None)
+
+                            
+                            ############
+                            ## QFAMES ##
+                            ############
+                            if "QFAMES" in Z_tensor_methods:
+                                # Run Algorithm
+                                start_time = time.perf_counter()
+                                output_energy, output_num = algorithms.QFAMES(Z, dx, t_list, K, T_max_alg, tau, verbose=False)
+                                end_time = time.perf_counter()
+                                print(f"\tfinished QFAMES in {end_time - start_time:.6f} seconds")
+
+                                # Update Data Frame
+                                my_eigenvalue = normalize_output_energy(output_energy, sort=True)
+                                multiplicities = str(output_num)
+                                results_df = record_result(name, results_df, test_type, param_value, perturb, "QFAMES", shots, torN, T_max_alg, T_total, my_eigenvalue, get_errors(eigenvalues, my_eigenvalue, lambda_i), multiplicities)
 
                         if method == "numeric":
+                            # Generate Z_Tensor
                             data_start_time = time.perf_counter()
-                            Z = par_comp.generate_Z_tensor(M, torN, U_list, V_list, L, R, t_list, is_unitary=is_unitary, workers=workers, method="numeric")
+                            Z = par_comp.generate_Z_tensor(M, torN, U_list, V_list, L, R, t_list, is_unitary=is_unitary, shots=-1, workers=workers, method="numeric")
                             data_end_time = time.perf_counter()
                             print(f"\tfinished Z tensor numeric creation in {data_end_time - data_start_time:.6f} seconds; shape of Z is {Z.shape}")
-
-                            ##############################
-                            ## TSRHSE Jenrich version 1 ##
-                            ##############################
-                            start_time = time.perf_counter()
-                            output_energy = algorithms.TSRHSE(Z, t_list)
-                            end_time = time.perf_counter()
-                            
-                            my_eigenvalue = normalize_output_energy(output_energy, sort=True)
-                            print(f"\tfinished TSRHSE Jenrich version 1 in {end_time - start_time:.6f} seconds")
-
-                            results_row = {
-                                "test_type": test_type,
-                                "param_value": param_value,
-                                "perturb": perturb,
-                                "algorithm": "TSRHSE_Jenrich_v1",
-                                "t or N": torN,
-                                "T_max": T_max_alg,
-                                "T_total": T_total,
-                                "eval(s)": my_eigenvalue,
-                                "errors": get_errors(eigenvalues, my_eigenvalue, lambda_i),
-                            }
-                            results_df = pd.concat([results_df, pd.DataFrame([results_row])], ignore_index=True)
-                            results_df.to_csv(f"data/dataframes/{name}.csv", index=False)
-
-                            ##############################
-                            ## TSRHSE Jenrich version 2 ##
-                            ##############################
-                            start_time = time.perf_counter()
-                            output_energy = TSRHSE.jennrich_ladder(Z, t_list, 15)
-                            end_time = time.perf_counter()
-                            
-                            my_eigenvalue = normalize_output_energy(output_energy, sort=True)
-                            print(f"\tfinished TSRHSE Jenrich version 2 in {end_time - start_time:.6f} seconds")
-
-                            results_row = {
-                                "test_type": test_type,
-                                "param_value": param_value,
-                                "perturb": perturb,
-                                "algorithm": "TSRHSE_Jenrich_v2",
-                                "t or N": torN,
-                                "T_max": T_max_alg,
-                                "T_total": T_total,
-                                "eval(s)": my_eigenvalue,
-                                "errors": get_errors(eigenvalues, my_eigenvalue, lambda_i)
-                            }
-                            results_df = pd.concat([results_df, pd.DataFrame([results_row])], ignore_index=True)
-                            results_df.to_csv(f"data/dataframes/{name}.csv", index=False)
-
-                            ###################
-                            ## TSRHSE CP-ALS ##
-                            ###################
-                            start_time = time.perf_counter()
-                            output_energy, _, _ = TSRHSE.cp_eigenphases(Z, t_list, max(L, R), use_jennrich_init=False, verbosity=2)
-                            end_time = time.perf_counter()
-                            
-                            my_eigenvalue = normalize_output_energy(output_energy, sort=True)
-                            print(f"\tfinished TSRHSE CP-ALS in {end_time - start_time:.6f} seconds")
-
-                            results_row = {
-                                "test_type": test_type,
-                                "param_value": param_value,
-                                "perturb": perturb,
-                                "algorithm": "CP_ALS",
-                                "t or N": torN,
-                                "T_max": T_max_alg,
-                                "T_total": T_total,
-                                "eval(s)": my_eigenvalue,
-                                "errors": get_errors(eigenvalues, my_eigenvalue, lambda_i),
-                            }
-                            results_df = pd.concat([results_df, pd.DataFrame([results_row])], ignore_index=True)
-                            results_df.to_csv(f"data/dataframes/{name}.csv", index=False)
-
-                            
-                            #####################################
-                            ## TSRHSE CP-ALS with Jenrich Init ##
-                            #####################################
-                            start_time = time.perf_counter()
-                            output_energy, _, _ = TSRHSE.cp_eigenphases(Z, t_list, max(L, R), use_jennrich_init=True, verbosity=2)
-                            end_time = time.perf_counter()
-
-                            my_eigenvalue = normalize_output_energy(output_energy, sort=True)
-                            print(f"\tfinished TSRHSE CP-ALS with Jenrich Init in {end_time - start_time:.6f} seconds")
-
-                            results_row = {
-                                "test_type": test_type,
-                                "param_value": param_value,
-                                "perturb": perturb,
-                                "algorithm": "CP_ALS_Jen_Init",
-                                "t or N": torN,
-                                "T_max": T_max_alg,
-                                "T_total": T_total,
-                                "eval(s)": my_eigenvalue,
-                                "errors": get_errors(eigenvalues, my_eigenvalue, lambda_i),
-                            }
-                            results_df = pd.concat([results_df, pd.DataFrame([results_row])], ignore_index=True)
-                            results_df.to_csv(f"data/dataframes/{name}.csv", index=False)
-                            
-                            
-                            # ############
-                            # ## QFAMES ##
-                            # ############
-                            # start_time = time.perf_counter()
-                            # try:
-                            #     output_energy, output_num = algorithms.QFAMES(Z, dx, t_list, K, T_max_alg, tau, verbose=verbose)
-                            # except Exception as e:
-                            #     print(f"\tQFAMES failed: {e}")
-                            # end_time = time.perf_counter()
-                            
-                            # my_eigenvalue = normalize_output_energy(output_energy, sort=True)
-                            # multiplicities = str(output_num)
-                            # print(f"\tfinished QFAMES in {end_time - start_time:.6f} seconds")
-
-                            # results_row = {
-                            #     "test_type": test_type,
-                            #     "param_value": param_value,
-                            #     "perturb": perturb,
-                            #     "algorithm": alg,
-                            #     "t or N": torN,
-                            #     "T_max": T_max_alg,
-                            #     "T_total": T_total,
-                            #     "eval(s)": my_eigenvalue,
-                            #     "errors": get_errors(eigenvalues, my_eigenvalue, lambda_i),
-                            #     "multiplicities": multiplicities
-                            # }
-                            # results_df = pd.concat([results_df, pd.DataFrame([results_row])], ignore_index=True)
-                            # results_df.to_csv(f"data/dataframes/{name}.csv", index=False)
+                            run_Z_tensor_methods(-1)
 
                         elif method == "circuit":
-                            for shots in shots_array:
+                            for shots in Z_tensor_shots_array:
+                                # Generate Z_tensor
                                 data_start_time = time.perf_counter()
                                 Z = par_comp.generate_Z_tensor(M, torN, U_list, V_list, L, R, t_list, shots=shots, is_unitary=is_unitary, workers=workers, method="circuit")
                                 data_end_time = time.perf_counter()
                                 print(f"\tfinished Z tensor circuit creation in {data_end_time - data_start_time:.6f} seconds; shape of Z is {Z.shape}; {shots} shots")
+                                run_Z_tensor_methods(shots)
+                        
+                        else:
+                            raise ValueError(f"Method {method} is unsurported, choose either \"numeric\" or \"circuit\"")
 
 if __name__ == "__main__":
     main()

@@ -12,5 +12,8 @@ poetry.toml
 data/Ztensors/*
 !data/Ztensors/.gitkeep
 
-# Terminal utput files
+# Terminal output files
 output.txt
+
+# Shell files
+run_main_aux.sh

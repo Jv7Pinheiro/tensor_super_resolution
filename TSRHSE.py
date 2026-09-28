@@ -111,7 +111,7 @@ def _reconstruct(U, V, W):
     return np.einsum("il,kl,jl->ikj", U, V, W, optimize=True)
 
 
-def cp_als(Z, D, t=None, n_iter=300, tol=1e-7, init=None, vandermonde=False,
+def cp_als(Z, D, t=None, n_iter=300, tol=1e-7, vandermonde=False,
            lam_bounds=None, n_restarts=1, seed=None, verbosity=0):
     """Rank-D complex CP decomposition of Z (Q, Q, N) by alternating least squares.
 
@@ -125,8 +125,7 @@ def cp_als(Z, D, t=None, n_iter=300, tol=1e-7, init=None, vandermonde=False,
         Requires t.
     n_restarts : int
         Random restarts; the lowest-residual fit is returned. ALS is only
-        locally convergent (Theorem 8.1 in your draft), so restarts matter
-        unless you pass a Jennrich init.
+        locally convergent (Theorem 8.1 in your draft).
     """
     Z = np.asarray(Z, dtype=complex)
     Q1, Q2, N = Z.shape
@@ -137,12 +136,9 @@ def cp_als(Z, D, t=None, n_iter=300, tol=1e-7, init=None, vandermonde=False,
 
     best = None
     for restart in range(max(1, n_restarts)):
-        if init is not None and restart == 0:
-            U, V, W = (np.array(f, dtype=complex) for f in init)
-        else:
-            U = rng.normal(size=(Q1, D)) + 1j * rng.normal(size=(Q1, D))
-            V = rng.normal(size=(Q2, D)) + 1j * rng.normal(size=(Q2, D))
-            W = rng.normal(size=(N, D)) + 1j * rng.normal(size=(N, D))
+        U = rng.normal(size=(Q1, D)) + 1j * rng.normal(size=(Q1, D))
+        V = rng.normal(size=(Q2, D)) + 1j * rng.normal(size=(Q2, D))
+        W = rng.normal(size=(N, D)) + 1j * rng.normal(size=(N, D))
 
         prev = np.inf
         for it in range(n_iter):
@@ -192,43 +188,6 @@ def project_vandermonde(W, t, lam_bounds=None):
 #########################
 ## Jenrich's Algorithm ##
 #########################
-
-def jennrich_init(Z, D, seed=None, ridge=0.0):
-    """Jennrich with random mode-3 contractions, used as an ALS initialiser.
-
-    Theorem 4.1 allows any absolutely continuous g1, g2, not just slice
-    selectors. Random g averages over all N time slices, so the contracted
-    matrices carry ~sqrt(N) times less shot noise than a single slice. The
-    eigenvalues are then ratios beta_l(g1)/beta_l(g2), which are no longer
-    eigenphases -- but that is fine here, because we only want the eigenvectors
-    U, and the eigenphases come from the CP time factor afterwards.
-    """
-    Z = np.asarray(Z, dtype=complex)
-    N = Z.shape[2]
-    rng = np.random.default_rng(seed)
-
-    g1 = rng.normal(size=N) + 1j * rng.normal(size=N)
-    g2 = rng.normal(size=N) + 1j * rng.normal(size=N)
-
-    A = Z @ g1
-    B = Z @ g2
-
-    Ub, S, Vh = np.linalg.svd(B, full_matrices=False)
-    k = min(D, np.sum(S > S[0] * 1e-10))
-    S_inv = S[:k] / (S[:k] ** 2 + ridge ** 2)          # Tikhonov if ridge > 0
-    B_dag = Vh[:k].conj().T @ np.diag(S_inv) @ Ub[:, :k].conj().T
-
-    _, evecs = np.linalg.eig(A @ B_dag)
-    U = evecs[:, :D]
-    U = U / np.linalg.norm(U, axis=0, keepdims=True)
-
-    # Fill in V and W with one least-squares pass each.
-    V = np.eye(Z.shape[1], D, dtype=complex)
-    W = np.ones((N, D), dtype=complex)
-    V = _solve_block(khatri_rao(U, W), _unfold(Z, 1))
-    W = _solve_block(khatri_rao(U, V), _unfold(Z, 2))
-    return U, V, W
-
 
 def jennrich_ratio(Z, t_list, D, a, b, ridge=0.0, rank=None):
     """One ratio estimate from the slices at t_a and t_b."""
@@ -332,10 +291,9 @@ def jennrich_ladder(Z, t_list, D, n_candidates=15, unit_circle_tol=0.25,
     return current
 
 
-def cp_eigenphases(Z, t_list, D, tol=1e-7, vandermonde=True, n_restarts=4, use_jennrich_init=False, lam_bounds=None, seed=None, verbosity=0):
+def cp_eigenphases(Z, t_list, D, tol=1e-7, vandermonde=True, n_restarts=4, lam_bounds=None, seed=None, verbosity=0):
     """End-to-end: CP-decompose Z, then read eigenphases off the time factor."""
     t = np.asarray(t_list, dtype=float)
-    init = jennrich_init(Z, D, seed=seed) if use_jennrich_init else None
-    U, V, W, res = cp_als(Z, D, t=t, init=init, tol=tol, vandermonde=vandermonde, lam_bounds=lam_bounds, n_restarts=n_restarts, seed=seed, verbosity=verbosity)
+    U, V, W, res = cp_als(Z, D, t=t, tol=tol, vandermonde=vandermonde, lam_bounds=lam_bounds, n_restarts=n_restarts, seed=seed, verbosity=verbosity)
     lams, weights = eigenphases_from_factor(W, t, lam_bounds)
     return lams, weights, (U, V, W, res)

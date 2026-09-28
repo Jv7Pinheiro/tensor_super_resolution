@@ -60,7 +60,7 @@ _worker_data = {}
 #################
 
 def _initialize_worker(M, U_list, V_list, t_array, is_unitary, shots,
-                       fast_sampling, seed, method, noiseless, want):
+                       fast_sampling, seed, method, want):
     """Runs once per worker process. Heavy objects are pickled once, here."""
     _worker_data["M"] = M
     _worker_data["U_list"] = U_list
@@ -70,7 +70,6 @@ def _initialize_worker(M, U_list, V_list, t_array, is_unitary, shots,
     _worker_data["shots"] = shots
     _worker_data["fast_sampling"] = fast_sampling
     _worker_data["seed"] = seed
-    _worker_data["noiseless"] = noiseless
     _worker_data["want"] = want          # "single", "poly", or "both"
     # Fallback stream, used only when seed is None (non-reproducible mode).
     _worker_data["rng"] = np.random.default_rng()

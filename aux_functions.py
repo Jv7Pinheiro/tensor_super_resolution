@@ -163,7 +163,7 @@ def generate_multiple_Z_tensors(M, N, U_list, V_list, L, R, t_list, is_unitary=T
     if verbose: print(f"Total time to generate Z was {Zend - Zstart:.6f} seconds")
     return Z_tensor_single, Z_tensor_poly
 
-def QMEGS_setup(M, Init, eps=None, T_max=None, is_unitary=True, sigma=1, p_min=0.5, p_tail=0.0, D=2, eta=0.1, q=0.05, delta_dom=None):
+def QMEGS_setup(M, Init, eps=None, T_max=None, is_unitary=True, sigma=1, p_min=0.5, p_tail=0.0, D=2, eta=0.1, q=0.05, delta_dom=None, shots=1):
     """
     Compute QMEGS parameters from error tolerance eps.
     
@@ -197,7 +197,7 @@ def QMEGS_setup(M, Init, eps=None, T_max=None, is_unitary=True, sigma=1, p_min=0
     t_list = generate_t_list(N, T_max, sigma)
     T_total = sum(np.abs(t_list))
 
-    Z = generate_Z_array(M, N, t_list, Init, is_unitary=is_unitary, shots=1)
+    Z = generate_Z_array(M, N, t_list, Init, is_unitary=is_unitary, shots=shots)
 
     return Z, dx, t_list, K, T_max, T_total, N
 
