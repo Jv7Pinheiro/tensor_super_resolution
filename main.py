@@ -161,7 +161,7 @@ def main():
     eigenvalues, eigenvectors = np.linalg.eig(M)
 
     # Choose Init State: Targeted eigenvalue for QPE, KQPE, and QMEGS
-    lambda_i = 1 # This is the index of the INIT state, # If 1 then QPE and KQPE need a scaling factor greater than ||M||
+    lambda_i = 0 # This is the index of the INIT state, # If 1 then QPE and KQPE need a scaling factor greater than ||M||
     eigenvalue = np.real(eigenvalues[lambda_i])
     
     # Print Information about my matrix
@@ -181,7 +181,7 @@ def main():
     # Options are "QPE", "KQPE", "QMEGS", "Z_Tensor_Methods"
     # Four variants for Z_Tensor_Methods are "Jenrich_V1", "Jenrich_V2", "CP_ALS" (all three are TSRHSE) and "QFAMES"
     algorithms_array = ["QPE", "KQPE", "QMEGS", "Z_tensor_methods"]
-    Z_tensor_methods = ["Jenrich_V1", "Jenrich_V2", "CP_ALS", "QFAMES"]
+    Z_tensor_methods = ["Jenrich_V1", "Jenrich_V2", "CP_ALS"]
 
     # Verbosity parameters
     verbosity = 0
@@ -196,7 +196,7 @@ def main():
 
     # Test configurations: iterate through eps_array and T_max_array separately
     # eps_array = np.array([0.5, 0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001])
-    T_max_array = np.array([100, 200, 400, 800, 1200, 1600, 2000, 3200])
+    T_max_array = np.array([100, 200, 400, 800, 1200, 1600, 2000, 3200]) # [100, 200, 400, 800, 1200, 1600, 2000, 3200]
     test_configs = {
         # "eps": {"array": eps_array, "name": "eps"},
         "T_max": {"array": T_max_array, "name": "T_max"}
@@ -207,7 +207,7 @@ def main():
     # TODO: Edit QMEGS framework such that it can create numeric Z array
     qpe_shots = 1000 # Applies to QPE and KQPE
     Z_array_shots_array = np.array([1500]) # Applies to QMEGS
-    Z_tensor_shots_array = np.array([500, 750, 1000, 1500, 2000]) # Applies to QFAMES and TSRHSE
+    Z_tensor_shots_array = np.array([1500]) # Applies to QFAMES and TSRHSE
 
 
     ################
@@ -354,7 +354,7 @@ def main():
                             if "CP_ALS" in Z_tensor_methods:
                                 # Run Algorithm
                                 start_time = time.perf_counter()
-                                output_energy, _, _ = TSRHSE.cp_eigenphases(Z, t_list, min(L, R), verbosity=2)
+                                output_energy, _, _ = TSRHSE.cp_eigenphases(Z, t_list, min(L, R), verbosity=verbosity)
                                 end_time = time.perf_counter()
                                 print(f"\tfinished TSRHSE CP ALS in {end_time - start_time:.6f} seconds")
                                 

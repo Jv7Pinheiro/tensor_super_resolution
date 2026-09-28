@@ -231,7 +231,7 @@ def QFAMES_setup(M, U_list, V_list, eps=None, T_max=None, is_unitary=True, shots
 
     dx = q / T_max  # grid step, q << alpha, and grid step q/T is the resolution
 
-    t_list = generate_t_list(N, T_max, sigma)
+    t_list = np.ascontiguousarray(np.asarray(generate_t_list(N, T_max, sigma)))
     T_total = L*R*sum(np.abs(t_list))
 
     return dx, tau, t_list, K, T_max, T_total, N

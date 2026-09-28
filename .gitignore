@@ -14,6 +14,7 @@ data/Ztensors/*
 
 # Terminal output files
 output.txt
+output2.txt
 
 # Shell files
 run_main_aux.sh

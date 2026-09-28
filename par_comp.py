@@ -1,45 +1,41 @@
 """Parallel generation of the Z tensor for QPE experiments.
- 
-Drop-in replacement for the original par_comp.py. The public signature of
-generate_multiple_Z_tensors() is unchanged except for new keyword-only options,
-all of which default to the old behaviour where behaviour could differ.
- 
-Three changes relative to the original:
- 
-1. The task space is flattened over (l, r, t) instead of being parallelised only
-   over t inside a serial L x R double loop. There is now exactly one
-   synchronisation barrier at the very end of the whole run, instead of L * R
-   barriers.
- 
-2. Workers receive integer index ranges instead of pickled numpy slices. t_array
-   is shipped once per worker in the initializer.
- 
-3. The measurement step computes the exact marginal probability of the ancilla
-   from the statevector and draws the shot noise with numpy, instead of calling
-   Statevector.sample_counts(). This is distributionally identical (see
-   _p0_from_statevector) and avoids building a counts dict per circuit.
-   Set fast_sampling=False to fall back to the original sample_counts() path.
-"""
 
+The module provides two backends for computing the same Z tensor:
 
-"""Parallel generation of the Z tensor for QPE experiments.
+    _compute_chunk
+        Builds generalized Hadamard test circuits with Qiskit and estimates
+        the real and imaginary parts of the matrix element from finite-shot
+        measurements.
 
-Two backends, same task decomposition and same output statistics:
+    _compute_chunk_numerically
+        Evaluates
+            Z[l, r, n] = <psi_l| exp(-i M t_n) |phi_r>
+        directly using NumPy. This backend computes the tensor exactly and
+        does not use shot sampling.
 
-  _compute_chunk              builds the generalized Hadamard test circuits with
-                              qiskit and reads the ancilla marginal off the
-                              statevector.
-  _compute_chunk_numerically  evaluates Z[l, r, n] = <psi_l| exp(-i M t_n) |phi_r>
-                              directly with numpy.
+The task space is flattened over (l, r, t), allowing work to be distributed
+across the probe-pair and time dimensions. Workers receive integer index
+ranges rather than pickled NumPy slices, and t_list is shipped once per
+worker through the initializer. Results are assembled into a single
+(L, R, N) tensor after the workers finish their assigned chunks.
 
-Select with method="circuit" (default) or method="numeric" in
-generate_multiple_Z_tensors(). compare_backends() checks that the two agree
-before you rely on the numeric one.
+For the circuit backend, the exact ancilla marginal is obtained directly
+from the statevector and the shot noise is drawn with NumPy when
+fast_sampling=True. This avoids constructing a counts dictionary for every
+circuit. Set fast_sampling=False to use Qiskit's Statevector.sample_counts()
+path instead.
 
-Convention note for the numeric backend: it assumes M is the Hamiltonian and the
-propagator is exp(-i M t), with probe vectors stored as COLUMNS of U_list and
-V_list (matching U_list[:, l] in the worker). The is_unitary flag is passed to
-algorithms.GeneralizedHadamardTest and is not used by the numeric path.
+For the numeric backend, M is assumed to be the Hamiltonian and the
+propagator is exp(-i M t). Probe vectors are stored as COLUMNS of U_list
+and V_list, matching U_list[:, l] and V_list[:, r] in the workers.
+
+The is_unitary flag determines whether M is treated as unitary or
+Hermitian. The circuit backend forwards this flag to
+algorithms.GeneralizedHadamardTest. The numeric backend uses it to select
+the appropriate spectral decomposition and validates M accordingly.
+
+compare_backends() provides a direct check that the numerical backend
+agrees with the exact amplitudes produced by the circuit backend.
 """
 
 import os
@@ -52,38 +48,98 @@ import qiskit as qk
 import algorithms
 
 
+#################
+## Worker Side ##
+#################
+
 _worker_data = {}
 
-
-#################
-## Worker side ##
-#################
-
-def _initialize_worker(M, U_list, V_list, t_array, is_unitary, shots,
-                       fast_sampling, seed, method, want):
+def _initialize_worker(M, U_list, V_list, t_list, is_unitary, shots, fast_sampling, seed, method):
     """Runs once per worker process. Heavy objects are pickled once, here."""
     _worker_data["M"] = M
     _worker_data["U_list"] = U_list
     _worker_data["V_list"] = V_list
-    _worker_data["t_array"] = t_array
+    _worker_data["t_list"] = t_list
     _worker_data["is_unitary"] = is_unitary
     _worker_data["shots"] = shots
     _worker_data["fast_sampling"] = fast_sampling
     _worker_data["seed"] = seed
-    _worker_data["want"] = want          # "single", "poly", or "both"
-    # Fallback stream, used only when seed is None (non-reproducible mode).
-    _worker_data["rng"] = np.random.default_rng()
+    _worker_data["rng"] = np.random.default_rng() # Fallback stream, used only when seed is None (non-reproducible mode).
 
     if method == "numeric":
-        _precompute_numeric(M, U_list, V_list, t_array, is_unitary)
+        _precompute_numeric(M, U_list, V_list, t_list, is_unitary)
 
+
+########################
+## Scheduling Helpers ##
+########################
+
+def _split_bounds(n, k):
+    """
+    Split range(n) into k contiguous, near-equal (start, stop) pairs.
+    Where k is the number of workers.
+    """
+    k = max(1, min(int(k), n))
+    base, extra = divmod(n, k)
+    bounds = []
+    start = 0
+    for i in range(k):
+        stop = start + base + (1 if i < extra else 0)
+        bounds.append((start, stop))
+        start = stop
+    return bounds
+
+
+def _build_tasks(L, R, N, workers, tasks_per_worker, n_splits=None):
+    """Flat task list covering every (l, r, t-slice).
+
+    If L * R is already large compared to the core count, each (l, r) pair is a
+    single task and t is not split at all -- that gives good balance with the
+    least IPC. If L * R is small (e.g. 4x4 on 64 cores), t gets split enough to
+    keep every core busy.
+
+    Pass n_splits to pin the t-axis split count instead, which makes the task
+    boundaries independent of the worker count (see the seed note in
+    generate_multiple_Z_tensors).
+    """
+    if n_splits is None:
+        pairs = L * R
+        # Below we are basically calculating ceil(desired number of tasks / number of (L, R) pairs)
+        target = max(1, int(workers) * int(tasks_per_worker))
+        n_splits = max(1, -(-target // pairs))      # ceil division
+    n_splits = min(max(1, int(n_splits)), N)
+
+    bounds = _split_bounds(N, n_splits)
+
+    tasks = []
+    for l in range(L):
+        for r in range(R):
+            for start, stop in bounds:
+                if stop > start:
+                    tasks.append((l, r, start, stop))
+    return tasks
+
+
+def _limit_blas_threads():
+    """Stop each worker's BLAS from spawning its own thread pool.
+
+    With 64 processes each defaulting to 64 BLAS threads you get ~4096 threads
+    fighting over 64 cores. Set in the parent; spawned children inherit it.
+    """
+    for var in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS",
+                "NUMEXPR_NUM_THREADS", "VECLIB_MAXIMUM_THREADS"):
+        os.environ.setdefault(var, "1")
+
+
+##############
+## Checkers ##
+##############
 
 def _check_hermitian(M, tol=1e-8):
     asym = np.max(np.abs(M - M.conj().T))
     if asym > tol * max(1.0, float(np.max(np.abs(M)))):
         raise ValueError(
-            f"M is not Hermitian (max |M - M^dagger| = {asym:.3e}). "
-            "Pass is_unitary=True if M is meant to be unitary instead.")
+            f"M is not Hermitian (max |M - M^dagger| = {asym:.3e}).\nPass is_unitary=True if M is meant to be unitary instead.")
 
 
 def _check_unitary(M, tol=1e-8):
@@ -91,11 +147,14 @@ def _check_unitary(M, tol=1e-8):
     resid = np.max(np.abs(M @ M.conj().T - np.eye(d)))
     if resid > tol * max(1.0, float(np.max(np.abs(M)))):
         raise ValueError(
-            f"M is not unitary (max |M M^dagger - I| = {resid:.3e}). "
-            "Pass is_unitary=False if M is meant to be Hermitian instead.")
+            f"M is not unitary (max |M M^dagger - I| = {resid:.3e}).\nPass is_unitary=False if M is meant to be Hermitian instead.")
 
 
-def _precompute_numeric(M, U_list, V_list, t_array, is_unitary):
+#####################
+## Numeric Methods ##
+#####################
+
+def _precompute_numeric(M, U_list, V_list, t_list, is_unitary):
     """Diagonalise M once per worker and cache the pieces every entry reuses.
 
     Single flag, matching your is_matrix_unitary() convention: M is assumed to
@@ -106,8 +165,7 @@ def _precompute_numeric(M, U_list, V_list, t_array, is_unitary):
 
     With M = W diag(lam) W^-1,
 
-        <psi_l| exp(-i M t_n) |phi_r>
-            = sum_k (U^dagger W)[l, k] * exp(-i lam_k t_n) * (W^-1 V)[k, r]
+        <psi_l| exp(-i M t_n) |phi_r> = sum_k (U^dagger W)[l, k] * exp(-i lam_k t_n) * (W^-1 V)[k, r]
 
     Both Hermitian and unitary matrices are normal, so in both cases W can be
     taken unitary and the expensive/ill-conditioned W^-1 replaced by the cheap,
@@ -120,36 +178,56 @@ def _precompute_numeric(M, U_list, V_list, t_array, is_unitary):
         stable, and only exactly right for non-degenerate eigenvalues) if
         scipy is not importable.
     """
-    M = np.asarray(M, dtype=complex)
-    U = np.asarray(U_list, dtype=complex)          # (d, L), probes in columns
-    V = np.asarray(V_list, dtype=complex)          # (d, R)
-
     if is_unitary:
         _check_unitary(M)
         try:
             from scipy.linalg import schur
             T, W = schur(M, output="complex")      # exact diagonal: M normal
             evals = np.diag(T).astype(complex)
-            B = W.conj().T @ V                      # W guaranteed unitary
+            B = W.conj().T @ V_list                # W guaranteed unitary
         except ImportError:
             evals, W = np.linalg.eig(M)
-            B = np.linalg.solve(W, V)               # W not guaranteed unitary
+            B = np.linalg.solve(W, V_list)         # W not guaranteed unitary
     else:
         _check_hermitian(M)
         evals, W = np.linalg.eigh(M)
         evals = evals.astype(complex)
-        B = W.conj().T @ V                          # W^-1 == W^dagger
+        B = W.conj().T @ V_list                    # W^-1 == W^dagger
 
-    A = U.conj().T @ W                              # (L, d)
+    A = U_list.conj().T @ W                        # (L, d)
 
-    # (d, N) phase table, shared by every (l, r). Small: d is the Hilbert
-    # dimension, so 16 x N complex for a 16x16 Hamiltonian.
-    phases = np.exp(-1j * np.outer(evals, t_array))
+    # (d, N) phase table, shared by every (l, r). 
+    # Small d is the Hilbert dimension, so for example 16 x N complex for a 16x16 Hamiltonian.
+    phases = np.exp(-1j * np.outer(evals, t_list))
 
     _worker_data["num_A"] = np.ascontiguousarray(A)
     _worker_data["num_B"] = np.ascontiguousarray(B)
     _worker_data["num_phases"] = np.ascontiguousarray(phases)
 
+
+def _amplitudes_numerically(l, r, start, stop):
+    """Exact <psi_l| exp(-i M t_n) |phi_r> for n in [start, stop)."""
+    A = _worker_data["num_A"]               # (L, d)
+    B = _worker_data["num_B"]               # (d, R)
+    phases = _worker_data["num_phases"]     # (d, N)
+
+    # Fold the two probe-dependent factors together first: one length-d vector.
+    coeff = A[l, :] * B[:, r]
+    return coeff @ phases[:, start:stop]    # (stop - start,)
+
+
+def _compute_chunk_numerically(task):
+    """Evaluate Z[l, r, start:stop] exactly, matching Z_{i,k}(t) = <u_i| exp(-i H t) |v_k> directly."""
+    l, r, start, stop = task
+ 
+    Z_chunk = _amplitudes_numerically(l, r, start, stop)
+ 
+    return l, r, start, Z_chunk
+
+
+#####################
+## Circuit Methods ##
+#####################
 
 def _p0_from_statevector(data):
     """Exact P(ancilla qubit 0 == '0') for a qiskit Statevector's raw array.
@@ -195,13 +273,10 @@ def _compute_chunk(task):
     M = _worker_data["M"]
     U = _worker_data["U_list"][:, l]
     V = _worker_data["V_list"][:, r]
-    t_array = _worker_data["t_array"]
+    t_list = _worker_data["t_list"]
     is_unitary = _worker_data["is_unitary"]
     shots = _worker_data["shots"]
     fast_sampling = _worker_data["fast_sampling"]
-    want = _worker_data["want"]
-    want_single = want in ("single", "both")
-    want_poly = want in ("poly", "both")
  
     rng = _task_rng(l, r, start)
     n = stop - start
@@ -210,194 +285,143 @@ def _compute_chunk(task):
         p_real = np.empty(n, dtype=float)
         p_img = np.empty(n, dtype=float)
  
-        for i, t in enumerate(t_array[start:stop]):
+        for i, t in enumerate(t_list[start:stop]):
             _, p_real[i] = _run_circuit_probability(M, U, V, t, False, is_unitary)
             _, p_img[i] = _run_circuit_probability(M, U, V, t, True, is_unitary)
  
-        Z_single_chunk = None
-        if want_single:
-            # One vectorised draw per chunk instead of four per t.
-            real_single = 2.0 * (rng.random(n) < p_real) - 1.0
-            img_single = 2.0 * (rng.random(n) < p_img) - 1.0
-            Z_single_chunk = real_single + 1j * img_single
- 
-        Z_poly_chunk = None
-        if want_poly:
-            real_poly = 2.0 * (rng.binomial(shots, p_real) / shots) - 1.0
-            img_poly = 2.0 * (rng.binomial(shots, p_img) / shots) - 1.0
-            Z_poly_chunk = real_poly + 1j * img_poly
+        real = 2.0 * (rng.binomial(shots, p_real) / shots) - 1.0
+        img = 2.0 * (rng.binomial(shots, p_img) / shots) - 1.0
+        Z_chunk = real + 1j * img
  
     else:
         # Original code path, kept verbatim in spirit for A/B validation.
-        real_single = np.empty(n, dtype=float) if want_single else None
-        img_single = np.empty(n, dtype=float) if want_single else None
-        real_poly = np.empty(n, dtype=float) if want_poly else None
-        img_poly = np.empty(n, dtype=float) if want_poly else None
+        real = np.empty(n, dtype=float)
+        img = np.empty(n, dtype=float)
  
-        for i, t in enumerate(t_array[start:stop]):
+        for i, t in enumerate(t_list[start:stop]):
             state_re, _ = _run_circuit_probability(M, U, V, t, False, is_unitary)
-            if want_single:
-                real_single[i] = 2 * state_re.sample_counts(1, [0]).get("0", 0) - 1
-            if want_poly:
-                real_poly[i] = 2 * (state_re.sample_counts(shots, [0]).get("0", 0)
-                                    / shots) - 1
+            real[i] = 2 * (state_re.sample_counts(shots, [0]).get("0", 0) / shots) - 1
  
             state_im, _ = _run_circuit_probability(M, U, V, t, True, is_unitary)
-            if want_single:
-                img_single[i] = 2 * state_im.sample_counts(1, [0]).get("0", 0) - 1
-            if want_poly:
-                img_poly[i] = 2 * (state_im.sample_counts(shots, [0]).get("0", 0)
-                                   / shots) - 1
+            img[i] = 2 * (state_im.sample_counts(shots, [0]).get("0", 0) / shots) - 1
  
-        Z_single_chunk = (real_single + 1j * img_single) if want_single else None
-        Z_poly_chunk = (real_poly + 1j * img_poly) if want_poly else None
+        Z_chunk = (real + 1j * img)
  
-    return l, r, start, Z_single_chunk, Z_poly_chunk
-
-
-def _amplitudes_numerically(l, r, start, stop):
-    """Exact <psi_l| exp(-i M t_n) |phi_r> for n in [start, stop)."""
-    A = _worker_data["num_A"]               # (L, d)
-    B = _worker_data["num_B"]               # (d, R)
-    phases = _worker_data["num_phases"]     # (d, N)
-
-    # Fold the two probe-dependent factors together first: one length-d vector.
-    coeff = A[l, :] * B[:, r]
-    return coeff @ phases[:, start:stop]    # (stop - start,)
-
-
-def _compute_chunk_numerically(task):
-    """Evaluate Z[l, r, start:stop] exactly, matching Z_{i,k}(t) = <u_i|
-    exp(-i H t) |v_k> from the paper directly -- no shot sampling of any kind.
- 
-    This is the numeric backend's whole point: an exact analytic contraction
-    has no shot count to speak of, so `shots` is never read here and nothing
-    here is a stand-in for the circuit backend's finite-shot statistics (that
-    simulation happens in _compute_chunk; this function is a different, exact
-    computation of the same tensor). Whichever of single/poly
-    _worker_data["want"] asks for gets a copy of the same exact value -- there
-    is no distinct "single-shot" amplitude to compute, so want="both" (from
-    generate_multiple_Z_tensors) just returns the same tensor twice.
-    """
-    l, r, start, stop = task
-    want = _worker_data["want"]
- 
-    z = _amplitudes_numerically(l, r, start, stop)
- 
-    single_chunk = z.copy() if want in ("single", "both") else None
-    poly_chunk = z.copy() if want in ("poly", "both") else None
-    return l, r, start, single_chunk, poly_chunk
-
+    return l, r, start, Z_chunk
 
 
 ########################
-## Scheduling helpers ##
+## Public Entry Point ##
 ########################
-
-def _split_bounds(n, k):
-    """Split range(n) into k contiguous, near-equal (start, stop) pairs."""
-    k = max(1, min(int(k), n))
-    base, extra = divmod(n, k)
-    bounds = []
-    start = 0
-    for i in range(k):
-        stop = start + base + (1 if i < extra else 0)
-        bounds.append((start, stop))
-        start = stop
-    return bounds
-
-
-def _build_tasks(L, R, N, workers, tasks_per_worker, n_splits=None):
-    """Flat task list covering every (l, r, t-slice).
-
-    If L * R is already large compared to the core count, each (l, r) pair is a
-    single task and t is not split at all -- that gives good balance with the
-    least IPC. If L * R is small (e.g. 4x4 on 64 cores), t gets split enough to
-    keep every core busy.
-
-    Pass n_splits to pin the t-axis split count instead, which makes the task
-    boundaries independent of the worker count (see the seed note in
-    generate_multiple_Z_tensors).
-    """
-    if n_splits is None:
-        pairs = L * R
-        target = max(1, int(workers) * int(tasks_per_worker))
-        n_splits = max(1, -(-target // pairs))      # ceil division
-    n_splits = min(max(1, int(n_splits)), N)
-
-    bounds = _split_bounds(N, n_splits)
-
-    tasks = []
-    for l in range(L):
-        for r in range(R):
-            for start, stop in bounds:
-                if stop > start:
-                    tasks.append((l, r, start, stop))
-    return tasks
-
-
-def _limit_blas_threads():
-    """Stop each worker's BLAS from spawning its own thread pool.
-
-    With 64 processes each defaulting to 64 BLAS threads you get ~4096 threads
-    fighting over 64 cores. Set in the parent; spawned children inherit it.
-    """
-    for var in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS",
-                "NUMEXPR_NUM_THREADS", "VECLIB_MAXIMUM_THREADS"):
-        os.environ.setdefault(var, "1")
-
-
-########################
-## Public entry point ##
-########################
-
-def _generate_Z_tensors(M, N, U_list, V_list, L, R, t_list, is_unitary, shots,
-                        workers, tasks_per_worker, n_splits, fast_sampling,
-                        limit_blas_threads, seed, progress, method, want):
-    """Shared engine behind generate_Z_tensor and generate_multiple_Z_tensors.
  
-    Both public functions differ only in which tensor(s) they need, so this is
-    the one place that builds tasks, spawns the pool, and assembles results.
-    `want` ("single", "poly", or "both") is forwarded to the workers, which
-    skip computing and returning whichever tensor isn't wanted (see
-    _compute_chunk / _compute_chunk_numerically) -- so asking for just one
-    tensor also means only allocating one (L, R, N) array here, not throwing
-    half of a bigger computation away.
- 
-    Note for method="numeric": `shots` only reaches the circuit backend.
-    The numeric backend computes Z exactly with no shot concept at all, so
-    with want="both" the two returned tensors are identical.
- 
-    Returns (Z_tensor_single, Z_tensor_poly) with whichever wasn't in `want`
-    left as None.
+def generate_Z_tensor(M, N, U_list, V_list, L, R, t_list, is_unitary=True, shots=1500, workers=4, tasks_per_worker=4, n_splits=None, fast_sampling=True, limit_blas_threads=True, seed=None, progress=False, method="circuit"):
+    """Build and return a single Z tensor of shape (L, R, N).
+
+    The tensor contains
+
+        Z[l, r, n] = <psi_l| exp(-i M t_n) |phi_r>,
+
+    with the circuit backend estimating the matrix elements using finite-shot
+    generalized Hadamard tests and the numeric backend evaluating them exactly.
+
+    Parameters
+    ----------
+    M : array-like
+        Matrix used by the generalized Hadamard test or, for method="numeric",
+        the Hamiltonian defining the propagator exp(-i M t).
+
+    N : int
+        Number of time points. Must match len(t_list).
+
+    U_list : array-like
+        Probe vectors for the left side, stored as columns with shape (d, L).
+
+    V_list : array-like
+        Probe vectors for the right side, stored as columns with shape (d, R).
+
+    L, R : int
+        Number of left and right probe vectors.
+
+    t_list : array-like
+        Time values at which the Z tensor is evaluated.
+
+    is_unitary : bool, default=True
+        Determines how M is treated. If True, M is assumed to be unitary;
+        if False, M is assumed to be Hermitian. The circuit backend forwards
+        this flag to GeneralizedHadamardTest, while the numeric backend uses it
+        to select the corresponding spectral decomposition and validation.
+
+    shots : int, default=1500
+        Number of measurement shots used by the circuit backend. Ignored by
+        the numeric backend, which computes the tensor exactly.
+
+    workers : int, default=4
+        Maximum number of worker processes.
+
+    tasks_per_worker : int, default=4
+        Target number of tasks per worker. Higher values provide finer-grained
+        load balancing at the cost of additional inter-process communication.
+
+    n_splits : int or None, default=None
+        Number of chunks into which the t axis is divided. If None, the split
+        count is chosen adaptively from the number of workers, tasks_per_worker,
+        and the number of probe pairs.
+
+        When seed is specified, providing an explicit n_splits fixes the task
+        boundaries and therefore allows reproducibility across different worker
+        counts.
+
+    fast_sampling : bool, default=True
+        Circuit backend only. If True, draw shot noise directly from the exact
+        ancilla probabilities using NumPy. If False, use
+        Statevector.sample_counts().
+
+    limit_blas_threads : bool, default=True
+        If True, limit each worker's BLAS thread count to one thread to avoid
+        excessive thread oversubscription.
+
+    seed : int or None, default=None
+        Random seed for reproducible circuit-backend shot noise. Task-local
+        random streams are keyed by (l, r, start), so results do not depend on
+        the order in which tasks complete. The adaptive task boundaries can
+        still depend on the worker count unless n_splits is specified.
+
+    progress : bool, default=False
+        If True, print task completion progress.
+
+    method : {"circuit", "numeric"}, default="circuit"
+        Backend used to generate the tensor. "circuit" builds generalized
+        Hadamard tests and applies finite-shot sampling. "numeric" evaluates
+        the matrix elements directly and exactly using the spectral
+        decomposition of M.
+
+    Returns
+    -------
+    Z : ndarray
+        Complex array of shape (L, R, N) containing the generated Z tensor.
     """
+
     if method not in ("circuit", "numeric"):
         raise ValueError(f"unknown method {method!r}")
-    if want not in ("single", "poly", "both"):
-        raise ValueError(f"unknown want {want!r}")
- 
-    N = int(N)
-    t_array = np.ascontiguousarray(np.asarray(t_list))
- 
-    if len(t_array) != N:
-        raise ValueError(f"N ({N}) must match len(t_list) ({len(t_array)})")
- 
-    U_arr = np.asarray(U_list)
-    V_arr = np.asarray(V_list)
-    if U_arr.ndim != 2 or U_arr.shape[1] != L or V_arr.shape[1] != R:
+
+    if len(t_list) != N:
+        raise ValueError(f"N ({N}) must match len(t_list) ({len(t_list)})")
+
+    if U_list.ndim != 2 or U_list.shape[1] != L or V_list.shape[1] != R:
         raise ValueError(
-            f"expected probes in columns: U_list is {U_arr.shape} (want (d, {L})), "
-            f"V_list is {V_arr.shape} (want (d, {R}))")
+            f"expected probes in columns: U_list is {U_list.shape} (want (d, {L})), "
+            f"V_list is {V_list.shape} (want (d, {R}))")
  
-    Z_tensor_single = np.zeros((L, R, N), dtype=complex) if want in ("single", "both") else None
-    Z_tensor_poly = np.zeros((L, R, N), dtype=complex) if want in ("poly", "both") else None
+    Z = np.zeros((L, R, N), dtype=complex) 
  
     if method == "numeric":
         # Check once, here, before spawning workers: an exception raised inside
         # the pool initializer surfaces as an opaque BrokenProcessPool instead
         # of the informative ValueError from _check_unitary/_check_hermitian.
-        M_arr = np.asarray(M, dtype=complex)
-        _check_unitary(M_arr) if is_unitary else _check_hermitian(M_arr)
+        if is_unitary:
+            _check_unitary(M)
+        else:
+            _check_hermitian(M)
  
     tasks = _build_tasks(L, R, N, workers, tasks_per_worker, n_splits)
     workers = max(1, min(int(workers), len(tasks)))
@@ -409,15 +433,11 @@ def _generate_Z_tensors(M, N, U_list, V_list, L, R, t_list, is_unitary, shots,
     # without re-executing main.py.
     context = mp.get_context("spawn")
  
-    initargs = (M, U_list, V_list, t_array, is_unitary, shots,
-                fast_sampling, seed, method, want)
+    initargs = (M, U_list, V_list, t_list, is_unitary, shots, fast_sampling, seed, method)
  
     worker_fn = _compute_chunk if method == "circuit" else _compute_chunk_numerically
  
-    with ProcessPoolExecutor(max_workers=workers, mp_context=context,
-                             initializer=_initialize_worker,
-                             initargs=initargs) as executor:
- 
+    with ProcessPoolExecutor(max_workers=workers, mp_context=context, initializer=_initialize_worker, initargs=initargs) as executor:
         # Everything is submitted up front, so a worker that finishes early
         # immediately picks up the next (l, r, t-slice) rather than waiting for
         # its peers to finish the current (l, r).
@@ -425,118 +445,28 @@ def _generate_Z_tensors(M, N, U_list, V_list, L, R, t_list, is_unitary, shots,
  
         done = 0
         for future in as_completed(futures):
-            l, r, start, single_chunk, poly_chunk = future.result()
-            chunk_len = len(single_chunk) if single_chunk is not None else len(poly_chunk)
+            l, r, start, chunk = future.result()
+            chunk_len = len(chunk)
             stop = start + chunk_len
- 
-            if single_chunk is not None:
-                Z_tensor_single[l, r, start:stop] = single_chunk
-            if poly_chunk is not None:
-                Z_tensor_poly[l, r, start:stop] = poly_chunk
+
+            Z[l, r, start:stop] = chunk
  
             done += 1
-            if progress and (done % max(1, len(tasks) // 100) == 0
-                             or done == len(tasks)):
+            if progress and (done % max(1, len(tasks) // 100) == 0 or done == len(tasks)):
                 pct = 100.0 * done / len(tasks)
-                print(f"\rZ tensor: {pct:5.1f}%  ({done}/{len(tasks)} tasks)",
-                      end="", flush=True)
+                print(f"\rZ tensor: {pct:5.1f}%  ({done}/{len(tasks)} tasks)", end="", flush=True)
  
         if progress:
             print()
  
-    return Z_tensor_single, Z_tensor_poly
- 
- 
-def generate_multiple_Z_tensors(M, N, U_list, V_list, L, R, t_list,
-                                is_unitary=True, shots=750, workers=4,
-                                tasks_per_worker=4,
-                                n_splits=None,
-                                fast_sampling=True,
-                                limit_blas_threads=True,
-                                seed=None,
-                                progress=False,
-                                method="circuit"):
-    """Build the single-shot and poly-shot Z tensors of shape (L, R, N).
- 
-    Parameters beyond the original signature
-    ----------------------------------------
-    tasks_per_worker : int
-        Target number of tasks per worker. Higher means finer-grained load
-        balancing but more IPC. 4 is a reasonable default; raise it if you see
-        stragglers at the end of a run, lower it if IPC dominates.
-    n_splits : int or None
-        Pin how many chunks the t axis is cut into, overriding the adaptive
-        rule above. Needed only for the reproducibility caveat under `seed`.
-    fast_sampling : bool
-        Circuit backend only. Draw shot noise with numpy from the exact ancilla
-        probability instead of calling Statevector.sample_counts().
-    limit_blas_threads : bool
-        Pin each worker's BLAS to one thread.
-    seed : int or None
-        If given, results are reproducible across runs and independent of the
-        order in which tasks happen to complete. They are NOT independent of
-        the worker count on their own: each task's stream is keyed by its
-        (l, r, start), and the adaptive rule above makes `start` depend on
-        `workers`. Pass an explicit n_splits to fix the task boundaries and get
-        the same tensors from any number of workers.
-    progress : bool
-        Print completion percentage.
-    method : {"circuit", "numeric"}
-        "circuit" builds generalized Hadamard tests in qiskit and applies shot
-        noise (both a 1-shot draw and a `shots`-shot draw) to the ancilla
-        marginal. "numeric" evaluates Z_{i,k}(t) = <u_i| exp(-i H t) |v_k>
-        directly and exactly with numpy -- there is no shot concept in that
-        computation, so `shots` is ignored and the two returned tensors are
-        identical.
-    is_unitary : bool
-        The single flag for both backends, matching your is_matrix_unitary
-        convention: M is assumed unitary if True, Hermitian if False -- never
-        both, never neither. The circuit backend forwards it to
-        GeneralizedHadamardTest as before; the numeric backend uses it to pick
-        eigh (Hermitian) vs. a Schur decomposition (unitary) and validates M
-        against the corresponding assumption before running (see
-        _check_hermitian / _check_unitary).
-    """
-    return _generate_Z_tensors(M, N, U_list, V_list, L, R, t_list, is_unitary,
-                               shots, workers, tasks_per_worker, n_splits,
-                               fast_sampling, limit_blas_threads, seed,
-                               progress, method, want="both")
- 
- 
-def generate_Z_tensor(M, N, U_list, V_list, L, R, t_list,
-                      is_unitary=True, shots=750, workers=4,
-                      tasks_per_worker=4,
-                      n_splits=None,
-                      fast_sampling=True,
-                      limit_blas_threads=True,
-                      seed=None,
-                      progress=False,
-                      method="circuit"):
-    """Build a single Z tensor of shape (L, R, N).
- 
-    Same parameters as generate_multiple_Z_tensors (see its docstring), minus
-    the fixed 1-shot tensor: this is not that function with half the result
-    discarded afterwards -- `want="poly"` is threaded all the way down to the
-    workers, so the second (L, R, N) array is never allocated and only one
-    chunk per task crosses back from the worker processes.
- 
-    For method="circuit", `shots` controls the shot count as usual. For
-    method="numeric" the tensor is exact and `shots` is ignored entirely.
-    """
-    _, Z_tensor = _generate_Z_tensors(M, N, U_list, V_list, L, R, t_list,
-                                      is_unitary, shots, workers,
-                                      tasks_per_worker, n_splits, fast_sampling,
-                                      limit_blas_threads, seed, progress,
-                                      method, want="poly")
-    return Z_tensor
+    return Z
 
 
 ################
 ## Validation ##
 ################
 
-def compare_backends(M, U_list, V_list, t_list, n_samples=12, is_unitary=True,
-                     tol=1e-8, seed=0):
+def compare_backends(M, U_list, V_list, t_list, n_samples=12, is_unitary=True, tol=1e-8, seed=0):
     """Check the numeric backend reproduces the circuits' exact amplitudes.
 
     Runs single-process, no sampling: for random (l, r, n) it reads the exact
@@ -554,7 +484,7 @@ def compare_backends(M, U_list, V_list, t_list, n_samples=12, is_unitary=True,
     U = np.asarray(U_list)
     V = np.asarray(V_list)
 
-    _worker_data["t_array"] = t
+    _worker_data["t_list"] = t
     _precompute_numeric(M, U, V, t, is_unitary)
 
     worst = 0.0
@@ -568,35 +498,39 @@ def compare_backends(M, U_list, V_list, t_list, n_samples=12, is_unitary=True,
 
         vals = []
         for img in (False, True):
-            _, p0 = _run_circuit_probability(M, U[:, l], V[:, r], t[n], img,
-                                             is_unitary)
+            _, p0 = _run_circuit_probability(M, U[:, l], V[:, r], t[n], img, is_unitary)
             vals.append(2.0 * p0 - 1.0)
 
         z = _amplitudes_numerically(l, r, n, n + 1)[0]
-        worst = max(worst, abs(vals[0] - z.real), abs(vals[1] - z.imag))
+        worst = max(
+            worst,
+            abs(vals[0] - z.real), # |Re(Z_circuit) - Re(Z_numeric)|
+            abs(vals[1] - z.imag)  # |Im(Z_circuit) - Im(Z_numeric)|
+            )
 
-        print(f"{l:>3} {r:>3} {n:>5} {vals[0]:>13.9f} {z.real:>13.9f} "
-              f"{vals[1]:>13.9f} {z.imag:>13.9f}")
+        print(f"{l:>3} {r:>3} {n:>5} {vals[0]:>13.9f} {z.real:>13.9f}\n{vals[1]:>13.9f} {z.imag:>13.9f}")
 
     verdict = "PASS" if worst < tol else "FAIL -- conventions differ"
     print(f"\nworst absolute discrepancy: {worst:.3e}  ({verdict})")
     return worst
 
+
 ########################
 ## Main (for testing) ##
 ########################
-# if __name__ == "__main__":
-#     import hamiltonians
-#     import aux_functions
 
-#     Ham = hamiltonians.get_hamiltonian("belldiagonal4x4")
-#     M = (np.pi / (4 * np.linalg.norm(Ham))) * Ham
-#     is_unitary = aux_functions.is_matrix_unitary(M)
-#     eigenvalues, eigenvectors = np.linalg.eig(M)
-#     L = Ham.shape[0]
-#     R = Ham.shape[1]
-#     U_list = eigenvectors[:, 0:L]
-#     V_list = eigenvectors[:, 0:R]
-#     t_list = aux_functions.generate_t_list(1600, 1200, 1)
-#     result = compare_backends(M, U_list, V_list, t_list, 100, is_unitary=is_unitary)
-#     print(result)
+if __name__ == "__main__":
+    import hamiltonians
+    import aux_functions
+
+    Ham = hamiltonians.get_hamiltonian("belldiagonal4x4")
+    M = (np.pi / (4 * np.linalg.norm(Ham))) * Ham
+    is_unitary = aux_functions.is_matrix_unitary(M)
+    eigenvalues, eigenvectors = np.linalg.eig(M)
+    L = Ham.shape[0]
+    R = Ham.shape[1]
+    U_list = eigenvectors[:, 0:L]
+    V_list = eigenvectors[:, 0:R]
+    t_list = aux_functions.generate_t_list(1600, 1200, 1)
+    result = compare_backends(M, U_list, V_list, t_list, 100, is_unitary=is_unitary)
+    print(result)
