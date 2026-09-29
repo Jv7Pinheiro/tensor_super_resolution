@@ -144,7 +144,6 @@ def main():
     
     # Name, initialize, and normalize hamiltonian
     name = args.H
-    name = f"{name}_{method}"
     M = (np.pi / (4 * np.linalg.norm(Ham))) * Ham
 
     # Set length of L and R parameters
@@ -165,6 +164,8 @@ def main():
     eigenvalue = np.real(eigenvalues[lambda_i])
     
     # Print Information about my matrix
+    name = f"{name}-{L}x{R}_{method}"
+    print(name)
     print(f"My Matrix: \n{M}\n")
     print(f"L = {L}, R = {R}")
     print(f"is_unitary: {is_unitary}")
@@ -179,9 +180,10 @@ def main():
     #########################
     # Choose which algorithms to test
     # Options are "QPE", "KQPE", "QMEGS", "Z_Tensor_Methods"
-    # Four variants for Z_Tensor_Methods are "Jenrich_V1", "Jenrich_V2", "CP_ALS" (all three are TSRHSE) and "QFAMES"
-    algorithms_array = ["QPE", "KQPE", "QMEGS", "Z_tensor_methods"]
-    Z_tensor_methods = ["Jenrich_V1", "Jenrich_V2", "CP_ALS"]
+    # Four variants for Z_Tensor_Methods are "Jenrich_V1", "Jenrich_V2", "CP_ALS", "QFAMES"
+    # The first three are all TSRHSE
+    algorithms_array = ["QPE", "KQPE", "QMEGS", "Z_Tensor_Methods"]
+    Z_tensor_methods = ["Jenrich_V1", "Jenrich_V2", "CP_ALS", "QFAMES"]
 
     # Verbosity parameters
     verbosity = 0
@@ -196,7 +198,7 @@ def main():
 
     # Test configurations: iterate through eps_array and T_max_array separately
     # eps_array = np.array([0.5, 0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001])
-    T_max_array = np.array([100, 200, 400, 800, 1200, 1600, 2000, 3200]) # [100, 200, 400, 800, 1200, 1600, 2000, 3200]
+    T_max_array = np.array([1200, 1600, 2000, 3200]) # [100, 200, 400, 800, 1200, 1600, 2000, 3200]
     test_configs = {
         # "eps": {"array": eps_array, "name": "eps"},
         "T_max": {"array": T_max_array, "name": "T_max"}

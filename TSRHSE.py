@@ -21,9 +21,10 @@ import numpy as np
 ###########################
 ## Eigenphase extraction ##
 ###########################
-# Computes the "angle between vectors" step
+
 def eigenphase_from_column(w, t, lam_bounds=None, grid_size=None, refine=True):
     """Estimate lam from one CP time-factor column w[j] ~ c * exp(-i lam t[j]).
+    In other words, it computes the "angle between vectors" step
 
     The per-column scale c is a CP gauge freedom and is unknown, so lam has to
     be read off relative phases, not absolute ones. This maximises the
@@ -111,9 +112,8 @@ def _reconstruct(U, V, W):
     return np.einsum("il,kl,jl->ikj", U, V, W, optimize=True)
 
 
-def cp_als(Z, D, t=None, n_iter=300, tol=1e-7, vandermonde=False,
-           lam_bounds=None, n_restarts=1, seed=None, verbosity=0):
-    """Rank-D complex CP decomposition of Z (Q, Q, N) by alternating least squares.
+def cp_als(Z, rank, t_list=None, n_iter=300, tol=1e-7, vandermonde=False, lam_bounds=None, n_restarts=1, seed=None, verbosity=0):
+    """Complex CP decomposition of Z (Q, Q, N) by alternating least squares.
 
     Parameters
     ----------
@@ -128,28 +128,28 @@ def cp_als(Z, D, t=None, n_iter=300, tol=1e-7, vandermonde=False,
         locally convergent (Theorem 8.1 in your draft).
     """
     Z = np.asarray(Z, dtype=complex)
-    Q1, Q2, N = Z.shape
+    L, R, N = Z.shape
     rng = np.random.default_rng(seed)
 
-    X0, X1, X2 = _unfold(Z, 0), _unfold(Z, 1), _unfold(Z, 2)
+    Z0, Z1, Z2 = _unfold(Z, 0), _unfold(Z, 1), _unfold(Z, 2)
     normZ = np.linalg.norm(Z)
 
     best = None
     for restart in range(max(1, n_restarts)):
-        U = rng.normal(size=(Q1, D)) + 1j * rng.normal(size=(Q1, D))
-        V = rng.normal(size=(Q2, D)) + 1j * rng.normal(size=(Q2, D))
-        W = rng.normal(size=(N, D)) + 1j * rng.normal(size=(N, D))
+        U = rng.normal(size=(L, rank)) + 1j * rng.normal(size=(L, rank))
+        V = rng.normal(size=(R, rank)) + 1j * rng.normal(size=(R, rank))
+        W = rng.normal(size=(N, rank)) + 1j * rng.normal(size=(N, rank))
 
         prev = np.inf
         for it in range(n_iter):
-            U = _solve_block(khatri_rao(V, W), X0)
-            V = _solve_block(khatri_rao(U, W), X1)
-            W = _solve_block(khatri_rao(U, V), X2)
+            U = _solve_block(khatri_rao(V, W), Z0)
+            V = _solve_block(khatri_rao(U, W), Z1)
+            W = _solve_block(khatri_rao(U, V), Z2)
 
             if vandermonde:
-                if t is None:
-                    raise ValueError("vandermonde=True requires t")
-                W = project_vandermonde(W, t, lam_bounds)
+                if t_list is None:
+                    raise ValueError("vandermonde=True requires t_list")
+                W = project_vandermonde(W, t_list, lam_bounds)
 
             # Gauge fixing: unit-norm columns in U and V, scale absorbed by W.
             for F in (U, V):
@@ -174,35 +174,35 @@ def cp_als(Z, D, t=None, n_iter=300, tol=1e-7, vandermonde=False,
     return U, V, W, res
 
 
-def project_vandermonde(W, t, lam_bounds=None):
+def project_vandermonde(W, t_list, lam_bounds=None):
     """Replace each column of W by the best fit c * exp(-i lam t)."""
-    t = np.asarray(t, dtype=float)
+    t_list = np.asarray(t_list, dtype=float)
     out = np.empty_like(W)
     for l in range(W.shape[1]):
-        lam = eigenphase_from_column(W[:, l], t, lam_bounds)
-        v = np.exp(-1j * lam * t)
+        lam = eigenphase_from_column(W[:, l], t_list, lam_bounds)
+        v = np.exp(-1j * lam * t_list)
         c = (np.conj(v) @ W[:, l]) / (np.conj(v) @ v)
         out[:, l] = c * v
     return out
+
 
 #########################
 ## Jenrich's Algorithm ##
 #########################
 
-def jennrich_ratio(Z, t_list, D, a, b, ridge=0.0, rank=None):
+def jennrich_ratio(Z, t_list, rank, a, b, ridge=0.0):
     """One ratio estimate from the slices at t_a and t_b."""
     dt = float(t_list[a] - t_list[b])
     A = Z[:, :, a]
     B = Z[:, :, b]
 
     Ub, S, Vh = np.linalg.svd(B, full_matrices=False)
-    r = rank if rank is not None else D
-    r = min(r, S.size)
-    S_inv = S[:r] / (S[:r] ** 2 + ridge ** 2)
-    B_dag = Vh[:r].conj().T @ np.diag(S_inv) @ Ub[:, :r].conj().T
+    rank = min(rank, S.size)
+    S_inv = S[:rank] / (S[:rank] ** 2 + ridge ** 2)
+    B_dag = Vh[:rank].conj().T @ np.diag(S_inv) @ Ub[:, :rank].conj().T
 
     alphas = np.linalg.eigvals(A @ B_dag)
-    alphas = np.array(sorted(alphas, key=lambda z: abs(abs(z) - 1.0))[:D])
+    alphas = np.array(sorted(alphas, key=lambda z: abs(abs(z) - 1.0))[:rank])
 
     lambdas = -np.angle(alphas) / dt
     order = np.argsort(lambdas)
@@ -213,9 +213,7 @@ def jennrich_ratio(Z, t_list, D, a, b, ridge=0.0, rank=None):
 ## Public entry points ##
 #########################
 
-def jennrich_ladder(Z, t_list, D, n_candidates=15, unit_circle_tol=0.25,
-                    ridge=0.0, rank=None, max_pairs=200_000, seed=None,
-                    verbosity=0):
+def jennrich_ladder(Z, t_list, rank, n_candidates=15, unit_circle_tol=0.25, ridge=0.0, max_pairs=200_000, seed=None, verbosity=0):
     """Multiscale dyadic unwrapping, with the four fixes described in chat.
 
     Differences from the original:
@@ -223,7 +221,7 @@ def jennrich_ladder(Z, t_list, D, n_candidates=15, unit_circle_tol=0.25,
         ladder can actually reach large dt;
       * each candidate is unwrapped against the running estimate using ITS OWN
         dt before the median, instead of the nominal target_dt after it;
-      * the pseudoinverse is truncated at `rank` (default D) with optional
+      * the pseudoinverse is truncated at `rank` with optional
         Tikhonov damping, instead of inverting every singular value of B;
       * the unit-circle check is per-eigenvalue rather than all-or-nothing.
     """
@@ -264,8 +262,7 @@ def jennrich_ladder(Z, t_list, D, n_candidates=15, unit_circle_tol=0.25,
         for j in idx:
             a, b = int(ia[j]), int(ib[j])
             try:
-                lams, alphas, dt_ab = jennrich_ratio(Z, t, D, a, b,
-                                                     ridge=ridge, rank=rank)
+                lams, alphas, dt_ab = jennrich_ratio(Z, t, rank, a, b)
             except np.linalg.LinAlgError:
                 continue
 
@@ -291,9 +288,10 @@ def jennrich_ladder(Z, t_list, D, n_candidates=15, unit_circle_tol=0.25,
     return current
 
 
-def cp_eigenphases(Z, t_list, D, tol=1e-7, vandermonde=True, n_restarts=4, lam_bounds=None, seed=None, verbosity=0):
+def cp_eigenphases(Z, t_list, rank, tol=1e-7, vandermonde=True, n_restarts=4, lam_bounds=None, seed=None, verbosity=0):
     """End-to-end: CP-decompose Z, then read eigenphases off the time factor."""
-    t = np.asarray(t_list, dtype=float)
-    U, V, W, res = cp_als(Z, D, t=t, tol=tol, vandermonde=vandermonde, lam_bounds=lam_bounds, n_restarts=n_restarts, seed=seed, verbosity=verbosity)
-    lams, weights = eigenphases_from_factor(W, t, lam_bounds)
-    return lams, weights, (U, V, W, res)
+
+    U, V, W, res = cp_als(Z, rank, t_list=t_list, tol=tol, vandermonde=vandermonde, lam_bounds=lam_bounds, n_restarts=n_restarts, seed=seed, verbosity=verbosity)
+    eigenvalues, weights = eigenphases_from_factor(W, t_list, lam_bounds)
+
+    return eigenvalues, weights, (U, V, W, res)
