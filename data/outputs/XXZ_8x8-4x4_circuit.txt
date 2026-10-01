@@ -1,0 +1,71 @@
+Using 64 worker(s) for parallel Z-tensor generation
+XXZ_8x8-4x4_circuit
+My Matrix: 
+[[ 0.13089969  0.          0.          0.          0.          0.
+   0.          0.        ]
+ [ 0.          0.          0.26179939  0.          0.          0.
+   0.          0.        ]
+ [ 0.          0.26179939 -0.13089969  0.          0.26179939  0.
+   0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.26179939
+   0.          0.        ]
+ [ 0.          0.          0.26179939  0.          0.          0.
+   0.          0.        ]
+ [ 0.          0.          0.          0.26179939  0.         -0.13089969
+   0.26179939  0.        ]
+ [ 0.          0.          0.          0.          0.          0.26179939
+   0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.
+   0.          0.13089969]]
+
+L = 4, R = 4
+is_unitary: False
+Norm of my matrix: 0.7853981633974482
+Eigenvalues: [-4.41430593e-01  8.12304596e-18  3.10530899e-01 -4.41430593e-01
+  3.10530899e-01  0.00000000e+00  1.30899694e-01  1.30899694e-01]
+Target eigenvalue: -0.44143059295916653
+Eigenvectors: 
+[[ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  1.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  4.54401349e-01
+   5.41774320e-01 -7.07106781e-01  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00 -7.66184591e-01
+   6.42620551e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 4.54401349e-01  7.07106781e-01  5.41774320e-01  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  4.54401349e-01
+   5.41774320e-01  7.07106781e-01  0.00000000e+00  0.00000000e+00]
+ [-7.66184591e-01 -2.57087689e-16  6.42620551e-01  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 4.54401349e-01 -7.07106781e-01  5.41774320e-01  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00]]
+
+test_type = T_max, param_array = [1200 1600 2000 3200]
+Test: T_max = 1200, perturb = None [range = None, scale = None]
+	finished QPE in 0.231641 seconds
+	finished KQPE in 0.095057 seconds
+	finished Z array creation in 2.408762 seconds
+	finished QMEGS in 0.044677 seconds
+	finished Z tensor circuit creation in 81.174152 seconds; shape of Z is (4, 4, 6400); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.040198 seconds
+	finished TSRHSE Jennrich version 2 in 0.140665 seconds
+	finished TSRHSE CP ALS in 21132.392444 seconds
+	finished QFAMES in 55.707661 seconds
+Test: T_max = 1600, perturb = None [range = None, scale = None]
+	finished QPE in 0.077120 seconds
+	finished KQPE in 0.096919 seconds
+	finished Z array creation in 2.018466 seconds
+	finished QMEGS in 0.058698 seconds
+	finished Z tensor circuit creation in 83.338022 seconds; shape of Z is (4, 4, 6400); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.039306 seconds
+	finished TSRHSE Jennrich version 2 in 0.134371 seconds
+	finished TSRHSE CP ALS in 1151.988029 seconds
+	finished QFAMES in 74.085475 seconds
+Test: T_max = 2000, perturb = None [range = None, scale = None]
+	finished QPE in 0.091143 seconds
+	finished KQPE in 0.113555 seconds
+	finished Z array creation in 2.028889 seconds
+	finished QMEGS in 0.073287 seconds
+[2026-09-30T00:36:18.009] error: *** JOB 2993731 ON bell-a004 CANCELLED AT 2026-09-30T00:36:18 DUE TO TIME LIMIT ***

@@ -32,19 +32,19 @@ def get_resources(size, method):
 
     if method == "numeric":
         if size == 8:
-            return 32, "standby", "03:00:00"
+            return 64, "standby", "23:00:00"
 
         elif size == 16:
             # Estimated runtime is around 4 hours, so don't use
             # standby because its maximum walltime is 4 hours.
-            return 64, "normal", "08:00:00"
+            return 128, "normal", "23:00:00"
 
     elif method == "circuit":
         if size == 8:
-            return 64, "normal", "08:00:00"
+            return 128, "normal", "23:00:00"
 
         elif size == 16:
-            return 64, "normal", "24:00:00"
+            return 128, "normal", "23:00:00"
 
     raise ValueError(
         f"No resource policy defined for size={size}, method={method}"
@@ -60,7 +60,7 @@ def make_slurm_script(job_name, ham, size, lr, method, cores, qos, walltime):
 
     return f"""#!/bin/bash -l
 
-#SBATCH --job-name=tensor-sr
+#SBATCH --job-name={job_name}
 #SBATCH --account={ACCOUNT}
 #SBATCH --partition={PARTITION}
 #SBATCH --qos={qos}

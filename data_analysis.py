@@ -61,12 +61,15 @@ def get_target_error(value):
     return float(value)
 
 
-def get_average_error(value):
+def get_average_error(value, LR):
     value = parse_numeric_value(value)
     if isinstance(value, np.ndarray):
         if value.size == 0:
             return np.nan
-        return float(np.nanmean(value))
+        value = value[~np.isnan(value)]
+        if value.size == 0:
+            return np.nan
+        return float(np.mean(np.sort(value)[:LR]))
     return float(value)
 
 
@@ -77,22 +80,24 @@ use_x_axis_log_scale = True  # Toggle this to switch between log and linear scal
     
 perturbation_params = { # length 3
     "None": None,
-    "Small": {"range": 1, "scale": 0.5},
-    "Big": {"range": 3, "scale": 1},
+    # "Small": {"range": 1, "scale": 0.5},
+    # "Big": {"range": 3, "scale": 1},
 }
-Hamiltonian_name = "XXZ_8x8"
+Test = "XXZ_8x8"
+LR = 8
+Hamiltonian_name = f"{Test}-{LR}x{LR}_numeric"
 df = pd.read_csv(f"data/dataframes/{Hamiltonian_name}.csv")
 algo_order = df["algorithm"].unique().dropna()
 
 target_eigenvalue_index = 0
 df["error_to_target"] = df["errors"].map(get_target_error)
-df["average_error"] = df["errors"].map(get_average_error)
+df["average_error"] = df["errors"].map(lambda value: get_average_error(value, LR))
 
 for test_type in df["test_type"].unique():
     # if test_type == "true eigenvalues": continue
     if test_type == "eps":
-        # 3x3 grid for eps tests
-        fig, axes = plt.subplots(3, 3, figsize=(15, 12))
+        # One row per configured perturbation and one column per x-axis.
+        fig, axes = plt.subplots(len(perturbation_params), 3, figsize=(15, 4 * len(perturbation_params)), squeeze=False)
         fig.suptitle(f"Eps scaling tests for {Hamiltonian_name} eigenvalue {target_eigenvalue_index}", fontsize=20)
 
         x_labels = ["eps", "T_max", "T_total"]
@@ -140,7 +145,7 @@ for test_type in df["test_type"].unique():
         print(f"Saved eps plots to data/plots/{Hamiltonian_name}_eps_plots.png")
 
         # Average error across all eigenvalues
-        fig_avg, axes_avg = plt.subplots(3, 3, figsize=(15, 12))
+        fig_avg, axes_avg = plt.subplots(len(perturbation_params), 3, figsize=(15, 4 * len(perturbation_params)), squeeze=False)
         fig_avg.suptitle(f"Average error across all eigenvalues for {Hamiltonian_name} (eps)", fontsize=20)
 
         for row, perturb in enumerate(perturbation_params.keys()):
@@ -180,8 +185,8 @@ for test_type in df["test_type"].unique():
         print(f"Saved avg eps plots to data/plots/{Hamiltonian_name}_eps_plots_avg.png")
 
     elif test_type == "T_max":
-        # 3x2 grid for T_max tests
-        fig, axes = plt.subplots(3, 2, figsize=(12, 12))
+        # One row per configured perturbation and one column per x-axis.
+        fig, axes = plt.subplots(len(perturbation_params), 2, figsize=(12, 4 * len(perturbation_params)), squeeze=False)
         fig.suptitle(f"T_max scaling tests for {Hamiltonian_name} eigenvalue {target_eigenvalue_index}", fontsize=20)
 
         x_labels = ["T_max", "T_total"]
@@ -225,8 +230,8 @@ for test_type in df["test_type"].unique():
         print(f"Saved T_max plots to data/plots/{Hamiltonian_name}_T_max_plots.png")
 
         # Average error across all eigenvalues
-        fig_avg, axes_avg = plt.subplots(3, 2, figsize=(12, 12))
-        fig_avg.suptitle(f"Average error across all eigenvalues for {Hamiltonian_name} (T_max)", fontsize=20)
+        fig_avg, axes_avg = plt.subplots(len(perturbation_params), 2, figsize=(12, 4 * len(perturbation_params)), squeeze=False)
+        fig_avg.suptitle(f"Average error across all eigenvalues for {Hamiltonian_name} (T_max scaling)", fontsize=20)
 
         for row, perturb in enumerate(perturbation_params.keys()):
             for col, (x_label, x_col) in enumerate(zip(x_labels, x_cols)):

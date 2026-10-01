@@ -1,0 +1,71 @@
+Using 32 worker(s) for parallel Z-tensor generation
+TFIM_8x8-8x8_numeric
+My Matrix: 
+[[-0.24836471 -0.12418235 -0.12418235  0.         -0.12418235  0.
+   0.          0.        ]
+ [-0.12418235  0.          0.         -0.12418235  0.         -0.12418235
+   0.          0.        ]
+ [-0.12418235  0.          0.24836471 -0.12418235  0.          0.
+  -0.12418235  0.        ]
+ [ 0.         -0.12418235 -0.12418235  0.          0.          0.
+   0.         -0.12418235]
+ [-0.12418235  0.          0.          0.          0.         -0.12418235
+  -0.12418235  0.        ]
+ [ 0.         -0.12418235  0.          0.         -0.12418235  0.24836471
+   0.         -0.12418235]
+ [ 0.          0.         -0.12418235  0.         -0.12418235  0.
+   0.         -0.12418235]
+ [ 0.          0.          0.         -0.12418235  0.         -0.12418235
+  -0.12418235 -0.24836471]]
+
+L = 8, R = 8
+is_unitary: False
+Norm of my matrix: 0.7853981633974482
+Eigenvalues: [-0.43388808 -0.32335538  0.43388808  0.32335538 -0.01364966  0.01364966
+  0.12418235 -0.12418235]
+Target eigenvalue: -0.43388807679191677
+Eigenvectors: 
+[[-5.32480753e-01 -6.63992639e-01 -2.04495476e-01  7.29835903e-02
+   4.59497163e-01  1.31511885e-01  6.84718764e-18 -1.25336380e-16]
+ [-2.95504524e-01 -1.63992639e-01  2.95504524e-01  1.63992639e-01
+  -3.68488115e-01 -3.68488115e-01 -5.00000000e-01 -5.00000000e-01]
+ [-2.04495476e-01 -7.29835903e-02  5.32480753e-01 -6.63992639e-01
+  -1.31511885e-01  4.59497163e-01  7.00226976e-17 -1.76186250e-17]
+ [-2.95504524e-01  1.63992639e-01 -2.95504524e-01  1.63992639e-01
+  -3.68488115e-01  3.68488115e-01  5.00000000e-01 -5.00000000e-01]
+ [-2.95504524e-01 -1.63992639e-01  2.95504524e-01  1.63992639e-01
+  -3.68488115e-01 -3.68488115e-01  5.00000000e-01  5.00000000e-01]
+ [-2.04495476e-01  7.29835903e-02 -5.32480753e-01 -6.63992639e-01
+  -1.31511885e-01 -4.59497163e-01  4.41205493e-17  3.83323126e-17]
+ [-2.95504524e-01  1.63992639e-01 -2.95504524e-01  1.63992639e-01
+  -3.68488115e-01  3.68488115e-01 -5.00000000e-01  5.00000000e-01]
+ [-5.32480753e-01  6.63992639e-01  2.04495476e-01  7.29835903e-02
+   4.59497163e-01 -1.31511885e-01  3.06885811e-17 -1.95457035e-17]]
+
+test_type = T_max, param_array = [1200 1600 2000 3200]
+Test: T_max = 1200, perturb = None [range = None, scale = None]
+	finished QPE in 0.232099 seconds
+	finished KQPE in 0.091420 seconds
+	finished Z array creation in 2.193435 seconds
+	finished QMEGS in 0.046678 seconds
+	finished Z tensor numeric creation in 1.991191 seconds; shape of Z is (8, 8, 6400)
+	finished TSRHSE Jennrich version 1 in 0.051610 seconds
+	finished TSRHSE Jennrich version 2 in 0.143152 seconds
+	finished TSRHSE CP ALS in 4204.125418 seconds
+	finished QFAMES in 226.205805 seconds
+Test: T_max = 1600, perturb = None [range = None, scale = None]
+	finished QPE in 0.077188 seconds
+	finished KQPE in 0.092495 seconds
+	finished Z array creation in 1.757453 seconds
+	finished QMEGS in 0.059980 seconds
+	finished Z tensor numeric creation in 2.378889 seconds; shape of Z is (8, 8, 6400)
+	finished TSRHSE Jennrich version 1 in 0.043232 seconds
+	finished TSRHSE Jennrich version 2 in 0.140537 seconds
+	finished TSRHSE CP ALS in 5090.016308 seconds
+	finished QFAMES in 305.702786 seconds
+Test: T_max = 2000, perturb = None [range = None, scale = None]
+	finished QPE in 0.081360 seconds
+	finished KQPE in 0.100518 seconds
+	finished Z array creation in 1.819144 seconds
+	finished QMEGS in 0.072467 seconds
+[2026-09-29T05:35:29.035] error: *** JOB 2993658 ON bell-a027 CANCELLED AT 2026-09-29T05:35:29 DUE TO TIME LIMIT ***

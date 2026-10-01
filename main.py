@@ -128,10 +128,14 @@ def record_result(name, df, test_type, param_value, perturb, algorithm, shots, t
 
 
 def main():
+    # Parse Arguments
     args = parse_args()
     method = args.method
     workers = args.workers
-    print(f"Using {workers} worker(s) for parallel Z-tensor generation")
+
+    # Set seed
+    seed = 82304
+    rng = np.random.default_rng(seed)
 
     ############################
     ## Initialize Hamiltonian ##
@@ -145,6 +149,7 @@ def main():
     # Name, initialize, and normalize hamiltonian
     name = args.H
     M = (np.pi / (4 * np.linalg.norm(Ham))) * Ham
+    n = M.shape[0]
 
     # Set length of L and R parameters
     L = args.L
@@ -180,10 +185,10 @@ def main():
     #########################
     # Choose which algorithms to test
     # Options are "QPE", "KQPE", "QMEGS", "Z_Tensor_Methods"
-    # Four variants for Z_Tensor_Methods are "Jenrich_V1", "Jenrich_V2", "CP_ALS", "QFAMES"
+    # Four variants for Z_Tensor_Methods are "Jennrich_V1", "Jennrich_V2", "CP_ALS", "QFAMES"
     # The first three are all TSRHSE
     algorithms_array = ["QPE", "KQPE", "QMEGS", "Z_Tensor_Methods"]
-    Z_tensor_methods = ["Jenrich_V1", "Jenrich_V2", "CP_ALS", "QFAMES"]
+    Z_tensor_methods = ["Jennrich_V1", "Jennrich_V2", "CP_ALS", "QFAMES"]
 
     # Verbosity parameters
     verbosity = 0
@@ -192,13 +197,15 @@ def main():
     # Number of perturbations and their strength
     perturbation_params = { # length 3
         "None": {"range": None, "scale": None},
-        # "Small": {"range": 1, "scale": 0.5},
-        # "Big": {"range": 3, "scale": 1},
+        "Small": {"range": 1, "scale": 0.5},
+        "Big": {"range": 3, "scale": 1},
+        "Rand": {"range": None, "scale": None},
+        "Stand": {"range": None, "scale": None},
     }
 
     # Test configurations: iterate through eps_array and T_max_array separately
     # eps_array = np.array([0.5, 0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001])
-    T_max_array = np.array([1200, 1600, 2000, 3200]) # [100, 200, 400, 800, 1200, 1600, 2000, 3200]
+    T_max_array = np.array([100, 200, 400, 800, 1200, 1600, 2000, 3200])
     test_configs = {
         # "eps": {"array": eps_array, "name": "eps"},
         "T_max": {"array": T_max_array, "name": "T_max"}
@@ -249,25 +256,28 @@ def main():
 
             # In each test_type and parameter we want to study the different perturbations
             for perturb in perturbation_params.keys():
-                Init = eigenvectors[:, lambda_i]
-                U_list = eigenvectors[:, 0:L]
-                V_list = eigenvectors[:, 0:R]
-
                 # Obtain current test's perturbation 
-                params = perturbation_params[perturb]
-                perturb_range = params["range"] # Ontain current perturbation's range
-                perturb_scale = params["scale"] # Ontain current perturbation's scale
+                perturb_range = perturbation_params[perturb]["range"] # Ontain current perturbation's range
+                perturb_scale = perturbation_params[perturb]["scale"] # Ontain current perturbation's scale
 
                 # Apply perturbation if needed
-                if perturb != "None":
+                if perturb == "Rand":
+                    PHI = rng.standard_normal((n, n))
+                    PHI = PHI / np.linalg.norm(PHI, axis=0, keepdims=True)
+                elif perturb == "Stand":
+                    PHI = np.eye(n, dtype=eigenvectors.dtype)
+                elif perturb == "None":
+                    PHI = eigenvectors
+                else: # "Small" and "Large"
                     # Create the new Init state and U_list unitaries
                     PHI = eigenvectors + np.random.uniform(-perturb_range, perturb_range) * perturb_scale
-                    U_list = PHI[:, 0:L]
-                    V_list = PHI[:, 0:R]
-                    Init = PHI[:, lambda_i]
+
+                U_list = PHI[:, 0:L]
+                V_list = PHI[:, 0:R]
+                Init = PHI[:, lambda_i]
 
                 # Print information about current test
-                print(f"Test: {test_type} = {param_value}, perturb = {perturb} [range = {perturb_range}, scale = {perturb_scale}]")
+                print(f"Test: {test_type} = {param_value}, perturb = {perturb}")
 
                 # Perform the above test for each selected algorithm
                 for alg in algorithms_array:
@@ -323,7 +333,7 @@ def main():
                             ###############################
                             ## TSRHSE Jennrich version 1 ##
                             ###############################
-                            if "Jenrich_V1" in Z_tensor_methods:
+                            if "Jennrich_V1" in Z_tensor_methods:
                                 # Run Algorithm
                                 start_time = time.perf_counter()
                                 output_energy = algorithms.TSRHSE(Z, t_list)
@@ -338,16 +348,16 @@ def main():
                             ###############################
                             ## TSRHSE Jennrich version 2 ##
                             ###############################
-                            if "Jenrich_V2" in Z_tensor_methods:
+                            if "Jennrich_V2" in Z_tensor_methods:
                                 # Run Algorithm
                                 start_time = time.perf_counter()
                                 output_energy = TSRHSE.jennrich_ladder(Z, t_list, min(L, R))
                                 end_time = time.perf_counter()
+                                print(f"\tfinished TSRHSE Jennrich version 2 in {end_time - start_time:.6f} seconds")
                                 
                                 # Update Data Frame
                                 my_eigenvalue = normalize_output_energy(output_energy, sort=True)
-                                print(f"\tfinished TSRHSE Jennrich version 2 in {end_time - start_time:.6f} seconds")
-                                results_df = record_result(name, results_df, test_type, param_value, perturb, "Jenrich_V2", shots, torN, T_max_alg, T_total, my_eigenvalue, get_errors(eigenvalues, my_eigenvalue, lambda_i), None)
+                                results_df = record_result(name, results_df, test_type, param_value, perturb, "Jennrich_V2", shots, torN, T_max_alg, T_total, my_eigenvalue, get_errors(eigenvalues, my_eigenvalue, lambda_i), None)
 
 
                             ###################

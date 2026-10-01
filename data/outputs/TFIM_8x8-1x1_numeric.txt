@@ -1,0 +1,85 @@
+Using 32 worker(s) for parallel Z-tensor generation
+TFIM_8x8-1x1_numeric
+My Matrix: 
+[[-0.24836471 -0.12418235 -0.12418235  0.         -0.12418235  0.
+   0.          0.        ]
+ [-0.12418235  0.          0.         -0.12418235  0.         -0.12418235
+   0.          0.        ]
+ [-0.12418235  0.          0.24836471 -0.12418235  0.          0.
+  -0.12418235  0.        ]
+ [ 0.         -0.12418235 -0.12418235  0.          0.          0.
+   0.         -0.12418235]
+ [-0.12418235  0.          0.          0.          0.         -0.12418235
+  -0.12418235  0.        ]
+ [ 0.         -0.12418235  0.          0.         -0.12418235  0.24836471
+   0.         -0.12418235]
+ [ 0.          0.         -0.12418235  0.         -0.12418235  0.
+   0.         -0.12418235]
+ [ 0.          0.          0.         -0.12418235  0.         -0.12418235
+  -0.12418235 -0.24836471]]
+
+L = 1, R = 1
+is_unitary: False
+Norm of my matrix: 0.7853981633974482
+Eigenvalues: [-0.43388808 -0.32335538  0.43388808  0.32335538 -0.01364966  0.01364966
+  0.12418235 -0.12418235]
+Target eigenvalue: -0.43388807679191677
+Eigenvectors: 
+[[-5.32480753e-01 -6.63992639e-01 -2.04495476e-01  7.29835903e-02
+   4.59497163e-01  1.31511885e-01  6.84718764e-18 -1.25336380e-16]
+ [-2.95504524e-01 -1.63992639e-01  2.95504524e-01  1.63992639e-01
+  -3.68488115e-01 -3.68488115e-01 -5.00000000e-01 -5.00000000e-01]
+ [-2.04495476e-01 -7.29835903e-02  5.32480753e-01 -6.63992639e-01
+  -1.31511885e-01  4.59497163e-01  7.00226976e-17 -1.76186250e-17]
+ [-2.95504524e-01  1.63992639e-01 -2.95504524e-01  1.63992639e-01
+  -3.68488115e-01  3.68488115e-01  5.00000000e-01 -5.00000000e-01]
+ [-2.95504524e-01 -1.63992639e-01  2.95504524e-01  1.63992639e-01
+  -3.68488115e-01 -3.68488115e-01  5.00000000e-01  5.00000000e-01]
+ [-2.04495476e-01  7.29835903e-02 -5.32480753e-01 -6.63992639e-01
+  -1.31511885e-01 -4.59497163e-01  4.41205493e-17  3.83323126e-17]
+ [-2.95504524e-01  1.63992639e-01 -2.95504524e-01  1.63992639e-01
+  -3.68488115e-01  3.68488115e-01 -5.00000000e-01  5.00000000e-01]
+ [-5.32480753e-01  6.63992639e-01  2.04495476e-01  7.29835903e-02
+   4.59497163e-01 -1.31511885e-01  3.06885811e-17 -1.95457035e-17]]
+
+test_type = T_max, param_array = [1200 1600 2000 3200]
+Test: T_max = 1200, perturb = None [range = None, scale = None]
+	finished QPE in 0.236690 seconds
+	finished KQPE in 0.090666 seconds
+	finished Z array creation in 2.180426 seconds
+	finished QMEGS in 0.044394 seconds
+	finished Z tensor numeric creation in 1.932988 seconds; shape of Z is (1, 1, 6400)
+	finished TSRHSE Jennrich version 1 in 0.040202 seconds
+	finished TSRHSE Jennrich version 2 in 0.140207 seconds
+	finished TSRHSE CP ALS in 156.800557 seconds
+	finished QFAMES in 3.533750 seconds
+Test: T_max = 1600, perturb = None [range = None, scale = None]
+	finished QPE in 0.069397 seconds
+	finished KQPE in 0.090272 seconds
+	finished Z array creation in 1.741463 seconds
+	finished QMEGS in 0.060608 seconds
+	finished Z tensor numeric creation in 1.947772 seconds; shape of Z is (1, 1, 6400)
+	finished TSRHSE Jennrich version 1 in 0.036286 seconds
+	finished TSRHSE Jennrich version 2 in 0.123849 seconds
+	finished TSRHSE CP ALS in 157.589036 seconds
+	finished QFAMES in 4.636021 seconds
+Test: T_max = 2000, perturb = None [range = None, scale = None]
+	finished QPE in 0.083123 seconds
+	finished KQPE in 0.106374 seconds
+	finished Z array creation in 1.829205 seconds
+	finished QMEGS in 0.074352 seconds
+	finished Z tensor numeric creation in 1.988003 seconds; shape of Z is (1, 1, 6400)
+	finished TSRHSE Jennrich version 1 in 0.037759 seconds
+	finished TSRHSE Jennrich version 2 in 0.130425 seconds
+	finished TSRHSE CP ALS in 157.263668 seconds
+	finished QFAMES in 5.846603 seconds
+Test: T_max = 3200, perturb = None [range = None, scale = None]
+	finished QPE in 0.081641 seconds
+	finished KQPE in 0.104403 seconds
+	finished Z array creation in 1.915282 seconds
+	finished QMEGS in 0.119362 seconds
+	finished Z tensor numeric creation in 2.044150 seconds; shape of Z is (1, 1, 6400)
+	finished TSRHSE Jennrich version 1 in 0.044202 seconds
+	finished TSRHSE Jennrich version 2 in 0.131803 seconds
+	finished TSRHSE CP ALS in 158.148005 seconds
+	finished QFAMES in 9.559071 seconds

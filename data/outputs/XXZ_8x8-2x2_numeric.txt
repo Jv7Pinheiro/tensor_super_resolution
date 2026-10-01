@@ -1,0 +1,85 @@
+Using 32 worker(s) for parallel Z-tensor generation
+XXZ_8x8-2x2_numeric
+My Matrix: 
+[[ 0.13089969  0.          0.          0.          0.          0.
+   0.          0.        ]
+ [ 0.          0.          0.26179939  0.          0.          0.
+   0.          0.        ]
+ [ 0.          0.26179939 -0.13089969  0.          0.26179939  0.
+   0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.26179939
+   0.          0.        ]
+ [ 0.          0.          0.26179939  0.          0.          0.
+   0.          0.        ]
+ [ 0.          0.          0.          0.26179939  0.         -0.13089969
+   0.26179939  0.        ]
+ [ 0.          0.          0.          0.          0.          0.26179939
+   0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.
+   0.          0.13089969]]
+
+L = 2, R = 2
+is_unitary: False
+Norm of my matrix: 0.7853981633974482
+Eigenvalues: [-4.41430593e-01  8.12304596e-18  3.10530899e-01 -4.41430593e-01
+  3.10530899e-01  0.00000000e+00  1.30899694e-01  1.30899694e-01]
+Target eigenvalue: -0.44143059295916653
+Eigenvectors: 
+[[ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  1.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  4.54401349e-01
+   5.41774320e-01 -7.07106781e-01  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00 -7.66184591e-01
+   6.42620551e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 4.54401349e-01  7.07106781e-01  5.41774320e-01  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  4.54401349e-01
+   5.41774320e-01  7.07106781e-01  0.00000000e+00  0.00000000e+00]
+ [-7.66184591e-01 -2.57087689e-16  6.42620551e-01  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 4.54401349e-01 -7.07106781e-01  5.41774320e-01  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00]]
+
+test_type = T_max, param_array = [1200 1600 2000 3200]
+Test: T_max = 1200, perturb = None [range = None, scale = None]
+	finished QPE in 0.232528 seconds
+	finished KQPE in 0.097865 seconds
+	finished Z array creation in 2.381223 seconds
+	finished QMEGS in 0.044217 seconds
+	finished Z tensor numeric creation in 1.923322 seconds; shape of Z is (2, 2, 6400)
+	finished TSRHSE Jennrich version 1 in 0.040706 seconds
+	finished TSRHSE Jennrich version 2 in 0.129451 seconds
+	finished TSRHSE CP ALS in 751.908793 seconds
+	finished QFAMES in 13.836459 seconds
+Test: T_max = 1600, perturb = None [range = None, scale = None]
+	finished QPE in 0.079870 seconds
+	finished KQPE in 0.099147 seconds
+	finished Z array creation in 1.987421 seconds
+	finished QMEGS in 0.058954 seconds
+	finished Z tensor numeric creation in 2.238695 seconds; shape of Z is (2, 2, 6400)
+	finished TSRHSE Jennrich version 1 in 0.043061 seconds
+	finished TSRHSE Jennrich version 2 in 0.124654 seconds
+	finished TSRHSE CP ALS in 570.404190 seconds
+	finished QFAMES in 18.262866 seconds
+Test: T_max = 2000, perturb = None [range = None, scale = None]
+	finished QPE in 0.091137 seconds
+	finished KQPE in 0.113540 seconds
+	finished Z array creation in 2.045139 seconds
+	finished QMEGS in 0.074366 seconds
+	finished Z tensor numeric creation in 2.425909 seconds; shape of Z is (2, 2, 6400)
+	finished TSRHSE Jennrich version 1 in 0.038550 seconds
+	finished TSRHSE Jennrich version 2 in 0.133829 seconds
+	finished TSRHSE CP ALS in 707.975864 seconds
+	finished QFAMES in 22.749916 seconds
+Test: T_max = 3200, perturb = None [range = None, scale = None]
+	finished QPE in 0.092898 seconds
+	finished KQPE in 0.114127 seconds
+	finished Z array creation in 2.187265 seconds
+	finished QMEGS in 0.116789 seconds
+	finished Z tensor numeric creation in 1.906882 seconds; shape of Z is (2, 2, 6400)
+	finished TSRHSE Jennrich version 1 in 0.041811 seconds
+	finished TSRHSE Jennrich version 2 in 0.134077 seconds
+	finished TSRHSE CP ALS in 838.812017 seconds
+	finished QFAMES in 36.283545 seconds

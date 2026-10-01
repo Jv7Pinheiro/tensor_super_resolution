@@ -288,7 +288,7 @@ def jennrich_ladder(Z, t_list, rank, n_candidates=15, unit_circle_tol=0.25, ridg
     return current
 
 
-def cp_eigenphases(Z, t_list, rank, tol=1e-7, vandermonde=True, n_restarts=4, lam_bounds=None, seed=None, verbosity=0):
+def cp_eigenphases(Z, t_list, rank, tol=1e-7, vandermonde=True, n_restarts=3, lam_bounds=None, seed=None, verbosity=0):
     """End-to-end: CP-decompose Z, then read eigenphases off the time factor."""
 
     U, V, W, res = cp_als(Z, rank, t_list=t_list, tol=tol, vandermonde=vandermonde, lam_bounds=lam_bounds, n_restarts=n_restarts, seed=seed, verbosity=verbosity)

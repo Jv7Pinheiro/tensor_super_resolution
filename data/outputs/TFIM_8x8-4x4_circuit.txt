@@ -1,0 +1,85 @@
+Using 64 worker(s) for parallel Z-tensor generation
+TFIM_8x8-4x4_circuit
+My Matrix: 
+[[-0.24836471 -0.12418235 -0.12418235  0.         -0.12418235  0.
+   0.          0.        ]
+ [-0.12418235  0.          0.         -0.12418235  0.         -0.12418235
+   0.          0.        ]
+ [-0.12418235  0.          0.24836471 -0.12418235  0.          0.
+  -0.12418235  0.        ]
+ [ 0.         -0.12418235 -0.12418235  0.          0.          0.
+   0.         -0.12418235]
+ [-0.12418235  0.          0.          0.          0.         -0.12418235
+  -0.12418235  0.        ]
+ [ 0.         -0.12418235  0.          0.         -0.12418235  0.24836471
+   0.         -0.12418235]
+ [ 0.          0.         -0.12418235  0.         -0.12418235  0.
+   0.         -0.12418235]
+ [ 0.          0.          0.         -0.12418235  0.         -0.12418235
+  -0.12418235 -0.24836471]]
+
+L = 4, R = 4
+is_unitary: False
+Norm of my matrix: 0.7853981633974482
+Eigenvalues: [-0.43388808 -0.32335538  0.43388808  0.32335538 -0.01364966  0.01364966
+  0.12418235 -0.12418235]
+Target eigenvalue: -0.43388807679191677
+Eigenvectors: 
+[[-5.32480753e-01 -6.63992639e-01 -2.04495476e-01  7.29835903e-02
+   4.59497163e-01  1.31511885e-01  6.84718764e-18 -1.25336380e-16]
+ [-2.95504524e-01 -1.63992639e-01  2.95504524e-01  1.63992639e-01
+  -3.68488115e-01 -3.68488115e-01 -5.00000000e-01 -5.00000000e-01]
+ [-2.04495476e-01 -7.29835903e-02  5.32480753e-01 -6.63992639e-01
+  -1.31511885e-01  4.59497163e-01  7.00226976e-17 -1.76186250e-17]
+ [-2.95504524e-01  1.63992639e-01 -2.95504524e-01  1.63992639e-01
+  -3.68488115e-01  3.68488115e-01  5.00000000e-01 -5.00000000e-01]
+ [-2.95504524e-01 -1.63992639e-01  2.95504524e-01  1.63992639e-01
+  -3.68488115e-01 -3.68488115e-01  5.00000000e-01  5.00000000e-01]
+ [-2.04495476e-01  7.29835903e-02 -5.32480753e-01 -6.63992639e-01
+  -1.31511885e-01 -4.59497163e-01  4.41205493e-17  3.83323126e-17]
+ [-2.95504524e-01  1.63992639e-01 -2.95504524e-01  1.63992639e-01
+  -3.68488115e-01  3.68488115e-01 -5.00000000e-01  5.00000000e-01]
+ [-5.32480753e-01  6.63992639e-01  2.04495476e-01  7.29835903e-02
+   4.59497163e-01 -1.31511885e-01  3.06885811e-17 -1.95457035e-17]]
+
+test_type = T_max, param_array = [1200 1600 2000 3200]
+Test: T_max = 1200, perturb = None [range = None, scale = None]
+	finished QPE in 0.196915 seconds
+	finished KQPE in 0.092133 seconds
+	finished Z array creation in 2.117158 seconds
+	finished QMEGS in 0.045514 seconds
+	finished Z tensor circuit creation in 73.158883 seconds; shape of Z is (4, 4, 6400); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.040657 seconds
+	finished TSRHSE Jennrich version 2 in 0.148856 seconds
+	finished TSRHSE CP ALS in 1156.249458 seconds
+	finished QFAMES in 55.636639 seconds
+Test: T_max = 1600, perturb = None [range = None, scale = None]
+	finished QPE in 0.075095 seconds
+	finished KQPE in 0.091298 seconds
+	finished Z array creation in 1.751224 seconds
+	finished QMEGS in 0.057937 seconds
+	finished Z tensor circuit creation in 79.409748 seconds; shape of Z is (4, 4, 6400); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.039646 seconds
+	finished TSRHSE Jennrich version 2 in 0.128548 seconds
+	finished TSRHSE CP ALS in 1211.985356 seconds
+	finished QFAMES in 73.528910 seconds
+Test: T_max = 2000, perturb = None [range = None, scale = None]
+	finished QPE in 0.082685 seconds
+	finished KQPE in 0.199642 seconds
+	finished Z array creation in 1.782192 seconds
+	finished QMEGS in 0.075001 seconds
+	finished Z tensor circuit creation in 79.368348 seconds; shape of Z is (4, 4, 6400); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.039740 seconds
+	finished TSRHSE Jennrich version 2 in 0.145069 seconds
+	finished TSRHSE CP ALS in 1142.307817 seconds
+	finished QFAMES in 91.378960 seconds
+Test: T_max = 3200, perturb = None [range = None, scale = None]
+	finished QPE in 0.084147 seconds
+	finished KQPE in 0.104218 seconds
+	finished Z array creation in 1.907888 seconds
+	finished QMEGS in 0.119253 seconds
+	finished Z tensor circuit creation in 80.389168 seconds; shape of Z is (4, 4, 6400); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.044369 seconds
+	finished TSRHSE Jennrich version 2 in 0.143836 seconds
+	finished TSRHSE CP ALS in 1276.736268 seconds
+	finished QFAMES in 145.623772 seconds
