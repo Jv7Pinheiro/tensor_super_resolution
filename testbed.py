@@ -32,7 +32,7 @@ def get_resources(size, method):
 
     if method == "numeric":
         if size == 8:
-            return 64, "standby", "23:00:00"
+            return 64, "standby", "4:00:00"
 
         elif size == 16:
             # Estimated runtime is around 4 hours, so don't use

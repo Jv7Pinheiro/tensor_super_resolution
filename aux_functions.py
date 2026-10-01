@@ -226,7 +226,7 @@ def QFAMES_setup(M, U_list, V_list, eps=None, T_max=None, is_unitary=True, shots
         N = np.ceil(L * R / p_tail**2)
         tau = p_tail
     else:
-        N = np.ceil(L * R * 100)  # practical default
+        N = np.ceil(L * R * 50)  # practical default
         tau = 0.1 * np.sqrt(L * R)
 
     dx = q / T_max  # grid step, q << alpha, and grid step q/T is the resolution

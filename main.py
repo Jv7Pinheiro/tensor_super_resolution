@@ -166,7 +166,9 @@ def main():
 
     # Choose Init State: Targeted eigenvalue for QPE, KQPE, and QMEGS
     lambda_i = 0 # This is the index of the INIT state, # If 1 then QPE and KQPE need a scaling factor greater than ||M||
-    eigenvalue = np.real(eigenvalues[lambda_i])
+    eigenvectors = np.real(eigenvectors)
+    eigenvalues = np.real(eigenvalues)
+    eigenvalue = eigenvalues[lambda_i]
     
     # Print Information about my matrix
     name = f"{name}-{L}x{R}_{method}"
