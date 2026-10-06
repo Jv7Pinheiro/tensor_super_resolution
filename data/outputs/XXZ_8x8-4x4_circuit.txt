@@ -1,0 +1,310 @@
+XXZ_8x8-4x4_circuit
+My Matrix: 
+[[ 0.13089969  0.          0.          0.          0.          0.
+   0.          0.        ]
+ [ 0.          0.          0.26179939  0.          0.          0.
+   0.          0.        ]
+ [ 0.          0.26179939 -0.13089969  0.          0.26179939  0.
+   0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.26179939
+   0.          0.        ]
+ [ 0.          0.          0.26179939  0.          0.          0.
+   0.          0.        ]
+ [ 0.          0.          0.          0.26179939  0.         -0.13089969
+   0.26179939  0.        ]
+ [ 0.          0.          0.          0.          0.          0.26179939
+   0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.
+   0.          0.13089969]]
+
+L = 4, R = 4
+is_unitary: False
+Norm of my matrix: 0.7853981633974482
+Eigenvalues: [-4.41430593e-01  8.12304596e-18  3.10530899e-01 -4.41430593e-01
+  3.10530899e-01  0.00000000e+00  1.30899694e-01  1.30899694e-01]
+Target eigenvalue: -0.44143059295916653
+Eigenvectors: 
+[[ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  1.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  4.54401349e-01
+   5.41774320e-01 -7.07106781e-01  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00 -7.66184591e-01
+   6.42620551e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 4.54401349e-01  7.07106781e-01  5.41774320e-01  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  4.54401349e-01
+   5.41774320e-01  7.07106781e-01  0.00000000e+00  0.00000000e+00]
+ [-7.66184591e-01 -2.57087689e-16  6.42620551e-01  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 4.54401349e-01 -7.07106781e-01  5.41774320e-01  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00]]
+
+test_type = T_max, param_array = [ 100  200  400  800 1200 1600 2000 3200]
+Test: T_max = 100, perturb = None
+	finished QPE in 0.253054 seconds
+	finished KQPE in 0.042641 seconds
+	finished Z array creation in 2.216842 seconds
+	finished QMEGS in 0.006815 seconds
+	finished Z tensor circuit creation in 42.436843 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.019117 seconds
+	finished TSRHSE Jennrich version 2 in 0.118463 seconds
+	finished TSRHSE CP ALS in 764.366249 seconds
+	finished QFAMES in 2.781835 seconds
+Test: T_max = 100, perturb = Small
+	finished QPE in 0.043278 seconds
+	finished KQPE in 0.043482 seconds
+	finished Z array creation in 1.636122 seconds
+	finished QMEGS in 0.005527 seconds
+	finished Z tensor circuit creation in 45.170625 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.015333 seconds
+	finished TSRHSE Jennrich version 2 in 0.094769 seconds
+	finished TSRHSE CP ALS in 978.282303 seconds
+	finished QFAMES in 2.785243 seconds
+Test: T_max = 100, perturb = Big
+	finished QPE in 0.037202 seconds
+	finished KQPE in 0.042904 seconds
+	finished Z array creation in 1.694929 seconds
+	finished QMEGS in 0.005628 seconds
+	finished Z tensor circuit creation in 43.632035 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.016796 seconds
+	finished TSRHSE Jennrich version 2 in 0.091938 seconds
+	finished TSRHSE CP ALS in 5442.661132 seconds
+	finished QFAMES in 2.778523 seconds
+Test: T_max = 100, perturb = Rand
+	finished QPE in 0.039726 seconds
+	finished KQPE in 0.042646 seconds
+	finished Z array creation in 1.630555 seconds
+	finished QMEGS in 0.005472 seconds
+	finished Z tensor circuit creation in 44.868581 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.015314 seconds
+	finished TSRHSE Jennrich version 2 in 0.095037 seconds
+	finished TSRHSE CP ALS in 558.400330 seconds
+	finished QFAMES in 2.773049 seconds
+Test: T_max = 100, perturb = Stand
+	finished QPE in 0.035170 seconds
+	finished KQPE in 0.033013 seconds
+	finished Z array creation in 1.289193 seconds
+	finished QMEGS in 0.005544 seconds
+	finished Z tensor circuit creation in 36.931960 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.017357 seconds
+	finished TSRHSE Jennrich version 2 in 0.093739 seconds
+	finished TSRHSE CP ALS in 6321.996010 seconds
+	finished QFAMES in 2.771120 seconds
+Test: T_max = 200, perturb = None
+	finished QPE in 0.047409 seconds
+	finished KQPE in 0.057368 seconds
+	finished Z array creation in 1.741155 seconds
+	finished QMEGS in 0.008357 seconds
+	finished Z tensor circuit creation in 44.273931 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.018296 seconds
+	finished TSRHSE Jennrich version 2 in 0.102812 seconds
+	finished TSRHSE CP ALS in 207.009730 seconds
+	finished QFAMES in 4.999143 seconds
+Test: T_max = 200, perturb = Small
+	finished QPE in 0.047734 seconds
+	finished KQPE in 0.057943 seconds
+	finished Z array creation in 1.775006 seconds
+	finished QMEGS in 0.008375 seconds
+	finished Z tensor circuit creation in 43.059038 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.019474 seconds
+	finished TSRHSE Jennrich version 2 in 0.102435 seconds
+	finished TSRHSE CP ALS in 2796.205514 seconds
+	finished QFAMES in 5.126026 seconds
+Test: T_max = 200, perturb = Big
+	finished QPE in 0.047334 seconds
+	finished KQPE in 0.057408 seconds
+	finished Z array creation in 1.740295 seconds
+	finished QMEGS in 0.008541 seconds
+	finished Z tensor circuit creation in 44.181475 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.072732 seconds
+	finished TSRHSE Jennrich version 2 in 0.099103 seconds
+	finished TSRHSE CP ALS in 9751.036312 seconds
+	finished QFAMES in 5.013433 seconds
+Test: T_max = 200, perturb = Rand
+	finished QPE in 0.047157 seconds
+	finished KQPE in 0.057193 seconds
+	finished Z array creation in 1.730033 seconds
+	finished QMEGS in 0.008298 seconds
+	finished Z tensor circuit creation in 44.236917 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.018127 seconds
+	finished TSRHSE Jennrich version 2 in 0.100593 seconds
+	finished TSRHSE CP ALS in 477.954797 seconds
+	finished QFAMES in 5.000180 seconds
+Test: T_max = 200, perturb = Stand
+	finished QPE in 0.045061 seconds
+	finished KQPE in 0.043976 seconds
+	finished Z array creation in 1.380887 seconds
+	finished QMEGS in 0.008382 seconds
+	finished Z tensor circuit creation in 36.838853 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.020031 seconds
+	finished TSRHSE Jennrich version 2 in 0.100967 seconds
+	finished TSRHSE CP ALS in 1877.433459 seconds
+	finished QFAMES in 5.032866 seconds
+Test: T_max = 400, perturb = None
+	finished QPE in 0.057746 seconds
+	finished KQPE in 0.074812 seconds
+	finished Z array creation in 1.932027 seconds
+	finished QMEGS in 0.014242 seconds
+	finished Z tensor circuit creation in 45.071512 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.022360 seconds
+	finished TSRHSE Jennrich version 2 in 0.110760 seconds
+	finished TSRHSE CP ALS in 4919.742685 seconds
+	finished QFAMES in 9.231718 seconds
+Test: T_max = 400, perturb = Small
+	finished QPE in 0.059177 seconds
+	finished KQPE in 0.073213 seconds
+	finished Z array creation in 1.954908 seconds
+	finished QMEGS in 0.014129 seconds
+	finished Z tensor circuit creation in 44.489510 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.023628 seconds
+	finished TSRHSE Jennrich version 2 in 0.107953 seconds
+	finished TSRHSE CP ALS in 894.148736 seconds
+	finished QFAMES in 9.345034 seconds
+Test: T_max = 400, perturb = Big
+	finished QPE in 0.057508 seconds
+	finished KQPE in 0.072470 seconds
+	finished Z array creation in 1.910744 seconds
+	finished QMEGS in 0.014010 seconds
+	finished Z tensor circuit creation in 43.499175 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.021008 seconds
+	finished TSRHSE Jennrich version 2 in 0.108177 seconds
+	finished TSRHSE CP ALS in 2461.884330 seconds
+	finished QFAMES in 9.327816 seconds
+Test: T_max = 400, perturb = Rand
+	finished QPE in 0.058368 seconds
+	finished KQPE in 0.073366 seconds
+	finished Z array creation in 1.929025 seconds
+	finished QMEGS in 0.014174 seconds
+	finished Z tensor circuit creation in 44.865552 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.021593 seconds
+	finished TSRHSE Jennrich version 2 in 0.106652 seconds
+	finished TSRHSE CP ALS in 1606.165624 seconds
+	finished QFAMES in 9.235829 seconds
+Test: T_max = 400, perturb = Stand
+	finished QPE in 0.054357 seconds
+	finished KQPE in 0.056064 seconds
+	finished Z array creation in 1.528435 seconds
+	finished QMEGS in 0.014101 seconds
+	finished Z tensor circuit creation in 36.759062 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.026538 seconds
+	finished TSRHSE Jennrich version 2 in 0.107934 seconds
+	finished TSRHSE CP ALS in 6773.533449 seconds
+	finished QFAMES in 9.270854 seconds
+Test: T_max = 800, perturb = None
+	finished QPE in 0.068358 seconds
+	finished KQPE in 0.086919 seconds
+	finished Z array creation in 1.952674 seconds
+	finished QMEGS in 0.026081 seconds
+	finished Z tensor circuit creation in 44.913481 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.024620 seconds
+	finished TSRHSE Jennrich version 2 in 0.117511 seconds
+	finished TSRHSE CP ALS in 207.196232 seconds
+	finished QFAMES in 17.884902 seconds
+Test: T_max = 800, perturb = Small
+	finished QPE in 0.069628 seconds
+	finished KQPE in 0.088112 seconds
+	finished Z array creation in 2.017189 seconds
+	finished QMEGS in 0.026256 seconds
+	finished Z tensor circuit creation in 43.268608 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.025696 seconds
+	finished TSRHSE Jennrich version 2 in 0.117960 seconds
+	finished TSRHSE CP ALS in 757.531603 seconds
+	finished QFAMES in 18.151380 seconds
+Test: T_max = 800, perturb = Big
+	finished QPE in 0.069433 seconds
+	finished KQPE in 0.089213 seconds
+	finished Z array creation in 2.041563 seconds
+	finished QMEGS in 0.026402 seconds
+	finished Z tensor circuit creation in 42.320310 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.023677 seconds
+	finished TSRHSE Jennrich version 2 in 0.114042 seconds
+	finished TSRHSE CP ALS in 4304.533666 seconds
+	finished QFAMES in 18.026689 seconds
+Test: T_max = 800, perturb = Rand
+	finished QPE in 0.068989 seconds
+	finished KQPE in 0.088352 seconds
+	finished Z array creation in 1.986488 seconds
+	finished QMEGS in 0.026388 seconds
+	finished Z tensor circuit creation in 43.205871 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.024411 seconds
+	finished TSRHSE Jennrich version 2 in 0.116715 seconds
+	finished TSRHSE CP ALS in 539.694277 seconds
+	finished QFAMES in 17.848466 seconds
+Test: T_max = 800, perturb = Stand
+	finished QPE in 0.065651 seconds
+	finished KQPE in 0.067507 seconds
+	finished Z array creation in 1.541181 seconds
+	finished QMEGS in 0.026004 seconds
+	finished Z tensor circuit creation in 37.234123 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.025290 seconds
+	finished TSRHSE Jennrich version 2 in 0.114573 seconds
+	finished TSRHSE CP ALS in 1274.863610 seconds
+	finished QFAMES in 18.045268 seconds
+Test: T_max = 1200, perturb = None
+	finished QPE in 0.081380 seconds
+	finished KQPE in 0.102391 seconds
+	finished Z array creation in 2.140754 seconds
+	finished QMEGS in 0.040734 seconds
+	finished Z tensor circuit creation in 43.008718 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.026073 seconds
+	finished TSRHSE Jennrich version 2 in 0.123288 seconds
+	finished TSRHSE CP ALS in 254.793418 seconds
+	finished QFAMES in 26.489531 seconds
+Test: T_max = 1200, perturb = Small
+	finished QPE in 0.081259 seconds
+	finished KQPE in 0.102833 seconds
+	finished Z array creation in 2.081018 seconds
+	finished QMEGS in 0.038729 seconds
+	finished Z tensor circuit creation in 43.321731 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.025328 seconds
+	finished TSRHSE Jennrich version 2 in 0.123405 seconds
+	finished TSRHSE CP ALS in 493.445929 seconds
+	finished QFAMES in 26.406662 seconds
+Test: T_max = 1200, perturb = Big
+	finished QPE in 0.085129 seconds
+	finished KQPE in 0.103640 seconds
+	finished Z array creation in 2.107870 seconds
+	finished QMEGS in 0.041586 seconds
+	finished Z tensor circuit creation in 42.201887 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.024099 seconds
+	finished TSRHSE Jennrich version 2 in 0.121007 seconds
+	finished TSRHSE CP ALS in 558.077342 seconds
+	finished QFAMES in 26.440646 seconds
+Test: T_max = 1200, perturb = Rand
+	finished QPE in 0.081185 seconds
+	finished KQPE in 0.102492 seconds
+	finished Z array creation in 2.148052 seconds
+	finished QMEGS in 0.038896 seconds
+	finished Z tensor circuit creation in 41.806765 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.026012 seconds
+	finished TSRHSE Jennrich version 2 in 0.123254 seconds
+	finished TSRHSE CP ALS in 318.356765 seconds
+	finished QFAMES in 26.401596 seconds
+Test: T_max = 1200, perturb = Stand
+	finished QPE in 0.076543 seconds
+	finished KQPE in 0.079102 seconds
+	finished Z array creation in 1.599324 seconds
+	finished QMEGS in 0.038687 seconds
+	finished Z tensor circuit creation in 36.559474 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.025169 seconds
+	finished TSRHSE Jennrich version 2 in 0.122173 seconds
+	finished TSRHSE CP ALS in 5223.581469 seconds
+	finished QFAMES in 26.519222 seconds
+Test: T_max = 1600, perturb = None
+	finished QPE in 0.080874 seconds
+	finished KQPE in 0.102912 seconds
+	finished Z array creation in 2.114482 seconds
+	finished QMEGS in 0.054627 seconds
+	finished Z tensor circuit creation in 45.485973 seconds; shape of Z is (4, 4, 3200); 1500 shots
+	finished TSRHSE Jennrich version 1 in 0.027228 seconds
+	finished TSRHSE Jennrich version 2 in 0.128071 seconds
+	finished TSRHSE CP ALS in 207.337457 seconds
+	finished QFAMES in 35.115530 seconds
+Test: T_max = 1600, perturb = Small
+	finished QPE in 0.080364 seconds
+	finished KQPE in 0.102761 seconds
+	finished Z array creation in 2.125616 seconds
+	finished QMEGS in 0.051808 seconds
+[2026-10-03T15:01:56.008] error: *** JOB 43663900 ON a202 CANCELLED AT 2026-10-03T15:01:56 DUE TO TIME LIMIT ***

@@ -1,0 +1,444 @@
+XXZ_8x8-1x1_numeric
+My Matrix: 
+[[ 0.13089969  0.          0.          0.          0.          0.
+   0.          0.        ]
+ [ 0.          0.          0.26179939  0.          0.          0.
+   0.          0.        ]
+ [ 0.          0.26179939 -0.13089969  0.          0.26179939  0.
+   0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.26179939
+   0.          0.        ]
+ [ 0.          0.          0.26179939  0.          0.          0.
+   0.          0.        ]
+ [ 0.          0.          0.          0.26179939  0.         -0.13089969
+   0.26179939  0.        ]
+ [ 0.          0.          0.          0.          0.          0.26179939
+   0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.
+   0.          0.13089969]]
+
+L = 1, R = 1
+is_unitary: False
+Norm of my matrix: 0.7853981633974482
+Eigenvalues: [-4.41430593e-01  8.12304596e-18  3.10530899e-01 -4.41430593e-01
+  3.10530899e-01  0.00000000e+00  1.30899694e-01  1.30899694e-01]
+Target eigenvalue: -0.44143059295916653
+Eigenvectors: 
+[[ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  1.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  4.54401349e-01
+   5.41774320e-01 -7.07106781e-01  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00 -7.66184591e-01
+   6.42620551e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 4.54401349e-01  7.07106781e-01  5.41774320e-01  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  4.54401349e-01
+   5.41774320e-01  7.07106781e-01  0.00000000e+00  0.00000000e+00]
+ [-7.66184591e-01 -2.57087689e-16  6.42620551e-01  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 4.54401349e-01 -7.07106781e-01  5.41774320e-01  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00]]
+
+test_type = T_max, param_array = [ 100  200  400  800 1200 1600 2000 3200]
+Test: T_max = 100, perturb = None
+	finished QPE in 0.300963 seconds
+	finished KQPE in 0.042828 seconds
+	finished Z array creation in 2.247145 seconds
+	finished QMEGS in 0.006904 seconds
+	finished Z tensor numeric creation in 4.148130 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.017842 seconds
+	finished TSRHSE Jennrich version 2 in 0.112467 seconds
+	finished TSRHSE CP ALS in 27.835082 seconds
+	finished QFAMES in 0.179989 seconds
+Test: T_max = 100, perturb = Small
+	finished QPE in 0.038113 seconds
+	finished KQPE in 0.042403 seconds
+	finished Z array creation in 1.619259 seconds
+	finished QMEGS in 0.006079 seconds
+	finished Z tensor numeric creation in 3.395540 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.012849 seconds
+	finished TSRHSE Jennrich version 2 in 0.093176 seconds
+	finished TSRHSE CP ALS in 27.786756 seconds
+	finished QFAMES in 0.179652 seconds
+Test: T_max = 100, perturb = Big
+	finished QPE in 0.037979 seconds
+	finished KQPE in 0.043183 seconds
+	finished Z array creation in 1.671028 seconds
+	finished QMEGS in 0.006166 seconds
+	finished Z tensor numeric creation in 2.238163 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.013087 seconds
+	finished TSRHSE Jennrich version 2 in 0.093940 seconds
+	finished TSRHSE CP ALS in 27.832299 seconds
+	finished QFAMES in 0.177708 seconds
+Test: T_max = 100, perturb = Rand
+	finished QPE in 0.038089 seconds
+	finished KQPE in 0.042733 seconds
+	finished Z array creation in 1.624136 seconds
+	finished QMEGS in 0.006057 seconds
+	finished Z tensor numeric creation in 2.643432 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.012795 seconds
+	finished TSRHSE Jennrich version 2 in 0.091493 seconds
+	finished TSRHSE CP ALS in 27.804861 seconds
+	finished QFAMES in 0.178065 seconds
+Test: T_max = 100, perturb = Stand
+	finished QPE in 0.034359 seconds
+	finished KQPE in 0.033644 seconds
+	finished Z array creation in 1.302942 seconds
+	finished QMEGS in 0.006193 seconds
+	finished Z tensor numeric creation in 3.859897 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.013260 seconds
+	finished TSRHSE Jennrich version 2 in 0.091959 seconds
+	finished TSRHSE CP ALS in 27.806645 seconds
+	finished QFAMES in 0.177894 seconds
+Test: T_max = 200, perturb = None
+	finished QPE in 0.047869 seconds
+	finished KQPE in 0.057469 seconds
+	finished Z array creation in 1.734158 seconds
+	finished QMEGS in 0.009622 seconds
+	finished Z tensor numeric creation in 2.219830 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.015226 seconds
+	finished TSRHSE Jennrich version 2 in 0.098528 seconds
+	finished TSRHSE CP ALS in 27.899306 seconds
+	finished QFAMES in 0.316789 seconds
+Test: T_max = 200, perturb = Small
+	finished QPE in 0.048370 seconds
+	finished KQPE in 0.058189 seconds
+	finished Z array creation in 1.805608 seconds
+	finished QMEGS in 0.009807 seconds
+	finished Z tensor numeric creation in 3.316040 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.016197 seconds
+	finished TSRHSE Jennrich version 2 in 0.097664 seconds
+	finished TSRHSE CP ALS in 27.855163 seconds
+	finished QFAMES in 0.316557 seconds
+Test: T_max = 200, perturb = Big
+	finished QPE in 0.048160 seconds
+	finished KQPE in 0.057651 seconds
+	finished Z array creation in 1.791789 seconds
+	finished QMEGS in 0.008641 seconds
+	finished Z tensor numeric creation in 2.375408 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.015847 seconds
+	finished TSRHSE Jennrich version 2 in 0.097085 seconds
+	finished TSRHSE CP ALS in 27.825250 seconds
+	finished QFAMES in 0.315848 seconds
+Test: T_max = 200, perturb = Rand
+	finished QPE in 0.046847 seconds
+	finished KQPE in 0.057974 seconds
+	finished Z array creation in 1.732276 seconds
+	finished QMEGS in 0.009673 seconds
+	finished Z tensor numeric creation in 2.619567 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.015699 seconds
+	finished TSRHSE Jennrich version 2 in 0.098452 seconds
+	finished TSRHSE CP ALS in 27.895616 seconds
+	finished QFAMES in 0.317097 seconds
+Test: T_max = 200, perturb = Stand
+	finished QPE in 0.044310 seconds
+	finished KQPE in 0.045147 seconds
+	finished Z array creation in 1.408922 seconds
+	finished QMEGS in 0.009877 seconds
+	finished Z tensor numeric creation in 2.463759 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.015636 seconds
+	finished TSRHSE Jennrich version 2 in 0.098315 seconds
+	finished TSRHSE CP ALS in 27.910827 seconds
+	finished QFAMES in 0.318159 seconds
+Test: T_max = 400, perturb = None
+	finished QPE in 0.058586 seconds
+	finished KQPE in 0.072808 seconds
+	finished Z array creation in 1.934579 seconds
+	finished QMEGS in 0.014835 seconds
+	finished Z tensor numeric creation in 3.405119 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.154929 seconds
+	finished TSRHSE Jennrich version 2 in 0.104835 seconds
+	finished TSRHSE CP ALS in 27.886749 seconds
+	finished QFAMES in 0.582244 seconds
+Test: T_max = 400, perturb = Small
+	finished QPE in 0.059903 seconds
+	finished KQPE in 0.073383 seconds
+	finished Z array creation in 1.940889 seconds
+	finished QMEGS in 0.019784 seconds
+	finished Z tensor numeric creation in 3.150891 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.018744 seconds
+	finished TSRHSE Jennrich version 2 in 0.103302 seconds
+	finished TSRHSE CP ALS in 27.840306 seconds
+	finished QFAMES in 0.583566 seconds
+Test: T_max = 400, perturb = Big
+	finished QPE in 0.059519 seconds
+	finished KQPE in 0.085143 seconds
+	finished Z array creation in 1.964941 seconds
+	finished QMEGS in 0.019108 seconds
+	finished Z tensor numeric creation in 2.914927 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.017848 seconds
+	finished TSRHSE Jennrich version 2 in 0.103966 seconds
+	finished TSRHSE CP ALS in 27.841495 seconds
+	finished QFAMES in 0.581575 seconds
+Test: T_max = 400, perturb = Rand
+	finished QPE in 0.058422 seconds
+	finished KQPE in 0.072533 seconds
+	finished Z array creation in 2.013475 seconds
+	finished QMEGS in 0.015799 seconds
+	finished Z tensor numeric creation in 2.333468 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.018558 seconds
+	finished TSRHSE Jennrich version 2 in 0.103708 seconds
+	finished TSRHSE CP ALS in 27.796030 seconds
+	finished QFAMES in 0.580329 seconds
+Test: T_max = 400, perturb = Stand
+	finished QPE in 0.054044 seconds
+	finished KQPE in 0.054989 seconds
+	finished Z array creation in 1.485551 seconds
+	finished QMEGS in 0.018930 seconds
+	finished Z tensor numeric creation in 2.283497 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.018319 seconds
+	finished TSRHSE Jennrich version 2 in 0.105882 seconds
+	finished TSRHSE CP ALS in 27.830163 seconds
+	finished QFAMES in 0.580936 seconds
+Test: T_max = 800, perturb = None
+	finished QPE in 0.071490 seconds
+	finished KQPE in 0.088388 seconds
+	finished Z array creation in 2.030360 seconds
+	finished QMEGS in 0.030221 seconds
+	finished Z tensor numeric creation in 2.047026 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.022765 seconds
+	finished TSRHSE Jennrich version 2 in 0.112160 seconds
+	finished TSRHSE CP ALS in 27.911489 seconds
+	finished QFAMES in 1.120217 seconds
+Test: T_max = 800, perturb = Small
+	finished QPE in 0.069243 seconds
+	finished KQPE in 0.088411 seconds
+	finished Z array creation in 1.957651 seconds
+	finished QMEGS in 0.029306 seconds
+	finished Z tensor numeric creation in 3.481632 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.020093 seconds
+	finished TSRHSE Jennrich version 2 in 0.111229 seconds
+	finished TSRHSE CP ALS in 27.882064 seconds
+	finished QFAMES in 1.121567 seconds
+Test: T_max = 800, perturb = Big
+	finished QPE in 0.069125 seconds
+	finished KQPE in 0.087901 seconds
+	finished Z array creation in 2.063511 seconds
+	finished QMEGS in 0.027265 seconds
+	finished Z tensor numeric creation in 3.428919 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.020314 seconds
+	finished TSRHSE Jennrich version 2 in 0.112164 seconds
+	finished TSRHSE CP ALS in 27.836102 seconds
+	finished QFAMES in 1.119924 seconds
+Test: T_max = 800, perturb = Rand
+	finished QPE in 0.068520 seconds
+	finished KQPE in 0.088257 seconds
+	finished Z array creation in 2.015132 seconds
+	finished QMEGS in 0.026893 seconds
+	finished Z tensor numeric creation in 2.969069 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.021403 seconds
+	finished TSRHSE Jennrich version 2 in 0.112151 seconds
+	finished TSRHSE CP ALS in 27.788768 seconds
+	finished QFAMES in 1.117539 seconds
+Test: T_max = 800, perturb = Stand
+	finished QPE in 0.064557 seconds
+	finished KQPE in 0.066625 seconds
+	finished Z array creation in 1.504010 seconds
+	finished QMEGS in 0.027899 seconds
+	finished Z tensor numeric creation in 2.264308 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.020349 seconds
+	finished TSRHSE Jennrich version 2 in 0.112558 seconds
+	finished TSRHSE CP ALS in 27.887810 seconds
+	finished QFAMES in 1.124035 seconds
+Test: T_max = 1200, perturb = None
+	finished QPE in 0.081213 seconds
+	finished KQPE in 0.103837 seconds
+	finished Z array creation in 2.139034 seconds
+	finished QMEGS in 0.043831 seconds
+	finished Z tensor numeric creation in 2.269185 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.020868 seconds
+	finished TSRHSE Jennrich version 2 in 0.119839 seconds
+	finished TSRHSE CP ALS in 27.882413 seconds
+	finished QFAMES in 1.655942 seconds
+Test: T_max = 1200, perturb = Small
+	finished QPE in 0.082220 seconds
+	finished KQPE in 0.113103 seconds
+	finished Z array creation in 2.162085 seconds
+	finished QMEGS in 0.044574 seconds
+	finished Z tensor numeric creation in 2.352096 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.021038 seconds
+	finished TSRHSE Jennrich version 2 in 0.128265 seconds
+	finished TSRHSE CP ALS in 27.886729 seconds
+	finished QFAMES in 1.655996 seconds
+Test: T_max = 1200, perturb = Big
+	finished QPE in 0.084459 seconds
+	finished KQPE in 0.106675 seconds
+	finished Z array creation in 2.087748 seconds
+	finished QMEGS in 0.046823 seconds
+	finished Z tensor numeric creation in 3.277701 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.020213 seconds
+	finished TSRHSE Jennrich version 2 in 0.119590 seconds
+	finished TSRHSE CP ALS in 27.875967 seconds
+	finished QFAMES in 1.656147 seconds
+Test: T_max = 1200, perturb = Rand
+	finished QPE in 0.083312 seconds
+	finished KQPE in 0.103325 seconds
+	finished Z array creation in 2.188620 seconds
+	finished QMEGS in 0.041195 seconds
+	finished Z tensor numeric creation in 2.525792 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.020506 seconds
+	finished TSRHSE Jennrich version 2 in 0.120003 seconds
+	finished TSRHSE CP ALS in 27.951512 seconds
+	finished QFAMES in 1.658268 seconds
+Test: T_max = 1200, perturb = Stand
+	finished QPE in 0.078004 seconds
+	finished KQPE in 0.080508 seconds
+	finished Z array creation in 1.691037 seconds
+	finished QMEGS in 0.041662 seconds
+	finished Z tensor numeric creation in 2.206200 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.021371 seconds
+	finished TSRHSE Jennrich version 2 in 0.118713 seconds
+	finished TSRHSE CP ALS in 27.879179 seconds
+	finished QFAMES in 1.654870 seconds
+Test: T_max = 1600, perturb = None
+	finished QPE in 0.080870 seconds
+	finished KQPE in 0.102259 seconds
+	finished Z array creation in 2.065030 seconds
+	finished QMEGS in 0.056054 seconds
+	finished Z tensor numeric creation in 2.847520 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.022360 seconds
+	finished TSRHSE Jennrich version 2 in 0.119908 seconds
+	finished TSRHSE CP ALS in 27.842570 seconds
+	finished QFAMES in 2.195507 seconds
+Test: T_max = 1600, perturb = Small
+	finished QPE in 0.079619 seconds
+	finished KQPE in 0.101369 seconds
+	finished Z array creation in 2.103511 seconds
+	finished QMEGS in 0.054997 seconds
+	finished Z tensor numeric creation in 2.292908 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.024307 seconds
+	finished TSRHSE Jennrich version 2 in 0.117892 seconds
+	finished TSRHSE CP ALS in 27.802389 seconds
+	finished QFAMES in 2.192245 seconds
+Test: T_max = 1600, perturb = Big
+	finished QPE in 0.079214 seconds
+	finished KQPE in 0.101408 seconds
+	finished Z array creation in 2.093468 seconds
+	finished QMEGS in 0.051966 seconds
+	finished Z tensor numeric creation in 3.263199 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.023768 seconds
+	finished TSRHSE Jennrich version 2 in 0.119371 seconds
+	finished TSRHSE CP ALS in 27.809132 seconds
+	finished QFAMES in 2.193114 seconds
+Test: T_max = 1600, perturb = Rand
+	finished QPE in 0.079341 seconds
+	finished KQPE in 0.101911 seconds
+	finished Z array creation in 2.097910 seconds
+	finished QMEGS in 0.051819 seconds
+	finished Z tensor numeric creation in 2.329469 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.022548 seconds
+	finished TSRHSE Jennrich version 2 in 0.116486 seconds
+	finished TSRHSE CP ALS in 27.784958 seconds
+	finished QFAMES in 2.190985 seconds
+Test: T_max = 1600, perturb = Stand
+	finished QPE in 0.075375 seconds
+	finished KQPE in 0.078103 seconds
+	finished Z array creation in 1.568878 seconds
+	finished QMEGS in 0.051594 seconds
+	finished Z tensor numeric creation in 2.223922 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.022426 seconds
+	finished TSRHSE Jennrich version 2 in 0.116467 seconds
+	finished TSRHSE CP ALS in 27.810859 seconds
+	finished QFAMES in 2.193533 seconds
+Test: T_max = 2000, perturb = None
+	finished QPE in 0.094065 seconds
+	finished KQPE in 0.116860 seconds
+	finished Z array creation in 2.183683 seconds
+	finished QMEGS in 0.066199 seconds
+	finished Z tensor numeric creation in 2.413098 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.022645 seconds
+	finished TSRHSE Jennrich version 2 in 0.131238 seconds
+	finished TSRHSE CP ALS in 27.916637 seconds
+	finished QFAMES in 2.736202 seconds
+Test: T_max = 2000, perturb = Small
+	finished QPE in 0.093395 seconds
+	finished KQPE in 0.117464 seconds
+	finished Z array creation in 2.184060 seconds
+	finished QMEGS in 0.073331 seconds
+	finished Z tensor numeric creation in 2.440621 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.024704 seconds
+	finished TSRHSE Jennrich version 2 in 0.130914 seconds
+	finished TSRHSE CP ALS in 27.852890 seconds
+	finished QFAMES in 2.729160 seconds
+Test: T_max = 2000, perturb = Big
+	finished QPE in 0.093145 seconds
+	finished KQPE in 0.115350 seconds
+	finished Z array creation in 2.136104 seconds
+	finished QMEGS in 0.073397 seconds
+	finished Z tensor numeric creation in 3.229412 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.022298 seconds
+	finished TSRHSE Jennrich version 2 in 0.129363 seconds
+	finished TSRHSE CP ALS in 27.876398 seconds
+	finished QFAMES in 2.733013 seconds
+Test: T_max = 2000, perturb = Rand
+	finished QPE in 0.094928 seconds
+	finished KQPE in 0.119349 seconds
+	finished Z array creation in 2.235846 seconds
+	finished QMEGS in 0.073504 seconds
+	finished Z tensor numeric creation in 2.372155 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.024134 seconds
+	finished TSRHSE Jennrich version 2 in 0.129288 seconds
+	finished TSRHSE CP ALS in 27.854455 seconds
+	finished QFAMES in 2.729334 seconds
+Test: T_max = 2000, perturb = Stand
+	finished QPE in 0.092490 seconds
+	finished KQPE in 0.092764 seconds
+	finished Z array creation in 1.745847 seconds
+	finished QMEGS in 0.073446 seconds
+	finished Z tensor numeric creation in 2.294493 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.022777 seconds
+	finished TSRHSE Jennrich version 2 in 0.129296 seconds
+	finished TSRHSE CP ALS in 27.894697 seconds
+	finished QFAMES in 2.734208 seconds
+Test: T_max = 3200, perturb = None
+	finished QPE in 0.093345 seconds
+	finished KQPE in 0.117264 seconds
+	finished Z array creation in 2.235984 seconds
+	finished QMEGS in 0.117460 seconds
+	finished Z tensor numeric creation in 2.860359 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.024754 seconds
+	finished TSRHSE Jennrich version 2 in 0.126337 seconds
+	finished TSRHSE CP ALS in 27.849616 seconds
+	finished QFAMES in 4.347837 seconds
+Test: T_max = 3200, perturb = Small
+	finished QPE in 0.093991 seconds
+	finished KQPE in 0.117549 seconds
+	finished Z array creation in 2.286205 seconds
+	finished QMEGS in 0.115629 seconds
+	finished Z tensor numeric creation in 3.295175 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.024649 seconds
+	finished TSRHSE Jennrich version 2 in 0.125899 seconds
+	finished TSRHSE CP ALS in 27.882057 seconds
+	finished QFAMES in 4.353626 seconds
+Test: T_max = 3200, perturb = Big
+	finished QPE in 0.094644 seconds
+	finished KQPE in 0.117761 seconds
+	finished Z array creation in 2.278401 seconds
+	finished QMEGS in 0.115084 seconds
+	finished Z tensor numeric creation in 3.308988 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.025036 seconds
+	finished TSRHSE Jennrich version 2 in 0.127276 seconds
+	finished TSRHSE CP ALS in 27.824610 seconds
+	finished QFAMES in 4.343122 seconds
+Test: T_max = 3200, perturb = Rand
+	finished QPE in 0.094666 seconds
+	finished KQPE in 0.121851 seconds
+	finished Z array creation in 2.280423 seconds
+	finished QMEGS in 0.114970 seconds
+	finished Z tensor numeric creation in 3.599560 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.024863 seconds
+	finished TSRHSE Jennrich version 2 in 0.126778 seconds
+	finished TSRHSE CP ALS in 27.857185 seconds
+	finished QFAMES in 4.353434 seconds
+Test: T_max = 3200, perturb = Stand
+	finished QPE in 0.090400 seconds
+	finished KQPE in 0.092138 seconds
+	finished Z array creation in 1.748482 seconds
+	finished QMEGS in 0.115485 seconds
+	finished Z tensor numeric creation in 2.920564 seconds; shape of Z is (1, 1, 3200)
+	finished TSRHSE Jennrich version 1 in 0.024405 seconds
+	finished TSRHSE Jennrich version 2 in 0.127573 seconds
+	finished TSRHSE CP ALS in 27.815813 seconds
+	finished QFAMES in 4.342374 seconds

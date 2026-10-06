@@ -1,0 +1,90 @@
+XXZ_8x8-4x4_numeric
+My Matrix: 
+[[ 0.13089969  0.          0.          0.          0.          0.
+   0.          0.        ]
+ [ 0.          0.          0.26179939  0.          0.          0.
+   0.          0.        ]
+ [ 0.          0.26179939 -0.13089969  0.          0.26179939  0.
+   0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.26179939
+   0.          0.        ]
+ [ 0.          0.          0.26179939  0.          0.          0.
+   0.          0.        ]
+ [ 0.          0.          0.          0.26179939  0.         -0.13089969
+   0.26179939  0.        ]
+ [ 0.          0.          0.          0.          0.          0.26179939
+   0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.
+   0.          0.13089969]]
+
+L = 4, R = 4
+is_unitary: False
+Norm of my matrix: 0.7853981633974482
+Eigenvalues: [-4.41430593e-01  8.12304596e-18  3.10530899e-01 -4.41430593e-01
+  3.10530899e-01  0.00000000e+00  1.30899694e-01  1.30899694e-01]
+Target eigenvalue: -0.44143059295916653
+Eigenvectors: 
+[[ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  1.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  4.54401349e-01
+   5.41774320e-01 -7.07106781e-01  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00 -7.66184591e-01
+   6.42620551e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 4.54401349e-01  7.07106781e-01  5.41774320e-01  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  4.54401349e-01
+   5.41774320e-01  7.07106781e-01  0.00000000e+00  0.00000000e+00]
+ [-7.66184591e-01 -2.57087689e-16  6.42620551e-01  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 4.54401349e-01 -7.07106781e-01  5.41774320e-01  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00]]
+
+test_type = T_max, param_array = [ 100  200  400  800 1200 1600 2000 3200]
+Test: T_max = 100, perturb = None
+	finished QPE in 0.228392 seconds
+	finished KQPE in 0.042235 seconds
+	finished Z array creation in 2.103004 seconds
+	finished QMEGS in 0.007099 seconds
+	finished Z tensor numeric creation in 4.309015 seconds; shape of Z is (4, 4, 3200)
+	finished TSRHSE Jennrich version 1 in 0.017540 seconds
+	finished TSRHSE Jennrich version 2 in 0.109564 seconds
+	finished TSRHSE CP ALS in 239.178148 seconds
+	finished QFAMES in 2.817087 seconds
+Test: T_max = 100, perturb = Small
+	finished QPE in 0.045090 seconds
+	finished KQPE in 0.043844 seconds
+	finished Z array creation in 1.625264 seconds
+	finished QMEGS in 0.006172 seconds
+	finished Z tensor numeric creation in 3.279908 seconds; shape of Z is (4, 4, 3200)
+	finished TSRHSE Jennrich version 1 in 0.014949 seconds
+	finished TSRHSE Jennrich version 2 in 0.097616 seconds
+	finished TSRHSE CP ALS in 5307.996402 seconds
+	finished QFAMES in 2.774318 seconds
+Test: T_max = 100, perturb = Big
+	finished QPE in 0.037962 seconds
+	finished KQPE in 0.042188 seconds
+	finished Z array creation in 1.635103 seconds
+	finished QMEGS in 0.005527 seconds
+	finished Z tensor numeric creation in 3.712397 seconds; shape of Z is (4, 4, 3200)
+	finished TSRHSE Jennrich version 1 in 0.015166 seconds
+	finished TSRHSE Jennrich version 2 in 0.093996 seconds
+	finished TSRHSE CP ALS in 5149.463792 seconds
+	finished QFAMES in 2.785206 seconds
+Test: T_max = 100, perturb = Rand
+	finished QPE in 0.038265 seconds
+	finished KQPE in 0.042749 seconds
+	finished Z array creation in 1.611906 seconds
+	finished QMEGS in 0.005491 seconds
+	finished Z tensor numeric creation in 3.537151 seconds; shape of Z is (4, 4, 3200)
+	finished TSRHSE Jennrich version 1 in 0.016455 seconds
+	finished TSRHSE Jennrich version 2 in 0.094624 seconds
+	finished TSRHSE CP ALS in 254.475796 seconds
+	finished QFAMES in 2.770668 seconds
+Test: T_max = 100, perturb = Stand
+	finished QPE in 0.043566 seconds
+	finished KQPE in 0.033216 seconds
+	finished Z array creation in 1.323023 seconds
+	finished QMEGS in 0.005564 seconds
+[2026-10-01T15:25:04.003] error: *** JOB 43663879 ON a376 CANCELLED AT 2026-10-01T15:25:04 DUE TO TIME LIMIT ***
