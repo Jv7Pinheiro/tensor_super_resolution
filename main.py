@@ -207,7 +207,7 @@ def main():
 
     # Test configurations: iterate through eps_array and T_max_array separately
     # eps_array = np.array([0.5, 0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001])
-    T_max_array = np.array([100, 200, 400, 800, 1200, 1600, 2000, 3200])
+    T_max_array = np.array([1600, 2000, 3200])
     test_configs = {
         # "eps": {"array": eps_array, "name": "eps"},
         "T_max": {"array": T_max_array, "name": "T_max"}

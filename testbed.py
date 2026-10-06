@@ -14,7 +14,7 @@ HAMILTONIANS = ["XXZ", "TFIM"]
 METHODS = ["numeric", "circuit"]
 
 MIN_SIZE = 8
-MAX_SIZE = 16
+MAX_SIZE = 8
 
 LR_VALUES = [1, 2, 4, 8, 16]
 
@@ -23,28 +23,23 @@ LR_VALUES = [1, 2, 4, 8, 16]
 ## Resource policy ##
 #####################
 
-def get_resources(size, method):
+def get_resources(lr, size, method):
     """
     Return (cores, qos, walltime) for a given experiment.
 
     walltime is in Slurm's HH:MM:SS format.
     """
 
-    if method == "numeric":
-        if size == 8:
-            return 64, "standby", "4:00:00"
+    if size == 8:
+        if lr == 1:
+            return 64, "standby", "01:00:00"
+        elif lr == 2:
+            return 64, "standby", "03:00:00"
+        elif lr == 4:
+            return 64, "normal", "30:00:00"
+        elif lr == 8:
+            return 64, "normal", "48:00:00"
 
-        elif size == 16:
-            # Estimated runtime is around 4 hours, so don't use
-            # standby because its maximum walltime is 4 hours.
-            return 128, "normal", "23:00:00"
-
-    elif method == "circuit":
-        if size == 8:
-            return 128, "normal", "23:00:00"
-
-        elif size == 16:
-            return 128, "normal", "23:00:00"
 
     raise ValueError(
         f"No resource policy defined for size={size}, method={method}"
@@ -100,8 +95,6 @@ def main():
 
     for ham in HAMILTONIANS:
         for method in METHODS:
-            cores, qos, walltime = get_resources(MAX_SIZE if False else MIN_SIZE, method)
-
             for size in range(MIN_SIZE, MAX_SIZE + 1):
                 # Only use powers of two.
                 if size & (size - 1):
@@ -114,7 +107,7 @@ def main():
 
                     job_name = f"{ham}_{size}x{size}-{lr}x{lr}_{method}"
 
-                    cores, qos, walltime = get_resources(size, method)
+                    cores, qos, walltime = get_resources(lr, size, method)
 
                     script = make_slurm_script(
                         job_name=job_name,

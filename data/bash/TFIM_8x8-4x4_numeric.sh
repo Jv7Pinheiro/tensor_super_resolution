@@ -3,11 +3,11 @@
 #SBATCH --job-name=TFIM_8x8-4x4_numeric
 #SBATCH --account=csit
 #SBATCH --partition=cpu
-#SBATCH --qos=standby
+#SBATCH --qos=normal
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=64
-#SBATCH --time=4:00:00
+#SBATCH --time=30:00:00
 #SBATCH --output=data/outputs/TFIM_8x8-4x4_numeric.txt
 #SBATCH --error=data/outputs/TFIM_8x8-4x4_numeric.txt
 #SBATCH --mail-user=deolivj@purdue.edu

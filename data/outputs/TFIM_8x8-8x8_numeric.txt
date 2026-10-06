@@ -1,0 +1,120 @@
+TFIM_8x8-8x8_numeric
+My Matrix: 
+[[-0.24836471 -0.12418235 -0.12418235  0.         -0.12418235  0.
+   0.          0.        ]
+ [-0.12418235  0.          0.         -0.12418235  0.         -0.12418235
+   0.          0.        ]
+ [-0.12418235  0.          0.24836471 -0.12418235  0.          0.
+  -0.12418235  0.        ]
+ [ 0.         -0.12418235 -0.12418235  0.          0.          0.
+   0.         -0.12418235]
+ [-0.12418235  0.          0.          0.          0.         -0.12418235
+  -0.12418235  0.        ]
+ [ 0.         -0.12418235  0.          0.         -0.12418235  0.24836471
+   0.         -0.12418235]
+ [ 0.          0.         -0.12418235  0.         -0.12418235  0.
+   0.         -0.12418235]
+ [ 0.          0.          0.         -0.12418235  0.         -0.12418235
+  -0.12418235 -0.24836471]]
+
+L = 8, R = 8
+is_unitary: False
+Norm of my matrix: 0.7853981633974482
+Eigenvalues: [-0.43388808 -0.32335538  0.43388808  0.32335538 -0.01364966  0.01364966
+  0.12418235 -0.12418235]
+Target eigenvalue: -0.43388807679191677
+Eigenvectors: 
+[[-5.32480753e-01 -6.63992639e-01 -2.04495476e-01  7.29835903e-02
+   4.59497163e-01  1.31511885e-01  6.84718764e-18 -1.25336380e-16]
+ [-2.95504524e-01 -1.63992639e-01  2.95504524e-01  1.63992639e-01
+  -3.68488115e-01 -3.68488115e-01 -5.00000000e-01 -5.00000000e-01]
+ [-2.04495476e-01 -7.29835903e-02  5.32480753e-01 -6.63992639e-01
+  -1.31511885e-01  4.59497163e-01  7.00226976e-17 -1.76186250e-17]
+ [-2.95504524e-01  1.63992639e-01 -2.95504524e-01  1.63992639e-01
+  -3.68488115e-01  3.68488115e-01  5.00000000e-01 -5.00000000e-01]
+ [-2.95504524e-01 -1.63992639e-01  2.95504524e-01  1.63992639e-01
+  -3.68488115e-01 -3.68488115e-01  5.00000000e-01  5.00000000e-01]
+ [-2.04495476e-01  7.29835903e-02 -5.32480753e-01 -6.63992639e-01
+  -1.31511885e-01 -4.59497163e-01  4.41205493e-17  3.83323126e-17]
+ [-2.95504524e-01  1.63992639e-01 -2.95504524e-01  1.63992639e-01
+  -3.68488115e-01  3.68488115e-01 -5.00000000e-01  5.00000000e-01]
+ [-5.32480753e-01  6.63992639e-01  2.04495476e-01  7.29835903e-02
+   4.59497163e-01 -1.31511885e-01  3.06885811e-17 -1.95457035e-17]]
+
+test_type = T_max, param_array = [ 100  200  400  800 1200 1600 2000 3200]
+Test: T_max = 100, perturb = None
+	finished QPE in 0.198529 seconds
+	finished KQPE in 0.038721 seconds
+	finished Z array creation in 1.837686 seconds
+	finished QMEGS in 0.006596 seconds
+	finished Z tensor numeric creation in 2.536733 seconds; shape of Z is (8, 8, 3200)
+	finished TSRHSE Jennrich version 1 in 0.020831 seconds
+	finished TSRHSE Jennrich version 2 in 0.116006 seconds
+	finished TSRHSE CP ALS in 716.103551 seconds
+	finished QFAMES in 11.780037 seconds
+Test: T_max = 100, perturb = Small
+	finished QPE in 0.038265 seconds
+	finished KQPE in 0.038670 seconds
+	finished Z array creation in 1.427012 seconds
+	finished QMEGS in 0.005773 seconds
+	finished Z tensor numeric creation in 2.798208 seconds; shape of Z is (8, 8, 3200)
+	finished TSRHSE Jennrich version 1 in 0.019985 seconds
+	finished TSRHSE Jennrich version 2 in 0.109938 seconds
+	finished TSRHSE CP ALS in 1944.810153 seconds
+	finished QFAMES in 11.834129 seconds
+Test: T_max = 100, perturb = Big
+	finished QPE in 0.033550 seconds
+	finished KQPE in 0.038924 seconds
+	finished Z array creation in 1.501615 seconds
+	finished QMEGS in 0.005764 seconds
+	finished Z tensor numeric creation in 2.962249 seconds; shape of Z is (8, 8, 3200)
+	finished TSRHSE Jennrich version 1 in 0.019691 seconds
+	finished TSRHSE Jennrich version 2 in 0.113026 seconds
+	finished TSRHSE CP ALS in 5485.483389 seconds
+	finished QFAMES in 11.833142 seconds
+Test: T_max = 100, perturb = Rand
+	finished QPE in 0.032439 seconds
+	finished KQPE in 0.038202 seconds
+	finished Z array creation in 1.427112 seconds
+	finished QMEGS in 0.005762 seconds
+	finished Z tensor numeric creation in 2.833200 seconds; shape of Z is (8, 8, 3200)
+	finished TSRHSE Jennrich version 1 in 0.018985 seconds
+	finished TSRHSE Jennrich version 2 in 0.110060 seconds
+	finished TSRHSE CP ALS in 1603.455444 seconds
+	finished QFAMES in 11.829674 seconds
+Test: T_max = 100, perturb = Stand
+	finished QPE in 0.029713 seconds
+	finished KQPE in 0.029364 seconds
+	finished Z array creation in 1.071503 seconds
+	finished QMEGS in 0.005780 seconds
+	finished Z tensor numeric creation in 2.705320 seconds; shape of Z is (8, 8, 3200)
+	finished TSRHSE Jennrich version 1 in 0.018377 seconds
+	finished TSRHSE Jennrich version 2 in 0.106548 seconds
+	finished TSRHSE CP ALS in 1498.872031 seconds
+	finished QFAMES in 11.785245 seconds
+Test: T_max = 200, perturb = None
+	finished QPE in 0.041956 seconds
+	finished KQPE in 0.051998 seconds
+	finished Z array creation in 1.584684 seconds
+	finished QMEGS in 0.008795 seconds
+	finished Z tensor numeric creation in 2.955460 seconds; shape of Z is (8, 8, 3200)
+	finished TSRHSE Jennrich version 1 in 0.024055 seconds
+	finished TSRHSE Jennrich version 2 in 0.117584 seconds
+	finished TSRHSE CP ALS in 1806.911234 seconds
+	finished QFAMES in 21.184572 seconds
+Test: T_max = 200, perturb = Small
+	finished QPE in 0.042245 seconds
+	finished KQPE in 0.052038 seconds
+	finished Z array creation in 1.528935 seconds
+	finished QMEGS in 0.008754 seconds
+	finished Z tensor numeric creation in 2.827205 seconds; shape of Z is (8, 8, 3200)
+	finished TSRHSE Jennrich version 1 in 0.022803 seconds
+	finished TSRHSE Jennrich version 2 in 0.118960 seconds
+	finished TSRHSE CP ALS in 717.644735 seconds
+	finished QFAMES in 21.282258 seconds
+Test: T_max = 200, perturb = Big
+	finished QPE in 0.041538 seconds
+	finished KQPE in 0.051207 seconds
+	finished Z array creation in 1.525004 seconds
+	finished QMEGS in 0.008883 seconds
+[2026-10-01T15:21:51.005] error: *** JOB 3337986 ON bell-a118 CANCELLED AT 2026-10-01T15:21:51 DUE TO TIME LIMIT ***

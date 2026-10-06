@@ -7,7 +7,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=64
-#SBATCH --time=4:00:00
+#SBATCH --time=03:00:00
 #SBATCH --output=data/outputs/XXZ_8x8-2x2_numeric.txt
 #SBATCH --error=data/outputs/XXZ_8x8-2x2_numeric.txt
 #SBATCH --mail-user=deolivj@purdue.edu
