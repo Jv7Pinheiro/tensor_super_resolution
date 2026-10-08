@@ -3,14 +3,43 @@ import os
 import sys
 import time
 
-import numpy as np
 import pandas as pd
+import numpy as np
+np.set_printoptions(linewidth=200)
 
 import TSRHSE
 import algorithms
 import aux_functions
 import hamiltonians
 import par_comp
+
+# TODO:
+# Mess with TAU
+# Get the bar figures
+# Somehow test T_Total scaling
+# Take a look at Zhang's notes
+
+PERTURBATION_OPTIONS = ("None", "Small", "Big", "Rand", "Stand")
+ALGORITHM_OPTIONS = ("QPE", "KQPE", "QMEGS", "Jennrich_V1", "Jennrich_V2", "CP_ALS", "QFAMES")
+
+def parse_csv_options(value, valid_options, argument_name):
+    user_inputs = [option.strip() for option in value.split(",")]
+
+    if not value.strip() or any(not option for option in user_inputs):
+        raise argparse.ArgumentTypeError(f"{argument_name} must be a comma-separated list of valid options")
+
+    invalid_options = sorted(set(user_inputs) - set(valid_options))
+    if invalid_options:
+        valid = ", ".join(valid_options)
+        invalid = ", ".join(invalid_options)
+        raise argparse.ArgumentTypeError(f"{argument_name} contains invalid option(s): {invalid}. Valid options are: {valid}")
+
+    duplicate_options = sorted(option for option in set(user_inputs) if user_inputs.count(option) > 1)
+    if duplicate_options:
+        duplicates = ", ".join(duplicate_options)
+        raise argparse.ArgumentTypeError(f"{argument_name} contains duplicate option(s): {duplicates}")
+
+    return user_inputs
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Run TSR/QFAMES benchmark suite")
@@ -39,12 +68,29 @@ def parse_args():
         help="Number of right coefficients for QFAMES and TSRHSE (default: 0 => same length as Hamiltonian)",
     )
     parser.add_argument(
+        "--perturbations",
+        type=str,
+        default=",".join(PERTURBATION_OPTIONS),
+        help="Comma-separated perturbations to test "
+        f"(choices: {', '.join(PERTURBATION_OPTIONS)})",
+    )
+    parser.add_argument(
+        "--algorithms",
+        type=str,
+        default=",".join(ALGORITHM_OPTIONS),
+        help="Comma-separated algorithms to test "
+        f"(choices: {', '.join(ALGORITHM_OPTIONS)})",
+    )
+    parser.add_argument(
         "--method",
         type=str,
         default="circuit",
-        help="Z tensor's generation method for QFAMES and TSRHSE (default: circuit)",
+        help="Z-tensor's generation method for QFAMES and TSRHSE (default: circuit)",
     )
-    return parser.parse_args()
+    args = parser.parse_args()
+    args.perturbations = parse_csv_options(args.perturbations, PERTURBATION_OPTIONS, "--perturbations")
+    args.algorithms = parse_csv_options(args.algorithms, ALGORITHM_OPTIONS, "--algorithms")
+    return args
 
 def get_errors(true, estimate, target):
     true = np.asarray(true, dtype=float).ravel()
@@ -185,29 +231,30 @@ def main():
     #########################
     ## Set Test Parameters ##
     #########################
-    # Choose which algorithms to test
-    # Options are "QPE", "KQPE", "QMEGS", "Z_Tensor_Methods"
-    # Four variants for Z_Tensor_Methods are "Jennrich_V1", "Jennrich_V2", "CP_ALS", "QFAMES"
-    # The first three are all TSRHSE
-    algorithms_array = ["QPE", "KQPE", "QMEGS", "Z_Tensor_Methods"]
-    Z_tensor_methods = ["Jennrich_V1", "Jennrich_V2", "CP_ALS", "QFAMES"]
+    # Keep the existing grouped execution for the four Z-tensor algorithms.
+    non_z_tensor_algorithms = ["QPE", "KQPE", "QMEGS"]
+    z_tensor_methods = ["Jennrich_V1", "Jennrich_V2", "CP_ALS", "QFAMES"]
+    algorithms_array = [algorithm for algorithm in non_z_tensor_algorithms if algorithm in args.algorithms]
+    Z_tensor_methods = [algorithm for algorithm in z_tensor_methods if algorithm in args.algorithms]
+    if Z_tensor_methods: algorithms_array.append("Z_Tensor_Methods")
 
     # Verbosity parameters
     verbosity = 0
     verbose = True if verbosity > 0 else False
 
     # Number of perturbations and their strength
-    perturbation_params = { # length 3
+    all_perturbation_params = {
         "None": {"range": None, "scale": None},
         "Small": {"range": 1, "scale": 0.5},
         "Big": {"range": 3, "scale": 1},
         "Rand": {"range": None, "scale": None},
         "Stand": {"range": None, "scale": None},
     }
+    perturbation_params = {perturbation: all_perturbation_params[perturbation] for perturbation in args.perturbations}
 
     # Test configurations: iterate through eps_array and T_max_array separately
     # eps_array = np.array([0.5, 0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001])
-    T_max_array = np.array([1600, 2000, 3200])
+    T_max_array = np.array([100, 200, 400, 800, 1200, 1600, 2000, 3200])
     test_configs = {
         # "eps": {"array": eps_array, "name": "eps"},
         "T_max": {"array": T_max_array, "name": "T_max"}
@@ -383,7 +430,7 @@ def main():
                             if "QFAMES" in Z_tensor_methods:
                                 # Run Algorithm
                                 start_time = time.perf_counter()
-                                output_energy, output_num = algorithms.QFAMES(Z, dx, t_list, K, T_max_alg, tau, verbose=False)
+                                output_energy, output_num = algorithms.QFAMES(Z, dx, t_list, min(L, R), T_max_alg, tau, verbose=False)
                                 end_time = time.perf_counter()
                                 print(f"\tfinished QFAMES in {end_time - start_time:.6f} seconds")
 

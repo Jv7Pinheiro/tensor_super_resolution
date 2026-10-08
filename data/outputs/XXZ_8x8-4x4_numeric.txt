@@ -41,50 +41,24 @@ Eigenvectors:
  [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
    0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00]]
 
-test_type = T_max, param_array = [ 100  200  400  800 1200 1600 2000 3200]
-Test: T_max = 100, perturb = None
-	finished QPE in 0.228392 seconds
-	finished KQPE in 0.042235 seconds
-	finished Z array creation in 2.103004 seconds
-	finished QMEGS in 0.007099 seconds
-	finished Z tensor numeric creation in 4.309015 seconds; shape of Z is (4, 4, 3200)
-	finished TSRHSE Jennrich version 1 in 0.017540 seconds
-	finished TSRHSE Jennrich version 2 in 0.109564 seconds
-	finished TSRHSE CP ALS in 239.178148 seconds
-	finished QFAMES in 2.817087 seconds
-Test: T_max = 100, perturb = Small
-	finished QPE in 0.045090 seconds
-	finished KQPE in 0.043844 seconds
-	finished Z array creation in 1.625264 seconds
-	finished QMEGS in 0.006172 seconds
-	finished Z tensor numeric creation in 3.279908 seconds; shape of Z is (4, 4, 3200)
-	finished TSRHSE Jennrich version 1 in 0.014949 seconds
-	finished TSRHSE Jennrich version 2 in 0.097616 seconds
-	finished TSRHSE CP ALS in 5307.996402 seconds
-	finished QFAMES in 2.774318 seconds
-Test: T_max = 100, perturb = Big
-	finished QPE in 0.037962 seconds
-	finished KQPE in 0.042188 seconds
-	finished Z array creation in 1.635103 seconds
-	finished QMEGS in 0.005527 seconds
-	finished Z tensor numeric creation in 3.712397 seconds; shape of Z is (4, 4, 3200)
-	finished TSRHSE Jennrich version 1 in 0.015166 seconds
-	finished TSRHSE Jennrich version 2 in 0.093996 seconds
-	finished TSRHSE CP ALS in 5149.463792 seconds
-	finished QFAMES in 2.785206 seconds
+test_type = T_max, param_array = [100]
 Test: T_max = 100, perturb = Rand
-	finished QPE in 0.038265 seconds
-	finished KQPE in 0.042749 seconds
-	finished Z array creation in 1.611906 seconds
-	finished QMEGS in 0.005491 seconds
-	finished Z tensor numeric creation in 3.537151 seconds; shape of Z is (4, 4, 3200)
-	finished TSRHSE Jennrich version 1 in 0.016455 seconds
-	finished TSRHSE Jennrich version 2 in 0.094624 seconds
-	finished TSRHSE CP ALS in 254.475796 seconds
-	finished QFAMES in 2.770668 seconds
+	finished QPE in 0.217090 seconds
+	finished KQPE in 0.045405 seconds
+	finished Z array creation in 2.072828 seconds
+	finished QMEGS in 0.006453 seconds
+	finished Z tensor numeric creation in 1.513852 seconds; shape of Z is (4, 4, 3200)
+	finished TSRHSE Jennrich version 1 in 0.019659 seconds
+	finished TSRHSE Jennrich version 2 in 0.112321 seconds
+	finished TSRHSE CP ALS in 5722.856735 seconds
+	finished QFAMES in 2.881711 seconds
 Test: T_max = 100, perturb = Stand
-	finished QPE in 0.043566 seconds
-	finished KQPE in 0.033216 seconds
-	finished Z array creation in 1.323023 seconds
-	finished QMEGS in 0.005564 seconds
-[2026-10-01T15:25:04.003] error: *** JOB 43663879 ON a376 CANCELLED AT 2026-10-01T15:25:04 DUE TO TIME LIMIT ***
+	finished QPE in 0.036503 seconds
+	finished KQPE in 0.031413 seconds
+	finished Z array creation in 1.195981 seconds
+	finished QMEGS in 0.005870 seconds
+	finished Z tensor numeric creation in 1.615160 seconds; shape of Z is (4, 4, 3200)
+	finished TSRHSE Jennrich version 1 in 0.017016 seconds
+	finished TSRHSE Jennrich version 2 in 0.101482 seconds
+	finished TSRHSE CP ALS in 12778.296654 seconds
+	finished QFAMES in 2.924484 seconds

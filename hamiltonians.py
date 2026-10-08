@@ -76,6 +76,7 @@ def _belldiagonal_4x4():
 def _belldiagonal_16x16():
     return np.kron(_belldiagonal_4x4(), _belldiagonal_4x4())
 
+
 def _diagonal_8x8():
     return np.array([
         [8, 0, 0, 0, 0, 0, 0, 0],
@@ -109,14 +110,16 @@ def _diagonal_16x16():
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     ],dtype=float)
 
+
 ############################
 ## Important Hamiltonians ##
 ############################
 
-def _TFIM(n_qubits):
+def _TFIM(n_qubits, g=1):
     """
     Open-boundary transverse-field Ising model:
     """
+    print(f"TFIM: g = {g}")
     if n_qubits < 1: raise ValueError("Number of qubits must be at least 1.")
 
     dimension = 2 ** n_qubits
@@ -126,17 +129,18 @@ def _TFIM(n_qubits):
     for i in range(n_qubits - 1):
         H -= _two_site_operator(_Z, i, _Z, i + 1, n_qubits)
 
-    # -X_i
+    # -g X_i
     for i in range(n_qubits):
-        H -= _operator_on_site(_X, i, n_qubits)
+        H -= g * _operator_on_site(_X, i, n_qubits)
 
     return H.real
 
 
-def _XXZ(n_qubits, delta=0.5):
+def _XXZ(n_qubits, h=1, delta=0.5):
     """
     Open-boundary XXZ model:
     """
+    print(f"TFIM: h = {h}, delta = {delta}")
     if n_qubits < 1: raise ValueError("Number of qubits must be at least 1.")
 
     dimension = 2 ** n_qubits
@@ -146,6 +150,10 @@ def _XXZ(n_qubits, delta=0.5):
         H += _two_site_operator( _X, i, _X, i + 1, n_qubits)
         H += _two_site_operator(_Y, i, _Y, i + 1, n_qubits)
         H += delta * _two_site_operator(_Z, i, _Z, i + 1, n_qubits)
+
+    # -h Z_i
+    for i in range(n_qubits):
+        H -= h * _operator_on_site(_Z, i, n_qubits)
 
     return H.real
 
@@ -166,17 +174,28 @@ def get_hamiltonian(name):
     if not key:
         raise ValueError("Hamiltonian name cannot be empty.")
 
-    normalized = key.lower().replace(" ", "").replace("_", "")
+    normalized = key.lower().replace(" ", "")
 
     ##########################
     ## Dynamic Hamiltonians ##
     ##########################
 
-    match = re.fullmatch(r"(tfim|xxz)(\d+)x(\d+)", normalized)
+    number = r"[-+]?(?:\d+(?:\.\d*)?|\.\d+)"
+    tfim_match = re.fullmatch(
+        rf"tfim(?:_\(g=(?P<g>{number})\)_|_)?(?P<rows>\d+)x(?P<cols>\d+)",
+        normalized,
+    )
+    xxz_match = re.fullmatch(
+        rf"xxz(?:_\(h=(?P<h>{number})\)-\(d=(?P<delta>{number})\)_|_)?"
+        rf"(?P<rows>\d+)x(?P<cols>\d+)",
+        normalized,
+    )
+
+    match = tfim_match or xxz_match
     if match:
-        model = match.group(1)
-        rows = int(match.group(2))
-        cols = int(match.group(3))
+        model = "tfim" if tfim_match else "xxz"
+        rows = int(match.group("rows"))
+        cols = int(match.group("cols"))
         N = rows
 
         if rows != cols: raise ValueError(f"Hamiltonian dimension must be square, got {rows}x{cols}.")
@@ -184,17 +203,21 @@ def get_hamiltonian(name):
 
         n_qubits = N.bit_length() - 1
 
-        if model == "tfim": 
-            return _TFIM(n_qubits)
-        elif model == "xxz": 
-            return _XXZ(n_qubits)
+        if model == "tfim":
+            g = float(tfim_match.group("g")) if tfim_match.group("g") else 1
+            return _TFIM(n_qubits, g=g)
+        elif model == "xxz":
+            h = float(xxz_match.group("h")) if xxz_match.group("h") else 1
+            delta = float(xxz_match.group("delta")) if xxz_match.group("delta") else 0.5
+            return _XXZ(n_qubits, h=h, delta=delta)
 
     #######################
     ## Fixed Hamiltnians ##
     #######################
-    if normalized not in HAMILTONIANS:
+    compact_normalized = normalized.replace("_", "")
+    if compact_normalized not in HAMILTONIANS:
         available = "\n\t".join(sorted(HAMILTONIANS.keys()))
 
         raise ValueError(f"Unknown Hamiltonian '{name}'. Available options:\n\t{available}")
 
-    return HAMILTONIANS[normalized]()
+    return HAMILTONIANS[compact_normalized]()

@@ -79,12 +79,15 @@ use_y_axis_log_scale = True  # Toggle this to switch between log and linear scal
 use_x_axis_log_scale = True  # Toggle this to switch between log and linear scale
     
 perturbation_params = { # length 3
-    "None": None,
-    # "Small": {"range": 1, "scale": 0.5},
-    # "Big": {"range": 3, "scale": 1},
+    "None": {"range": None, "scale": None},
+    "Small": {"range": 1, "scale": 0.5},
+    "Big": {"range": 3, "scale": 1},
+    "Rand": {"range": None, "scale": None},
+    "Stand": {"range": None, "scale": None},
 }
+
 Test = "XXZ_8x8"
-LR = 8
+LR = 4
 Hamiltonian_name = f"{Test}-{LR}x{LR}_numeric"
 df = pd.read_csv(f"data/dataframes/{Hamiltonian_name}.csv")
 algo_order = df["algorithm"].unique().dropna()

@@ -36,7 +36,7 @@ def get_resources(lr, size, method):
         elif lr == 2:
             return 64, "standby", "03:00:00"
         elif lr == 4:
-            return 64, "normal", "30:00:00"
+            return 64, "normal", "24:00:00"
         elif lr == 8:
             return 64, "normal", "48:00:00"
 
