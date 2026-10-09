@@ -87,6 +87,12 @@ def parse_args():
         default="circuit",
         help="Z-tensor's generation method for QFAMES and TSRHSE (default: circuit)",
     )
+    parser.add_argument(
+        "--genG",
+        type=boolean,
+        default=True,
+        help="Comuptes G signaling tensor from G tensor (default: True)",
+    )
     args = parser.parse_args()
     args.perturbations = parse_csv_options(args.perturbations, PERTURBATION_OPTIONS, "--perturbations")
     args.algorithms = parse_csv_options(args.algorithms, ALGORITHM_OPTIONS, "--algorithms")
@@ -455,9 +461,14 @@ def main():
                                 data_end_time = time.perf_counter()
                                 print(f"\tfinished Z tensor circuit creation in {data_end_time - data_start_time:.6f} seconds; shape of Z is {Z.shape}; {shots} shots")
                                 run_Z_tensor_methods(shots)
-                        
+
                         else:
                             raise ValueError(f"Method {method} is unsurported, choose either \"numeric\" or \"circuit\"")
+
+                        if args.genG:
+                            margin = 5 / T_max
+                            thetas = thetas = np.arange(eigenvalues.min() - margin, eigenvalues.max() + margin, dx)
+                            G = par_comp.generate_G_tensor(Z, t_list, thetas, workers=workers)
 
 if __name__ == "__main__":
     main()

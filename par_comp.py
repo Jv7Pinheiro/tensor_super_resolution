@@ -461,6 +461,117 @@ def generate_Z_tensor(M, N, U_list, V_list, L, R, t_list, is_unitary=True, shots
  
     return Z
 
+def generate_G_tensor(Z, t_list, thetas, workers=4, tasks_per_worker=4, max_block_mb=128, limit_blas_threads=True, progress=False):
+    """Build G of shape (L, R, J) from a Z tensor of shape (L, R, N).
+ 
+        G[l, r, j] = (1/N) * sum_n Z[l, r, n] * exp(i * thetas[j] * t_list[n])
+ 
+    This is Eq. 18 of the QFAMES paper, evaluated at every theta in `thetas`
+    for every (l, r): the same contraction algorithms.QFAMES does internally
+    (Z[l, r, :].dot(np.exp(1j * np.outer(t_list, x))) / N), done for all fibers
+    at once.
+ 
+    Parameters
+    ----------
+    Z : array-like, shape (L, R, N)
+        Z tensor, e.g. from generate_Z_tensor.
+ 
+    t_list : array-like, shape (N,)
+        The same time samples that were used to build Z.
+ 
+    thetas : array-like, shape (J,)
+        Grid of theta values at which to evaluate G. A grid step of dx (from
+        QFAMES_setup, dx = q / T_max) gives about 1 / (q) points across one
+        1/T_max-wide bump, which is plenty to draw it smoothly. Only the part
+        of the spectrum you want to look at needs to be covered.
+ 
+    workers : int, default=4
+        Number of worker processes. With workers=1 everything runs in this
+        process (no pool is spawned) and BLAS is free to use all its threads.
+ 
+    tasks_per_worker : int, default=4
+        Target number of theta blocks per worker, for load balancing.
+ 
+    max_block_mb : float, default=128
+        Upper bound on the size of the exponential matrix each worker builds at
+        once (N x block complex entries). More blocks are used automatically if
+        the target number of blocks would exceed this.
+ 
+    limit_blas_threads : bool, default=True
+        Same meaning as in generate_Z_tensor; only applies when workers > 1.
+ 
+    progress : bool, default=False
+        If True, print block completion progress.
+ 
+    Returns
+    -------
+    G : ndarray
+        Complex array of shape (L, R, J). Use np.linalg.norm(G, axis=(0, 1))
+        for ||G(theta)||_F, and np.linalg.svd(G[:, :, j]) for the singular
+        values of G at theta = thetas[j].
+    """
+    Z = np.asarray(Z, dtype=complex)
+    t_list = np.ascontiguousarray(np.asarray(t_list, dtype=float))
+    thetas = np.ascontiguousarray(np.asarray(thetas, dtype=float))
+ 
+    if Z.ndim != 3:
+        raise ValueError(f"Z must have shape (L, R, N), got {Z.shape}")
+    L, R, N = Z.shape
+    if len(t_list) != N:
+        raise ValueError(f"Z has N = {N} time points but len(t_list) = {len(t_list)}")
+    if thetas.ndim != 1 or len(thetas) == 0:
+        raise ValueError("thetas must be a non-empty 1-D array")
+    J = len(thetas)
+ 
+    # (l, r) fibers become the rows of one matrix; row index is l * R + r.
+    Z2d = np.ascontiguousarray(Z.reshape(L * R, N))
+ 
+    # Block the theta axis: enough blocks to keep every worker busy, and enough
+    # that no block's exponential matrix (N x block complex) exceeds the budget.
+    max_cols = max(1, int(max_block_mb * 2**20 // (16 * N)))
+    n_blocks = max(int(workers) * int(tasks_per_worker), -(-J // max_cols))
+    tasks = [(start, stop, thetas[start:stop]) for start, stop in _split_bounds(J, n_blocks) if stop > start]
+ 
+    G2d = np.empty((L * R, J), dtype=complex)
+ 
+    if int(workers) <= 1:
+        _initialize_G_worker(Z2d, t_list)
+        try:
+            for done, task in enumerate(tasks, start=1):
+                start, block = _compute_G_block(task)
+                G2d[:, start:start + block.shape[1]] = block
+                if progress:
+                    print(f"\rG tensor: {100.0 * done / len(tasks):5.1f}%  ({done}/{len(tasks)} blocks)", end="", flush=True)
+        finally:
+            _G_data.clear()
+        if progress:
+            print()
+        return G2d.reshape(L, R, J)
+ 
+    workers = max(1, min(int(workers), len(tasks)))
+ 
+    if limit_blas_threads:
+        _limit_blas_threads()
+ 
+    context = mp.get_context("spawn")
+ 
+    with ProcessPoolExecutor(max_workers=workers, mp_context=context, initializer=_initialize_G_worker, initargs=(Z2d, t_list)) as executor:
+        futures = [executor.submit(_compute_G_block, task) for task in tasks]
+ 
+        done = 0
+        for future in as_completed(futures):
+            start, block = future.result()
+            G2d[:, start:start + block.shape[1]] = block
+ 
+            done += 1
+            if progress and (done % max(1, len(tasks) // 100) == 0 or done == len(tasks)):
+                print(f"\rG tensor: {100.0 * done / len(tasks):5.1f}%  ({done}/{len(tasks)} blocks)", end="", flush=True)
+ 
+        if progress:
+            print()
+ 
+    return G2d.reshape(L, R, J)
+
 
 ################
 ## Validation ##
