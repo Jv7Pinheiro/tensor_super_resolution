@@ -6,8 +6,8 @@
 #SBATCH --qos=normal
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=26
-#SBATCH --time=08:00:00
+#SBATCH --cpus-per-task=64
+#SBATCH --time=24:00:00
 #SBATCH --output=data/outputs/XXZ_8x8-4x4_numeric.txt
 #SBATCH --error=data/outputs/XXZ_8x8-4x4_numeric.txt
 #SBATCH --mail-user=deolivj@purdue.edu
@@ -20,9 +20,41 @@ conda activate tensor-super-resolution
 cd "$HOME/tensor_super_resolution" || exit 1
 
 python3 main.py \
-    --workers 26 \
-    --H XXZ_8x8 \
+    --workers 64 \
+    --H "XXZ_(h=0)-(d=-1)_8x8" \
     --method numeric \
     --L 4 \
     --R 4 \
-    > "data/outputs/XXZ_8x8-4x4_numeric.txt" 2>&1
+    --algorithms "QFAMES"
+
+python3 main.py \
+    --workers 64 \
+    --H "XXZ_(h=1)-(d=-1)_8x8" \
+    --method numeric \
+    --L 4 \
+    --R 4 \
+    --algorithms "QFAMES"
+
+python3 main.py \
+    --workers 64 \
+    --H "XXZ_(h=0)-(d=0)_8x8" \
+    --method numeric \
+    --L 4 \
+    --R 4 \
+    --algorithms "QFAMES"
+
+python3 main.py \
+    --workers 64 \
+    --H "XXZ_(h=0)-(d=1)_8x8" \
+    --method numeric \
+    --L 4 \
+    --R 4 \
+    --algorithms "QFAMES"
+
+python3 main.py \
+    --workers 64 \
+    --H "XXZ_(h=0)-(d=2)_8x8" \
+    --method numeric \
+    --L 4 \
+    --R 4 \
+    --algorithms "QFAMES"

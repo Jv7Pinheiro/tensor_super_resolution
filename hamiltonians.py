@@ -140,7 +140,7 @@ def _XXZ(n_qubits, h=1, delta=0.5):
     """
     Open-boundary XXZ model:
     """
-    print(f"TFIM: h = {h}, delta = {delta}")
+    print(f"XXZ: h = {h}, delta = {delta}")
     if n_qubits < 1: raise ValueError("Number of qubits must be at least 1.")
 
     dimension = 2 ** n_qubits

@@ -21,8 +21,24 @@ cd "$HOME/tensor_super_resolution" || exit 1
 
 python3 main.py \
     --workers 64 \
-    --H TFIM_8x8 \
+    --H "TFIM_(g=0.5)_8x8" \
     --method numeric \
     --L 2 \
     --R 2 \
-    > "data/outputs/TFIM_8x8-2x2_numeric.txt" 2>&1
+    --algorithms "QFAMES"
+
+python3 main.py \
+    --workers 64 \
+    --H "TFIM_(g=1)_8x8" \
+    --method numeric \
+    --L 2 \
+    --R 2 \
+    --algorithms "QFAMES"
+
+python3 main.py \
+    --workers 64 \
+    --H "TFIM_(g=1.5)_8x8" \
+    --method numeric \
+    --L 2 \
+    --R 2 \
+    --algorithms "QFAMES"

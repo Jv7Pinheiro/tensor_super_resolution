@@ -7,7 +7,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=64
-#SBATCH --time=30:00:00
+#SBATCH --time=24:00:00
 #SBATCH --output=data/outputs/TFIM_8x8-4x4_numeric.txt
 #SBATCH --error=data/outputs/TFIM_8x8-4x4_numeric.txt
 #SBATCH --mail-user=deolivj@purdue.edu
@@ -21,8 +21,24 @@ cd "$HOME/tensor_super_resolution" || exit 1
 
 python3 main.py \
     --workers 64 \
-    --H TFIM_8x8 \
+    --H "TFIM_(g=0.5)_8x8" \
     --method numeric \
     --L 4 \
     --R 4 \
-    > "data/outputs/TFIM_8x8-4x4_numeric.txt" 2>&1
+    --algorithms "QFAMES"
+
+python3 main.py \
+    --workers 64 \
+    --H "TFIM_(g=1)_8x8" \
+    --method numeric \
+    --L 4 \
+    --R 4 \
+    --algorithms "QFAMES"
+
+python3 main.py \
+    --workers 64 \
+    --H "TFIM_(g=1.5)_8x8" \
+    --method numeric \
+    --L 4 \
+    --R 4 \
+    --algorithms "QFAMES"

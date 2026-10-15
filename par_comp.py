@@ -53,6 +53,8 @@ import algorithms
 #################
 
 _worker_data = {}
+_G_data = {} # Kept separate from _worker_data so the two kinds of worker pools never share keys.
+
 
 def _initialize_worker(M, U_list, V_list, t_list, is_unitary, shots, fast_sampling, seed, method):
     """Runs once per worker process. Heavy objects are pickled once, here."""
@@ -69,6 +71,10 @@ def _initialize_worker(M, U_list, V_list, t_list, is_unitary, shots, fast_sampli
     if method == "numeric":
         _precompute_numeric(M, U_list, V_list, t_list, is_unitary)
 
+def _initialize_G_worker(Z2d, t_list):
+    """Runs once per worker process. Z and t_list are pickled once, here."""
+    _G_data["Z2d"] = Z2d
+    _G_data["t_list"] = t_list
 
 ########################
 ## Scheduling Helpers ##
@@ -223,6 +229,24 @@ def _compute_chunk_numerically(task):
     Z_chunk = _amplitudes_numerically(l, r, start, stop)
  
     return l, r, start, Z_chunk
+
+
+def _compute_G_block(task):
+    """Evaluate G[:, :, start:stop] for one block of theta values.
+ 
+    The exponential matrix E[n, j] = exp(i * theta_j * t_n) does not depend on
+    (l, r), so it is built once for the block and applied to every (l, r) fiber
+    with a single matrix product. That is the whole reason the split is over
+    theta and not over (l, r): splitting over (l, r) would make every worker
+    rebuild E, repeating the expensive complex exponentials L*R times.
+    """
+    start, stop, thetas_block = task
+    Z2d = _G_data["Z2d"]            # (L*R, N)
+    t_list = _G_data["t_list"]      # (N,)
+ 
+    E = np.multiply.outer(1j * t_list, thetas_block)    # (N, block), complex
+    np.exp(E, out=E)                                    # in place: ~16 bytes per element
+    return start, (Z2d @ E) / len(t_list) 
 
 
 #####################
@@ -570,7 +594,7 @@ def generate_G_tensor(Z, t_list, thetas, workers=4, tasks_per_worker=4, max_bloc
         if progress:
             print()
  
-    return G2d.reshape(L, R, J)
+    return G2d.reshape(L, R, J) 
 
 
 ################

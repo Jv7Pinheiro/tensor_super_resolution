@@ -3,6 +3,7 @@ import os
 import sys
 import time
 
+import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 np.set_printoptions(linewidth=200)
@@ -12,6 +13,9 @@ import algorithms
 import aux_functions
 import hamiltonians
 import par_comp
+
+from scipy.signal import find_peaks
+
 
 # TODO:
 # Mess with TAU
@@ -89,7 +93,7 @@ def parse_args():
     )
     parser.add_argument(
         "--genG",
-        type=boolean,
+        type=bool,
         default=True,
         help="Comuptes G signaling tensor from G tensor (default: True)",
     )
@@ -178,6 +182,81 @@ def record_result(name, df, test_type, param_value, perturb, algorithm, shots, t
 
     return df
 
+def plot_G(thetas, G, eigenvalues, tau, LR, path, perturb, peak_height=0.5, title=""):
+    """
+    Left panel : ||G(theta)||_F^2 versus theta, one vertical dashed line per
+                 eigenvalue, and a red star at the first peak theta*_1.
+    Right panel: singular values of the matrix G(theta*_1) as bars, with the
+                 threshold tau as a red dashed horizontal line. Bars above the
+                 line are the eigenvalues QFAMES counts in that cluster.
+
+    Parameters
+    ----------
+    thetas : (J,) array     the theta grid G was evaluated on
+    G : (L, R, J) array     output of par_comp.generate_G_tensor
+    eigenvalues : array     eigenvalues of M (any order; complex is fine, the real part is used)
+    tau : float             singular-value threshold (the one QFAMES_setup returns)
+    path : str              where to save the figure
+    peak_height : float     a peak of ||G||_F^2 must be at least this tall to count.
+                            This is an absolute number, so it depends on how G is
+                            normalized; lower it if no peak is found.
+    title : str             optional title for the left panel
+
+    Returns
+    -------
+    theta_star : float      location of the first peak
+    sv : (min(L, R),) array singular values of G(theta_star), largest first
+    """
+
+    # ||G(theta)||_F^2 = sum over all (l, r) of |G[l, r, theta]|^2 -- one number per theta.
+    norm2 = np.sum(np.abs(G) ** 2, axis=(0, 1))
+
+    peaks, _ = find_peaks(norm2, height=peak_height)
+    star = int(peaks[0]) if len(peaks) > 0 else int(np.argmax(norm2))
+
+    # G(theta*_1) is already inside G, so nothing needs recomputing.
+    sv = np.linalg.svd(G[:, :, star], compute_uv=False)
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 3.5))
+    if title: fig.suptitle(title, fontsize=16)
+
+    ax1.plot(thetas, norm2, lw=2)
+    ax1.set_title(r'$\|G(\theta)\|_F^2$')
+    add_eigenvalue_lines(ax1, eigenvalues, LR, perturb)
+    ax1.set_xlabel(r'$\theta$')
+    # ax1.legend(frameon=False, loc='upper right', fontsize=10, handlelength=1)
+
+    x = np.arange(1, len(sv) + 1)
+    ax2.axhline(tau, color='red', linestyle='--', linewidth=2, label=r'$\tau$')
+    ax2.bar(x, sv, width=0.4, color='blue', label=r'$\sigma(G(\theta^\star_1))$')
+    ax2.set_xticks(x)
+    ax2.legend(fontsize=12)
+    ax2.set_title(f"SV of G at each eigenvalue")
+
+    fig.tight_layout()
+    fig.savefig(path, bbox_inches='tight')
+    plt.close(fig)
+
+    return thetas[star], sv
+
+def add_eigenvalue_lines(ax, eigenvalues, L, perturb):
+    red_count = L if perturb in ["None", "Small", "Big"] else len(eigenvalues)
+
+    for eigenvalue in eigenvalues[:red_count]:
+        ax.axvline(
+            eigenvalue,
+            color="red",
+            linestyle="--",
+            linewidth=1
+        )
+
+    for eigenvalue in eigenvalues[red_count:]:
+        ax.axvline(
+            eigenvalue,
+            color="gray",
+            linestyle="--",
+            linewidth=0.5
+        )
 
 def main():
     # Parse Arguments
@@ -379,8 +458,7 @@ def main():
                     ####################################
                     else:
                         # Obtain t_list and other QFAMES required arguments
-                        dx, tau, t_list, K, T_max_alg, T_total, torN = aux_functions.QFAMES_setup(M, U_list, V_list, eps=eps, T_max=T_max, is_unitary=is_unitary, verbose=verbose)
-
+                        dx, tau, t_list, T_max_alg, T_total, torN = aux_functions.QFAMES_setup(M, min(L, R), U_list, V_list, eps=eps, T_max=T_max, is_unitary=is_unitary, verbose=verbose)
                         # This function runs all selected Z_tensor_methods
                         def run_Z_tensor_methods(shots):
                             nonlocal results_df
@@ -469,6 +547,24 @@ def main():
                             margin = 5 / T_max
                             thetas = thetas = np.arange(eigenvalues.min() - margin, eigenvalues.max() + margin, dx)
                             G = par_comp.generate_G_tensor(Z, t_list, thetas, workers=workers)
+
+                            title = f"{name}\ntau = {tau}, nTmax={T_max}, Perturbation={perturb}"
+                            
+                            # Plot matrix elements of G
+                            fig, axes = plt.subplots(L, R, figsize=(2*L + L, 2*R), squeeze=False)
+                            fig.suptitle(title, fontsize=16)
+                            for i in range(L):
+                                for j in range(R):
+                                    ax = axes[i, j]
+                                    ax.plot(thetas, np.abs(G[i,j,:]), linewidth=2)
+                                    ax.set_title(f"|G_[{i},{j}]|", fontsize=12)
+                                    add_eigenvalue_lines(ax, eigenvalues, L, perturb)
+
+                            plt.tight_layout()
+                            plt.savefig(f"data/figures/{name}_tau-{tau}_Tmax-{T_max}_perturb-{perturb}_G_elements.pdf")
+
+                            path = f"data/figures/{name}_tau-{tau}_Tmax-{T_max}_perturb-{perturb}_G.pdf"
+                            theta_star, sv = plot_G(thetas, G, eigenvalues, tau, L, path, perturb, title=title)
 
 if __name__ == "__main__":
     main()

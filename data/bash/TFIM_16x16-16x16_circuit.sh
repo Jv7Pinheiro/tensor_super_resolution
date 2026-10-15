@@ -6,8 +6,8 @@
 #SBATCH --qos=normal
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=128
-#SBATCH --time=23:00:00
+#SBATCH --cpus-per-task=64
+#SBATCH --time=48:00:00
 #SBATCH --output=data/outputs/TFIM_16x16-16x16_circuit.txt
 #SBATCH --error=data/outputs/TFIM_16x16-16x16_circuit.txt
 #SBATCH --mail-user=deolivj@purdue.edu
@@ -20,9 +20,25 @@ conda activate tensor-super-resolution
 cd "$HOME/tensor_super_resolution" || exit 1
 
 python3 main.py \
-    --workers 128 \
-    --H TFIM_16x16 \
+    --workers 64 \
+    --H "TFIM_(g=0.5)_16x16" \
     --method circuit \
     --L 16 \
     --R 16 \
-    > "data/outputs/TFIM_16x16-16x16_circuit.txt" 2>&1
+    --algorithms "QFAMES"
+
+python3 main.py \
+    --workers 64 \
+    --H "TFIM_(g=1)_16x16" \
+    --method circuit \
+    --L 16 \
+    --R 16 \
+    --algorithms "QFAMES"
+
+python3 main.py \
+    --workers 64 \
+    --H "TFIM_(g=1.5)_16x16" \
+    --method circuit \
+    --L 16 \
+    --R 16 \
+    --algorithms "QFAMES"

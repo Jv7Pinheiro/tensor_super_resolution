@@ -3,11 +3,11 @@
 #SBATCH --job-name=TFIM_16x16-2x2_numeric
 #SBATCH --account=csit
 #SBATCH --partition=cpu
-#SBATCH --qos=normal
+#SBATCH --qos=standby
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=128
-#SBATCH --time=23:00:00
+#SBATCH --cpus-per-task=64
+#SBATCH --time=03:00:00
 #SBATCH --output=data/outputs/TFIM_16x16-2x2_numeric.txt
 #SBATCH --error=data/outputs/TFIM_16x16-2x2_numeric.txt
 #SBATCH --mail-user=deolivj@purdue.edu
@@ -20,9 +20,25 @@ conda activate tensor-super-resolution
 cd "$HOME/tensor_super_resolution" || exit 1
 
 python3 main.py \
-    --workers 128 \
-    --H TFIM_16x16 \
+    --workers 64 \
+    --H "TFIM_(g=0.5)_16x16" \
     --method numeric \
     --L 2 \
     --R 2 \
-    > "data/outputs/TFIM_16x16-2x2_numeric.txt" 2>&1
+    --algorithms "QFAMES"
+
+python3 main.py \
+    --workers 64 \
+    --H "TFIM_(g=1)_16x16" \
+    --method numeric \
+    --L 2 \
+    --R 2 \
+    --algorithms "QFAMES"
+
+python3 main.py \
+    --workers 64 \
+    --H "TFIM_(g=1.5)_16x16" \
+    --method numeric \
+    --L 2 \
+    --R 2 \
+    --algorithms "QFAMES"

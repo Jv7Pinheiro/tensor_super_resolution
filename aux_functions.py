@@ -201,9 +201,8 @@ def QMEGS_setup(M, Init, eps=None, T_max=None, is_unitary=True, sigma=1, p_min=0
 
     return Z, dx, t_list, K, T_max, T_total, N
 
-def QFAMES_setup(M, U_list, V_list, eps=None, T_max=None, is_unitary=True, shots=1, sigma=1, p_min=0.5, p_tail=0.0, q=0.05, delta=None, verbose=0):
-    K = len(M) + 1
-    L = R = len(M)
+def QFAMES_setup(M, LR, U_list, V_list, eps=None, T_max=None, is_unitary=True, shots=1, sigma=1, p_min=0.5, p_tail=0.0, q=0.05, delta=None, verbose=0):
+    L = R = LR
 
     # T from eps: epsilon = O(p_tail/p_min * 1/T) => T = p_tail/(p_min * eps)
     # If p_tail is unknown/zero, fall back to T = 1/eps
@@ -228,10 +227,10 @@ def QFAMES_setup(M, U_list, V_list, eps=None, T_max=None, is_unitary=True, shots
     else:
         N = np.ceil(L * R * 50)  # practical default
         tau = 0.1 * np.sqrt(L * R)
-
     dx = q / T_max  # grid step, q << alpha, and grid step q/T is the resolution
 
     t_list = np.ascontiguousarray(np.asarray(generate_t_list(N, T_max, sigma)))
     T_total = L*R*sum(np.abs(t_list))
 
-    return dx, tau, t_list, K, T_max, T_total, N
+
+    return dx, tau, t_list, T_max, T_total, N

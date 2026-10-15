@@ -21,8 +21,40 @@ cd "$HOME/tensor_super_resolution" || exit 1
 
 python3 main.py \
     --workers 64 \
-    --H XXZ_8x8 \
+    --H "XXZ_(h=0)-(d=-1)_8x8" \
     --method numeric \
     --L 1 \
     --R 1 \
-    > "data/outputs/XXZ_8x8-1x1_numeric.txt" 2>&1
+    --algorithms "QFAMES"
+
+python3 main.py \
+    --workers 64 \
+    --H "XXZ_(h=1)-(d=-1)_8x8" \
+    --method numeric \
+    --L 1 \
+    --R 1 \
+    --algorithms "QFAMES"
+
+python3 main.py \
+    --workers 64 \
+    --H "XXZ_(h=0)-(d=0)_8x8" \
+    --method numeric \
+    --L 1 \
+    --R 1 \
+    --algorithms "QFAMES"
+
+python3 main.py \
+    --workers 64 \
+    --H "XXZ_(h=0)-(d=1)_8x8" \
+    --method numeric \
+    --L 1 \
+    --R 1 \
+    --algorithms "QFAMES"
+
+python3 main.py \
+    --workers 64 \
+    --H "XXZ_(h=0)-(d=2)_8x8" \
+    --method numeric \
+    --L 1 \
+    --R 1 \
+    --algorithms "QFAMES"
