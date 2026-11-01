@@ -221,17 +221,17 @@ def plot_G(thetas, G, eigenvalues, tau, LR, path, perturb, peak_height=0.5, titl
     if title: fig.suptitle(title, fontsize=16)
 
     ax1.plot(thetas, norm2, lw=2)
-    ax1.set_title(r'$\|G(\theta)\|_F^2$')
+    ax1.set_title(rf"$\|G(\theta)\|_F^2$")
     add_eigenvalue_lines(ax1, eigenvalues, LR, perturb)
-    ax1.set_xlabel(r'$\theta$')
+    ax1.set_xlabel(rf"$\theta$")
     # ax1.legend(frameon=False, loc='upper right', fontsize=10, handlelength=1)
 
     x = np.arange(1, len(sv) + 1)
     ax2.axhline(tau, color='red', linestyle='--', linewidth=2, label=r'$\tau$')
-    ax2.bar(x, sv, width=0.4, color='blue', label=r'$\sigma(G(\theta^\star_1))$')
+    ax2.bar(x, sv, width=0.4, color='blue', label=rf"$\sigma(G(\theta^\star_1))$")
     ax2.set_xticks(x)
     ax2.legend(fontsize=12)
-    ax2.set_title(f"SV of G at each eigenvalue")
+    ax2.set_title(rf"SV of $G$ at $\lambda \approx {thetas[star]:.4f}$")
 
     fig.tight_layout()
     fig.savefig(path, bbox_inches='tight')
@@ -301,6 +301,22 @@ def main():
     eigenvalues = np.real(eigenvalues)
     eigenvalue = eigenvalues[lambda_i]
     
+    # Obtain eigenvalue multiplicities up to floating point error
+    sorted_eigenvalues = np.sort(np.real(eigenvalues))
+    tol = 1e-10
+    groups = []
+    counts = []
+    i = 0
+    while i < len(sorted_eigenvalues):
+        j = i + 1
+        while j < len(sorted_eigenvalues) and abs(sorted_eigenvalues[j] - sorted_eigenvalues[i]) < tol:
+            j += 1
+        groups.append(np.mean(sorted_eigenvalues[i:j]))  # use mean of the group as representative
+        counts.append(j - i)
+        i = j
+    unique_evals = np.array(groups)
+    true_multiplicities = np.array(counts)
+    
     # Print Information about my matrix
     name = f"{name}-{L}x{R}_{method}"
     print(name)
@@ -308,9 +324,11 @@ def main():
     print(f"L = {L}, R = {R}")
     print(f"is_unitary: {is_unitary}")
     print(f"Norm of my matrix: {np.linalg.norm(M)}")
-    print(f"Eigenvalues: {eigenvalues}")
+    print(f"Eigenvalues: {sorted_eigenvalues}")
+    print(f"Eigenvalues: {unique_evals}")
+    print(f"Evals Mult:  {true_multiplicities}")
     print(f"Target eigenvalue: {eigenvalue}")
-    print(f"Eigenvectors: \n{eigenvectors}\n")
+    # print(f"Eigenvectors: \n{eigenvectors}")
 
 
     #########################
@@ -339,7 +357,7 @@ def main():
 
     # Test configurations: iterate through eps_array and T_max_array separately
     # eps_array = np.array([0.5, 0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001])
-    T_max_array = np.array([100, 200, 400, 800, 1200, 1600, 2000, 3200])
+    T_max_array = np.array([100]) # , 200, 400, 800, 1200, 1600, 2000, 3200
     test_configs = {
         # "eps": {"array": eps_array, "name": "eps"},
         "T_max": {"array": T_max_array, "name": "T_max"}
@@ -369,14 +387,16 @@ def main():
         "t or N": None,
         "T_max": None,
         "T_total": None,
-        "eval(s)": np.real(eigenvalues).tolist()
+        "eval(s)": unique_evals.tolist(),
+        "errors": None,
+        "multiplicities": str(dict(zip(unique_evals.tolist(), true_multiplicities.tolist())))
     }
     results_df = pd.concat([results_df, pd.DataFrame([true_evals_row])], ignore_index=True)
 
     # Iterate through the two different tests being performed: scaling epsilon and T_max
     for test_type, config in test_configs.items():
         param_array = config["array"]
-        print(f"test_type = {test_type}, param_array = {param_array}")
+        print(f"\n\ntest_type = {test_type}, param_array = {param_array}")
 
         # Iterate through the scaling of eps and T_max
         for param_value in param_array:
@@ -514,13 +534,14 @@ def main():
                             if "QFAMES" in Z_tensor_methods:
                                 # Run Algorithm
                                 start_time = time.perf_counter()
-                                output_energy, output_num = algorithms.QFAMES(Z, dx, t_list, min(L, R), T_max_alg, tau, verbose=False)
+                                clusters = algorithms.QFAMES(Z, dx, t_list, min(L, R), T_max_alg, tau, verbose=False)
                                 end_time = time.perf_counter()
                                 print(f"\tfinished QFAMES in {end_time - start_time:.6f} seconds")
 
+
                                 # Update Data Frame
-                                my_eigenvalue = normalize_output_energy(output_energy, sort=True)
-                                multiplicities = str(output_num)
+                                my_eigenvalue = [c.eigenvalue for c in clusters] # already sorted by eigenvalue
+                                multiplicities = str({c.eigenvalue: c.multiplicity for c in clusters})
                                 results_df = record_result(name, results_df, test_type, param_value, perturb, "QFAMES", shots, torN, T_max_alg, T_total, my_eigenvalue, get_errors(eigenvalues, my_eigenvalue, lambda_i), multiplicities)
 
                         if method == "numeric":
@@ -548,7 +569,7 @@ def main():
                             thetas = thetas = np.arange(eigenvalues.min() - margin, eigenvalues.max() + margin, dx)
                             G = par_comp.generate_G_tensor(Z, t_list, thetas, workers=workers)
 
-                            title = f"{name}\ntau = {tau}, nTmax={T_max}, Perturbation={perturb}"
+                            title = f"{name}\ntau = {tau}, Tmax={T_max}, Perturbation={perturb}"
                             
                             # Plot matrix elements of G
                             fig, axes = plt.subplots(L, R, figsize=(2*L + L, 2*R), squeeze=False)

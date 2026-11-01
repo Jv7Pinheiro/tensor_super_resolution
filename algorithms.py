@@ -2,6 +2,9 @@ import numpy as np
 import qiskit as qk
 import scipy as sp
 
+from collections import namedtuple
+EigenCluster = namedtuple("EigenCluster", ["eigenvalue", "multiplicity"])
+
 def normalize_init_operator(Init, label="Init", control=False, ctrl_state="0"):
     """
     Converts various initialization objects into a Gate.
@@ -660,10 +663,19 @@ def QFAMES(Z, dx, t_list, K, T, tau, alpha=5, verbose=False):
         interval_min=x[max_idx_detail]-alpha/T
         # print('interval_min=',interval_min,'interval_max=',interval_max)
         G=np.multiply(G,x_rough>interval_max)+np.multiply(G,x_rough<interval_min) #eliminate interval
-    if verbose:
-        return Dominant_freq, Dominant_num, Dominant_vector
-    else:
-        return Dominant_freq, Dominant_num
+
+        # Bundle each eigenvalue with its multiplicity so the pairing is never lost
+        clusters = [
+            EigenCluster(eigenvalue=float(np.real(Dominant_freq[k])), multiplicity=int(Dominant_num[k]))
+            for k in range(K)
+            if Dominant_num[k] > 0 or not np.isnan(Dominant_freq[k])
+        ]
+        clusters.sort(key=lambda c: c.eigenvalue)
+
+        if verbose:
+            return clusters, Dominant_vector
+        else:
+            return clusters
 
 def TSRHSE(Z, t_list, verbosity = 0):
     N = len(t_list)

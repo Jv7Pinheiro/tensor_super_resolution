@@ -11,3 +11,8 @@ poetry.toml
 # Shell files
 create_bell_env.sh
 environment.yml
+
+# Data files
+data/dataframes/
+data/figures/
+data/outputs/
