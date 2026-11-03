@@ -659,12 +659,19 @@ def QFAMES(Z, dx, t_list, K, T, tau, alpha=5, verbose=False):
                     Dominant_vector.append(U[:,Dominant_num[k]:])
                 else:
                     Dominant_vector.append(V[:,Dominant_num[k]:])
-        interval_max=x[max_idx_detail]+alpha/T
-        interval_min=x[max_idx_detail]-alpha/T
+        # interval_max=x[max_idx_detail]+alpha/T
+        # interval_min=x[max_idx_detail]-alpha/T
+        min_exclusion = 6 * dx * 10  # at minimum exclude 3 rough grid steps on each side
+        interval_half = max(alpha / T, min_exclusion)
+        interval_max = x[max_idx_detail] + interval_half
+        interval_min = x[max_idx_detail] - interval_half
+
         # print('interval_min=',interval_min,'interval_max=',interval_max)
         G=np.multiply(G,x_rough>interval_max)+np.multiply(G,x_rough<interval_min) #eliminate interval
 
         # Bundle each eigenvalue with its multiplicity so the pairing is never lost
+        print(f"Dominant freq{Dominant_freq}")
+        print(f"Dominant num{Dominant_num}")
         clusters = [
             EigenCluster(eigenvalue=float(np.real(Dominant_freq[k])), multiplicity=int(Dominant_num[k]))
             for k in range(K)

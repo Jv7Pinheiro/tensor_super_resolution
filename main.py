@@ -212,7 +212,7 @@ def plot_G(thetas, G, eigenvalues, tau, LR, path, perturb, peak_height=0.5, titl
     norm2 = np.sum(np.abs(G) ** 2, axis=(0, 1))
 
     peaks, _ = find_peaks(norm2, height=peak_height)
-    star = int(peaks[0]) if len(peaks) > 0 else int(np.argmax(norm2))
+    star = int(peaks[2]) if len(peaks) > 0 else int(np.argmax(norm2))
 
     # G(theta*_1) is already inside G, so nothing needs recomputing.
     sv = np.linalg.svd(G[:, :, star], compute_uv=False)
@@ -357,7 +357,7 @@ def main():
 
     # Test configurations: iterate through eps_array and T_max_array separately
     # eps_array = np.array([0.5, 0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001])
-    T_max_array = np.array([100]) # , 200, 400, 800, 1200, 1600, 2000, 3200
+    T_max_array = np.array([400]) # , 200, 400, 800, 1200, 1600, 2000, 3200
     test_configs = {
         # "eps": {"array": eps_array, "name": "eps"},
         "T_max": {"array": T_max_array, "name": "T_max"}
@@ -478,7 +478,7 @@ def main():
                     ####################################
                     else:
                         # Obtain t_list and other QFAMES required arguments
-                        dx, tau, t_list, T_max_alg, T_total, torN = aux_functions.QFAMES_setup(M, min(L, R), U_list, V_list, eps=eps, T_max=T_max, is_unitary=is_unitary, verbose=verbose)
+                        dx, tau, t_list, T_max_alg, T_total, torN = aux_functions.QFAMES_setup(M, min(L, R), U_list, V_list, eps=eps, T_max=T_max, is_unitary=is_unitary, q=0.0005, verbose=verbose)
                         # This function runs all selected Z_tensor_methods
                         def run_Z_tensor_methods(shots):
                             nonlocal results_df
@@ -534,7 +534,7 @@ def main():
                             if "QFAMES" in Z_tensor_methods:
                                 # Run Algorithm
                                 start_time = time.perf_counter()
-                                clusters = algorithms.QFAMES(Z, dx, t_list, min(L, R), T_max_alg, tau, verbose=False)
+                                clusters = algorithms.QFAMES(Z, dx, t_list, min(L, R), T_max_alg, tau, alpha=0.005, verbose=False)
                                 end_time = time.perf_counter()
                                 print(f"\tfinished QFAMES in {end_time - start_time:.6f} seconds")
 
