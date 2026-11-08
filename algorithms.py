@@ -5,6 +5,8 @@ import scipy as sp
 from collections import namedtuple
 EigenCluster = namedtuple("EigenCluster", ["eigenvalue", "multiplicity"])
 
+import plotting
+
 def normalize_init_operator(Init, label="Init", control=False, ctrl_state="0"):
     """
     Converts various initialization objects into a Gate.
@@ -605,7 +607,8 @@ def QMEGS(Z, dx, t_list, K, T_max, alpha=5):
         G=np.multiply(G,x_rough>interval_max)+np.multiply(G,x_rough<interval_min) #eliminate interval
     return Dominant_freq
 
-def QFAMES(Z, dx, t_list, K, T, tau, alpha=5, verbose=False):
+def QFAMES(Z, dx, t_list, K, T, tau, alpha=5, verbose=False, prod_imag=True, true_multiplicities=None,
+):
     """
     nonorthogonal QMEGS algorithm
 
@@ -626,12 +629,15 @@ def QFAMES(Z, dx, t_list, K, T, tau, alpha=5, verbose=False):
     Dominant_freq=np.zeros(K,dtype='complex')
     Dominant_num=np.zeros(K,dtype='int')
     Dominant_vector=[]
+    num_found = 0
+    svs = np.zeros([L, K], dtype=complex)
     for k in range(K):
         max_idx_rough = np.argmax(G) # Rough search
         # print('maxG',max(G))
         if G[max_idx_rough] < 1e-6:
             if verbose: print('No more clusters found, exiting early.')
             break
+        num_found += 1
         Dominant_potential=x_rough[max_idx_rough]
         x=np.arange(0,num_x_detail)*dx+Dominant_potential-1/T
         G_detail = np.zeros(len(x), dtype='complex') #Store Frobenius norm of the data matrix (for detail search)
@@ -646,10 +652,9 @@ def QFAMES(Z, dx, t_list, K, T, tau, alpha=5, verbose=False):
             for r in range(R):
                 W[l,r] = Z[l, r, :].dot(np.exp(1j*t_list*Dominant_freq[k]))/N
         U, S, V = np.linalg.svd(W)
+        svs[:, k] = S
         V = V.conj().T
-        # print('k=',k,'Dominant_freq=',Dominant_freq[k])
-        # print(G_detail[max_idx_detail])
-        # print(k,S)
+
         Dominant_num[k] = int(np.sum(S > tau))
         if Dominant_num[k]>0: #if there is a cluster, calculate the orthogonal vector space
         #    print('k=',k,'S=',S)
@@ -669,20 +674,22 @@ def QFAMES(Z, dx, t_list, K, T, tau, alpha=5, verbose=False):
         # print('interval_min=',interval_min,'interval_max=',interval_max)
         G=np.multiply(G,x_rough>interval_max)+np.multiply(G,x_rough<interval_min) #eliminate interval
 
-        # Bundle each eigenvalue with its multiplicity so the pairing is never lost
-        print(f"Dominant freq{Dominant_freq}")
-        print(f"Dominant num{Dominant_num}")
-        clusters = [
-            EigenCluster(eigenvalue=float(np.real(Dominant_freq[k])), multiplicity=int(Dominant_num[k]))
-            for k in range(K)
-            if Dominant_num[k] > 0 or not np.isnan(Dominant_freq[k])
-        ]
-        clusters.sort(key=lambda c: c.eigenvalue)
+    plotting.plot_G(Dominant_freq, svs, tau, true_multiplicities=true_multiplicities)
 
-        if verbose:
-            return clusters, Dominant_vector
-        else:
-            return clusters
+    # Bundle each eigenvalue with its multiplicity so the pairing is never lost
+    print(f"Dominant freq{Dominant_freq}")
+    print(f"Dominant num{Dominant_num}")
+    clusters = [
+        EigenCluster(eigenvalue=float(np.real(Dominant_freq[k])), multiplicity=int(Dominant_num[k]))
+        for k in range(K)
+        if Dominant_num[k] > 0 or not np.isnan(Dominant_freq[k])
+    ]
+    clusters.sort(key=lambda c: c.eigenvalue)
+
+    if verbose:
+        return clusters, Dominant_vector
+    else:
+        return clusters
 
 def TSRHSE(Z, t_list, verbosity = 0):
     N = len(t_list)

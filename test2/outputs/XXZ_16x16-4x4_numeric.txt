@@ -1,0 +1,922 @@
+XXZ: h = 0.0, delta = -1.0
+XXZ_(h=0)-(d=-1)_16x16-4x4_numeric
+My Matrix: 
+[[-0.19634954  0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.         -0.06544985  0.13089969  0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.13089969  0.06544985  0.          0.13089969  0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.         -0.06544985  0.          0.13089969  0.          0.          0.          0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.13089969  0.          0.06544985  0.          0.          0.          0.13089969  0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.13089969  0.          0.19634954  0.13089969  0.          0.          0.13089969  0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.13089969  0.06544985  0.          0.          0.          0.13089969  0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.         -0.06544985  0.          0.          0.          0.13089969  0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.13089969  0.          0.          0.         -0.06544985  0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.13089969  0.          0.          0.          0.06544985  0.13089969  0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.13089969  0.          0.          0.13089969  0.19634954  0.          0.13089969  0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.13089969  0.          0.          0.          0.06544985  0.          0.13089969  0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.13089969  0.         -0.06544985  0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.13089969  0.          0.06544985  0.13089969  0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.13089969 -0.06544985  0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.         -0.19634954]]
+
+L = 4, R = 4
+is_unitary: False
+Norm of my matrix: 0.7853981633974483
+Eigenvalues: [ 0.25056997  0.06544985 -0.19634954 -0.11967028  0.25056997  0.06544985 -0.19634954 -0.11967028  0.42307446  0.25056997 -0.19634954 -0.11967028 -0.03037538  0.06544985 -0.19634954 -0.19634954]
+Target eigenvalue: 0.25056996937305254
+Eigenvectors: 
+[[ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  1.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  2.70598050e-01 -5.00000000e-01 -5.00000000e-01 -6.53281482e-01  5.69396297e-18  1.49024680e-02  2.01553369e-01 -4.09925965e-02
+   4.72607635e-17 -2.13520531e-02  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  6.53281482e-01 -5.00000000e-01  5.00000000e-01  2.70598050e-01  9.17450425e-17  3.59777405e-02 -2.01553369e-01  1.69796894e-02
+  -5.38109406e-17 -2.13520531e-02  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00 -1.92825058e-18  8.60170406e-18 -8.60170406e-18 -2.71325446e-17  1.49429245e-01 -2.70187382e-01  3.73609635e-01 -6.51994097e-01
+  -5.57677536e-01  1.58605211e-17  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  6.53281482e-01  5.00000000e-01 -5.00000000e-01  2.70598050e-01  1.00974710e-16  3.59777405e-02  2.01553369e-01  1.69796894e-02
+  -1.62440620e-17  2.13520531e-02  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  1.79570393e-17 -8.01042874e-17  8.01042874e-17  2.52674718e-16  5.57677536e-01 -6.52290041e-01 -3.73609635e-01  2.70064798e-01
+  -1.49429245e-01 -4.04517472e-17  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00 -3.45639481e-18  1.54185798e-17 -1.54185798e-17 -4.86351658e-17  4.08248290e-01  1.92829704e-17  3.73609635e-01  1.46107462e-16
+   4.08248290e-01 -7.06461733e-01  0.00000000e+00  0.00000000e+00]
+ [ 2.70598050e-01 -5.00000000e-01  5.00000000e-01 -6.53281482e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  2.70598050e-01  5.00000000e-01  5.00000000e-01 -6.53281482e-01  1.04438533e-16  1.49024680e-02 -2.01553369e-01 -4.09925965e-02
+   8.48999240e-17  2.13520531e-02  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00 -5.25252821e-18  2.34309243e-17 -2.34309243e-17 -7.39086807e-17  4.08248290e-01 -9.12480590e-18  3.73609635e-01  1.67461371e-16
+   4.08248290e-01  7.06461733e-01  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00 -7.16134571e-18  3.19459396e-17 -3.19459396e-17 -1.00767781e-16  5.57677536e-01  6.52290041e-01 -3.73609635e-01 -2.70064798e-01
+  -1.49429245e-01  6.16481728e-17  0.00000000e+00  0.00000000e+00]
+ [ 6.53281482e-01 -5.00000000e-01 -5.00000000e-01  2.70598050e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00 -1.91686694e-18  8.55092298e-18 -8.55092298e-18 -2.69723647e-17  1.49429245e-01  2.70187382e-01  3.73609635e-01  6.51994097e-01
+  -5.57677536e-01  3.23922580e-17  0.00000000e+00  0.00000000e+00]
+ [ 6.53281482e-01  5.00000000e-01  5.00000000e-01  2.70598050e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 2.70598050e-01  5.00000000e-01 -5.00000000e-01 -6.53281482e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00]]
+
+test_type = T_max, param_array = [ 100  200  400  800 1200 1600 2000 3200]
+Test: T_max = 100, perturb = None
+	finished Z tensor numeric creation in 4.520283 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.686853 seconds
+Test: T_max = 100, perturb = Small
+	finished Z tensor numeric creation in 3.794508 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.657784 seconds
+Test: T_max = 100, perturb = Big
+	finished Z tensor numeric creation in 3.619071 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.673400 seconds
+Test: T_max = 100, perturb = Rand
+	finished Z tensor numeric creation in 3.938673 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.643213 seconds
+Test: T_max = 100, perturb = Stand
+	finished Z tensor numeric creation in 3.606794 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.665831 seconds
+Test: T_max = 200, perturb = None
+	finished Z tensor numeric creation in 3.845834 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.208959 seconds
+Test: T_max = 200, perturb = Small
+	finished Z tensor numeric creation in 3.543698 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.207771 seconds
+Test: T_max = 200, perturb = Big
+	finished Z tensor numeric creation in 3.592534 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.214965 seconds
+Test: T_max = 200, perturb = Rand
+	finished Z tensor numeric creation in 3.741640 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.213739 seconds
+Test: T_max = 200, perturb = Stand
+	finished Z tensor numeric creation in 5.080310 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.194071 seconds
+Test: T_max = 400, perturb = None
+	finished Z tensor numeric creation in 4.110931 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.248816 seconds
+Test: T_max = 400, perturb = Small
+	finished Z tensor numeric creation in 3.510984 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.254608 seconds
+Test: T_max = 400, perturb = Big
+	finished Z tensor numeric creation in 3.756956 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.243377 seconds
+Test: T_max = 400, perturb = Rand
+	finished Z tensor numeric creation in 4.018570 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.262818 seconds
+Test: T_max = 400, perturb = Stand
+	finished Z tensor numeric creation in 3.955448 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.247242 seconds
+Test: T_max = 800, perturb = None
+	finished Z tensor numeric creation in 3.682446 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 4.479960 seconds
+Test: T_max = 800, perturb = Small
+	finished Z tensor numeric creation in 4.111767 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 4.467546 seconds
+Test: T_max = 800, perturb = Big
+	finished Z tensor numeric creation in 3.552852 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 4.483645 seconds
+Test: T_max = 800, perturb = Rand
+	finished Z tensor numeric creation in 3.627190 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 4.492683 seconds
+Test: T_max = 800, perturb = Stand
+	finished Z tensor numeric creation in 3.742108 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 4.464722 seconds
+/home/deolivj/tensor_super_resolution/main.py:220: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 3.5))
+Test: T_max = 1200, perturb = None
+	finished Z tensor numeric creation in 3.571694 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 6.644960 seconds
+/home/deolivj/tensor_super_resolution/main.py:554: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, axes = plt.subplots(L, R, figsize=(2*L + L, 2*R), squeeze=False)
+Test: T_max = 1200, perturb = Small
+	finished Z tensor numeric creation in 3.669031 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 6.636496 seconds
+Test: T_max = 1200, perturb = Big
+	finished Z tensor numeric creation in 3.737672 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 6.635600 seconds
+Test: T_max = 1200, perturb = Rand
+	finished Z tensor numeric creation in 3.737477 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 6.651534 seconds
+Test: T_max = 1200, perturb = Stand
+	finished Z tensor numeric creation in 3.908793 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 6.633697 seconds
+Test: T_max = 1600, perturb = None
+	finished Z tensor numeric creation in 3.629242 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 8.841858 seconds
+Test: T_max = 1600, perturb = Small
+	finished Z tensor numeric creation in 4.082515 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 8.833716 seconds
+Test: T_max = 1600, perturb = Big
+	finished Z tensor numeric creation in 4.259253 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 8.851712 seconds
+Test: T_max = 1600, perturb = Rand
+	finished Z tensor numeric creation in 3.634987 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 8.868894 seconds
+Test: T_max = 1600, perturb = Stand
+	finished Z tensor numeric creation in 3.599238 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 8.826542 seconds
+Test: T_max = 2000, perturb = None
+	finished Z tensor numeric creation in 3.498643 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 10.980391 seconds
+Test: T_max = 2000, perturb = Small
+	finished Z tensor numeric creation in 4.235295 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 10.992548 seconds
+Test: T_max = 2000, perturb = Big
+	finished Z tensor numeric creation in 4.023101 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 10.976633 seconds
+Test: T_max = 2000, perturb = Rand
+	finished Z tensor numeric creation in 4.001428 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 11.021543 seconds
+Test: T_max = 2000, perturb = Stand
+	finished Z tensor numeric creation in 3.587427 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 10.977636 seconds
+Test: T_max = 3200, perturb = None
+	finished Z tensor numeric creation in 3.711654 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.486447 seconds
+Test: T_max = 3200, perturb = Small
+	finished Z tensor numeric creation in 4.649064 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.451787 seconds
+Test: T_max = 3200, perturb = Big
+	finished Z tensor numeric creation in 3.555263 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.453863 seconds
+Test: T_max = 3200, perturb = Rand
+	finished Z tensor numeric creation in 3.721616 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.460337 seconds
+Test: T_max = 3200, perturb = Stand
+	finished Z tensor numeric creation in 4.138639 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.493049 seconds
+XXZ: h = 1.0, delta = -1.0
+XXZ_(h=1)-(d=-1)_16x16-4x4_numeric
+My Matrix: 
+[[-0.38120295  0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.         -0.16337269  0.10891513  0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.10891513 -0.05445756  0.          0.10891513  0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.         -0.05445756  0.          0.10891513  0.          0.          0.          0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.10891513  0.         -0.05445756  0.          0.          0.          0.10891513  0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.10891513  0.          0.16337269  0.10891513  0.          0.          0.10891513  0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.10891513  0.05445756  0.          0.          0.          0.10891513  0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.05445756  0.          0.          0.          0.10891513  0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.10891513  0.          0.          0.         -0.16337269  0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.10891513  0.          0.          0.          0.05445756  0.10891513  0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.10891513  0.          0.          0.10891513  0.16337269  0.          0.10891513  0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.10891513  0.          0.          0.          0.16337269  0.          0.10891513  0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.10891513  0.         -0.05445756  0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.10891513  0.          0.16337269  0.10891513  0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.10891513  0.05445756  0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.05445756]]
+
+L = 4, R = 4
+is_unitary: False
+Norm of my matrix: 0.7853981633974483
+Eigenvalues: [ 0.31740195  0.16337269 -0.05445756  0.00934344  0.09957169 -0.05445756 -0.27228782 -0.20848682  0.35201923  0.20848682 -0.16337269 -0.09957169 -0.02527384  0.05445756 -0.38120295  0.05445756]
+Target eigenvalue: 0.31740194560694773
+Eigenvectors: 
+[[ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  1.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  2.70598050e-01 -5.00000000e-01 -5.00000000e-01  6.53281482e-01  3.46257922e-17 -8.28499732e-17  8.26521670e-17  9.88542329e-17
+   3.71007997e-17  6.23273735e-17  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  6.53281482e-01 -5.00000000e-01  5.00000000e-01 -2.70598050e-01  2.41214516e-17 -5.71746575e-17 -3.22794013e-17 -3.36911292e-18
+  -4.84940272e-17 -1.56589396e-16  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00 -1.43690672e-17  6.40987562e-17 -6.40987562e-17  2.02188119e-16 -1.49429245e-01 -2.70598050e-01  4.08248290e-01  6.53281482e-01
+   5.57677536e-01  9.02661995e-17  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  6.53281482e-01  5.00000000e-01 -5.00000000e-01 -2.70598050e-01 -4.15289942e-17 -1.14830753e-16 -6.06451035e-17 -5.30978979e-17
+  -3.10655032e-17 -1.92590639e-16  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00 -2.75054633e-17  2.65505742e-17  1.09423421e-16 -2.19533117e-16 -5.57677536e-01 -6.53281482e-01 -4.08248290e-01 -2.70598050e-01
+   1.49429245e-01  2.53496060e-17  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00 -1.25729338e-17  5.60864117e-17 -5.60864117e-17  1.76914604e-16 -4.08248290e-01  1.26364935e-16  4.08248290e-01  4.14219621e-16
+  -4.08248290e-01 -7.07106781e-01  0.00000000e+00  0.00000000e+00]
+ [ 2.70598050e-01 -5.00000000e-01  5.00000000e-01 -6.53281482e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  2.70598050e-01  5.00000000e-01  5.00000000e-01  6.53281482e-01 -7.34984480e-17 -3.52841000e-17  1.75849862e-16  4.62107487e-17
+   8.96424487e-17 -3.08151879e-17  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00 -1.74914833e-17  7.80274955e-17 -7.80274955e-17  2.46123848e-16 -4.08248290e-01  2.99674605e-16  4.08248290e-01  2.67635487e-16
+  -4.08248290e-01  7.07106781e-01  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00 -5.57677536e-01  6.53281482e-01 -4.08248290e-01  2.70598050e-01
+   1.49429245e-01  4.16442205e-17  0.00000000e+00  0.00000000e+00]
+ [ 6.53281482e-01 -5.00000000e-01 -5.00000000e-01  2.70598050e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00 -1.49429245e-01  2.70598050e-01  4.08248290e-01 -6.53281482e-01
+   5.57677536e-01 -2.20955883e-16  0.00000000e+00  0.00000000e+00]
+ [ 6.53281482e-01  5.00000000e-01  5.00000000e-01  2.70598050e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 2.70598050e-01  5.00000000e-01 -5.00000000e-01 -6.53281482e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00]]
+
+test_type = T_max, param_array = [ 100  200  400  800 1200 1600 2000 3200]
+Test: T_max = 100, perturb = None
+	finished Z tensor numeric creation in 4.432656 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.653881 seconds
+Test: T_max = 100, perturb = Small
+	finished Z tensor numeric creation in 4.123166 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.641369 seconds
+Test: T_max = 100, perturb = Big
+	finished Z tensor numeric creation in 3.519858 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.654920 seconds
+Test: T_max = 100, perturb = Rand
+	finished Z tensor numeric creation in 3.984314 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.656367 seconds
+Test: T_max = 100, perturb = Stand
+	finished Z tensor numeric creation in 3.820599 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.654325 seconds
+Test: T_max = 200, perturb = None
+	finished Z tensor numeric creation in 3.642290 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.215965 seconds
+Test: T_max = 200, perturb = Small
+	finished Z tensor numeric creation in 4.658294 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.199769 seconds
+Test: T_max = 200, perturb = Big
+	finished Z tensor numeric creation in 4.197050 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.211228 seconds
+Test: T_max = 200, perturb = Rand
+	finished Z tensor numeric creation in 3.996089 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.207924 seconds
+Test: T_max = 200, perturb = Stand
+	finished Z tensor numeric creation in 4.519611 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.217706 seconds
+Test: T_max = 400, perturb = None
+	finished Z tensor numeric creation in 3.744462 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.247175 seconds
+Test: T_max = 400, perturb = Small
+	finished Z tensor numeric creation in 3.807090 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.251089 seconds
+Test: T_max = 400, perturb = Big
+	finished Z tensor numeric creation in 3.651369 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.284427 seconds
+Test: T_max = 400, perturb = Rand
+	finished Z tensor numeric creation in 3.548335 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.245381 seconds
+Test: T_max = 400, perturb = Stand
+	finished Z tensor numeric creation in 4.569139 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.259215 seconds
+Test: T_max = 800, perturb = None
+	finished Z tensor numeric creation in 4.245812 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 7.427955 seconds
+Test: T_max = 800, perturb = Small
+	finished Z tensor numeric creation in 3.658325 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 6.272239 seconds
+Test: T_max = 800, perturb = Big
+	finished Z tensor numeric creation in 3.637925 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 7.349536 seconds
+Test: T_max = 800, perturb = Rand
+	finished Z tensor numeric creation in 3.912338 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 7.578733 seconds
+Test: T_max = 800, perturb = Stand
+	finished Z tensor numeric creation in 3.600522 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 5.795863 seconds
+/home/deolivj/tensor_super_resolution/main.py:220: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 3.5))
+Test: T_max = 1200, perturb = None
+	finished Z tensor numeric creation in 3.619466 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 11.082813 seconds
+/home/deolivj/tensor_super_resolution/main.py:554: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, axes = plt.subplots(L, R, figsize=(2*L + L, 2*R), squeeze=False)
+Test: T_max = 1200, perturb = Small
+	finished Z tensor numeric creation in 3.947970 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 10.705645 seconds
+Test: T_max = 1200, perturb = Big
+	finished Z tensor numeric creation in 4.296202 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 11.276855 seconds
+Test: T_max = 1200, perturb = Rand
+	finished Z tensor numeric creation in 3.795042 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 11.033171 seconds
+Test: T_max = 1200, perturb = Stand
+	finished Z tensor numeric creation in 3.788810 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 11.258510 seconds
+Test: T_max = 1600, perturb = None
+	finished Z tensor numeric creation in 3.798054 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 15.000454 seconds
+Test: T_max = 1600, perturb = Small
+	finished Z tensor numeric creation in 4.118743 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 15.167856 seconds
+Test: T_max = 1600, perturb = Big
+	finished Z tensor numeric creation in 3.888800 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 15.613452 seconds
+Test: T_max = 1600, perturb = Rand
+	finished Z tensor numeric creation in 3.546815 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 14.141982 seconds
+Test: T_max = 1600, perturb = Stand
+	finished Z tensor numeric creation in 4.106875 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 15.181993 seconds
+Test: T_max = 2000, perturb = None
+	finished Z tensor numeric creation in 3.738326 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 19.220126 seconds
+Test: T_max = 2000, perturb = Small
+	finished Z tensor numeric creation in 3.926085 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 19.168625 seconds
+Test: T_max = 2000, perturb = Big
+	finished Z tensor numeric creation in 3.721733 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 19.970230 seconds
+Test: T_max = 2000, perturb = Rand
+	finished Z tensor numeric creation in 3.639594 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 19.989688 seconds
+Test: T_max = 2000, perturb = Stand
+	finished Z tensor numeric creation in 3.688175 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 19.936125 seconds
+Test: T_max = 3200, perturb = None
+	finished Z tensor numeric creation in 3.844692 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 19.020905 seconds
+Test: T_max = 3200, perturb = Small
+	finished Z tensor numeric creation in 3.664823 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.479053 seconds
+Test: T_max = 3200, perturb = Big
+	finished Z tensor numeric creation in 4.007936 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.509004 seconds
+Test: T_max = 3200, perturb = Rand
+	finished Z tensor numeric creation in 3.950406 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.539370 seconds
+Test: T_max = 3200, perturb = Stand
+	finished Z tensor numeric creation in 3.905358 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.456274 seconds
+XXZ: h = 0.0, delta = 0.0
+XXZ_(h=0)-(d=0)_16x16-4x4_numeric
+My Matrix: 
+[[0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.        ]
+ [0.         0.         0.16031873 0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.        ]
+ [0.         0.16031873 0.         0.         0.16031873 0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.        ]
+ [0.         0.         0.         0.         0.         0.16031873 0.         0.         0.         0.         0.         0.         0.         0.         0.         0.        ]
+ [0.         0.         0.16031873 0.         0.         0.         0.         0.         0.16031873 0.         0.         0.         0.         0.         0.         0.        ]
+ [0.         0.         0.         0.16031873 0.         0.         0.16031873 0.         0.         0.16031873 0.         0.         0.         0.         0.         0.        ]
+ [0.         0.         0.         0.         0.         0.16031873 0.         0.         0.         0.         0.16031873 0.         0.         0.         0.         0.        ]
+ [0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.16031873 0.         0.         0.         0.        ]
+ [0.         0.         0.         0.         0.16031873 0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.        ]
+ [0.         0.         0.         0.         0.         0.16031873 0.         0.         0.         0.         0.16031873 0.         0.         0.         0.         0.        ]
+ [0.         0.         0.         0.         0.         0.         0.16031873 0.         0.         0.16031873 0.         0.         0.16031873 0.         0.         0.        ]
+ [0.         0.         0.         0.         0.         0.         0.         0.16031873 0.         0.         0.         0.         0.         0.16031873 0.         0.        ]
+ [0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.16031873 0.         0.         0.         0.         0.        ]
+ [0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.16031873 0.         0.         0.16031873 0.        ]
+ [0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.16031873 0.         0.        ]
+ [0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.         0.        ]]
+
+L = 4, R = 4
+is_unitary: False
+Norm of my matrix: 0.7853981633974483
+Eigenvalues: [-2.59401152e-01 -9.90824234e-02  2.59401152e-01  9.90824234e-02 -2.59401152e-01  2.59401152e-01  9.90824234e-02 -9.90824234e-02 -3.58483576e-01  3.58483576e-01 -1.60318729e-01  1.60318729e-01
+ -1.67412362e-18 -1.39510360e-17  0.00000000e+00  0.00000000e+00]
+Target eigenvalue: -0.2594011521834124
+Eigenvectors: 
+[[ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  1.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  3.71748034e-01 -3.71748034e-01 -6.01500955e-01 -6.01500955e-01  8.36999575e-17 -6.70063748e-17  1.79279363e-17  7.91377397e-17
+  -6.04866142e-20 -2.43828923e-17  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00 -6.01500955e-01 -6.01500955e-01 -3.71748034e-01  3.71748034e-01 -1.44444090e-16 -1.46731734e-16 -5.58670122e-17  1.79388583e-16
+  -4.49974042e-19  6.25607823e-17  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  4.51025587e-18 -4.51025587e-18  6.75449831e-17  6.75449831e-17  2.23606798e-01 -2.23606798e-01 -5.00000000e-01 -5.00000000e-01
+  -1.36391614e-03 -5.49811239e-01  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  6.01500955e-01 -6.01500955e-01  3.71748034e-01  3.71748034e-01  1.19146173e-16 -1.13581646e-16  1.04491670e-16  4.32818670e-17
+   3.02433071e-20  1.21914461e-17  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  2.79184850e-18  2.79184850e-18  8.44853089e-17 -8.44853089e-17 -5.00000000e-01 -5.00000000e-01  5.00000000e-01 -5.00000000e-01
+   6.42704027e-17  1.31760821e-16  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00 -1.91057505e-17  1.91057505e-17  1.59452075e-17  1.59452075e-17  4.47213595e-01 -4.47213595e-01  9.38935635e-17  2.13779206e-16
+  -7.06423179e-01 -7.45718506e-02  0.00000000e+00  0.00000000e+00]
+ [-3.71748034e-01 -6.01500955e-01 -3.71748034e-01 -6.01500955e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00 -3.71748034e-01 -3.71748034e-01  6.01500955e-01 -6.01500955e-01 -6.88373507e-17 -5.41070452e-17 -1.17158184e-16 -6.75731909e-17
+   4.49974042e-19 -6.25607823e-17  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00 -1.91057505e-17  1.91057505e-17  1.59452075e-17  1.59452075e-17  4.47213595e-01 -4.47213595e-01  1.21649139e-16  1.96432024e-16
+   7.07787095e-01  6.24383089e-01  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  3.82115009e-17  3.82115009e-17 -3.18904151e-17  3.18904151e-17 -5.00000000e-01 -5.00000000e-01 -5.00000000e-01  5.00000000e-01
+   7.58805012e-17  1.17501939e-16  0.00000000e+00  0.00000000e+00]
+ [ 6.01500955e-01  3.71748034e-01 -6.01500955e-01 -3.71748034e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00 -2.36160063e-17  2.36160063e-17 -5.15997755e-17 -5.15997755e-17  2.23606798e-01 -2.23606798e-01  5.00000000e-01  5.00000000e-01
+  -1.36391614e-03 -5.49811239e-01  0.00000000e+00  0.00000000e+00]
+ [-6.01500955e-01  3.71748034e-01 -6.01500955e-01  3.71748034e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 3.71748034e-01 -6.01500955e-01 -3.71748034e-01  6.01500955e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00]]
+
+test_type = T_max, param_array = [ 100  200  400  800 1200 1600 2000 3200]
+Test: T_max = 100, perturb = None
+	finished Z tensor numeric creation in 3.750944 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.643456 seconds
+Test: T_max = 100, perturb = Small
+	finished Z tensor numeric creation in 3.681498 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.640229 seconds
+Test: T_max = 100, perturb = Big
+	finished Z tensor numeric creation in 4.251068 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.642522 seconds
+Test: T_max = 100, perturb = Rand
+	finished Z tensor numeric creation in 3.584329 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.654524 seconds
+Test: T_max = 100, perturb = Stand
+	finished Z tensor numeric creation in 3.544385 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.653825 seconds
+Test: T_max = 200, perturb = None
+	finished Z tensor numeric creation in 4.086341 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.200635 seconds
+Test: T_max = 200, perturb = Small
+	finished Z tensor numeric creation in 3.916840 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.208386 seconds
+Test: T_max = 200, perturb = Big
+	finished Z tensor numeric creation in 3.710847 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.206696 seconds
+Test: T_max = 200, perturb = Rand
+	finished Z tensor numeric creation in 3.890102 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.208062 seconds
+Test: T_max = 200, perturb = Stand
+	finished Z tensor numeric creation in 3.994609 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.202135 seconds
+Test: T_max = 400, perturb = None
+	finished Z tensor numeric creation in 3.695063 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.259902 seconds
+Test: T_max = 400, perturb = Small
+	finished Z tensor numeric creation in 3.607332 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.238468 seconds
+Test: T_max = 400, perturb = Big
+	finished Z tensor numeric creation in 3.620373 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.260086 seconds
+Test: T_max = 400, perturb = Rand
+	finished Z tensor numeric creation in 3.563457 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.235438 seconds
+Test: T_max = 400, perturb = Stand
+	finished Z tensor numeric creation in 3.722250 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.238653 seconds
+Test: T_max = 800, perturb = None
+	finished Z tensor numeric creation in 3.775717 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 4.516714 seconds
+Test: T_max = 800, perturb = Small
+	finished Z tensor numeric creation in 3.592874 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 4.474790 seconds
+Test: T_max = 800, perturb = Big
+	finished Z tensor numeric creation in 3.681435 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 4.480350 seconds
+Test: T_max = 800, perturb = Rand
+	finished Z tensor numeric creation in 3.788619 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 4.462954 seconds
+Test: T_max = 800, perturb = Stand
+	finished Z tensor numeric creation in 4.071769 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 4.465722 seconds
+/home/deolivj/tensor_super_resolution/main.py:220: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 3.5))
+Test: T_max = 1200, perturb = None
+	finished Z tensor numeric creation in 3.626380 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 11.010506 seconds
+/home/deolivj/tensor_super_resolution/main.py:554: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, axes = plt.subplots(L, R, figsize=(2*L + L, 2*R), squeeze=False)
+Test: T_max = 1200, perturb = Small
+	finished Z tensor numeric creation in 3.584413 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 11.703299 seconds
+Test: T_max = 1200, perturb = Big
+	finished Z tensor numeric creation in 4.049038 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 10.821696 seconds
+Test: T_max = 1200, perturb = Rand
+	finished Z tensor numeric creation in 3.714663 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 12.002920 seconds
+Test: T_max = 1200, perturb = Stand
+	finished Z tensor numeric creation in 3.710337 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 6.652172 seconds
+Test: T_max = 1600, perturb = None
+	finished Z tensor numeric creation in 3.849706 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 8.821870 seconds
+Test: T_max = 1600, perturb = Small
+	finished Z tensor numeric creation in 4.631347 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 8.842152 seconds
+Test: T_max = 1600, perturb = Big
+	finished Z tensor numeric creation in 4.411444 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 8.835908 seconds
+Test: T_max = 1600, perturb = Rand
+	finished Z tensor numeric creation in 4.055242 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 8.750692 seconds
+Test: T_max = 1600, perturb = Stand
+	finished Z tensor numeric creation in 3.940689 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 8.812404 seconds
+Test: T_max = 2000, perturb = None
+	finished Z tensor numeric creation in 4.080575 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 10.978942 seconds
+Test: T_max = 2000, perturb = Small
+	finished Z tensor numeric creation in 4.776464 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 10.974923 seconds
+Test: T_max = 2000, perturb = Big
+	finished Z tensor numeric creation in 4.153156 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 10.972793 seconds
+Test: T_max = 2000, perturb = Rand
+	finished Z tensor numeric creation in 3.983315 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 11.046839 seconds
+Test: T_max = 2000, perturb = Stand
+	finished Z tensor numeric creation in 3.671897 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 10.990464 seconds
+Test: T_max = 3200, perturb = None
+	finished Z tensor numeric creation in 3.703762 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.476823 seconds
+Test: T_max = 3200, perturb = Small
+	finished Z tensor numeric creation in 3.964037 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.467295 seconds
+Test: T_max = 3200, perturb = Big
+	finished Z tensor numeric creation in 3.712965 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.521521 seconds
+Test: T_max = 3200, perturb = Rand
+	finished Z tensor numeric creation in 4.146333 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.354701 seconds
+Test: T_max = 3200, perturb = Stand
+	finished Z tensor numeric creation in 3.627715 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.463696 seconds
+XXZ: h = 0.0, delta = 1.0
+XXZ_(h=0)-(d=1)_16x16-4x4_numeric
+My Matrix: 
+[[ 0.19634954  0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.06544985  0.13089969  0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.13089969 -0.06544985  0.          0.13089969  0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.06544985  0.          0.13089969  0.          0.          0.          0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.13089969  0.         -0.06544985  0.          0.          0.          0.13089969  0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.13089969  0.         -0.19634954  0.13089969  0.          0.          0.13089969  0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.13089969 -0.06544985  0.          0.          0.          0.13089969  0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.06544985  0.          0.          0.          0.13089969  0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.13089969  0.          0.          0.          0.06544985  0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.13089969  0.          0.          0.         -0.06544985  0.13089969  0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.13089969  0.          0.          0.13089969 -0.19634954  0.          0.13089969  0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.13089969  0.          0.          0.         -0.06544985  0.          0.13089969  0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.13089969  0.          0.06544985  0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.13089969  0.         -0.06544985  0.13089969  0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.13089969  0.06544985  0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.19634954]]
+
+L = 4, R = 4
+is_unitary: False
+Norm of my matrix: 0.7853981633974483
+Eigenvalues: [-0.25056997 -0.06544985  0.19634954  0.11967028 -0.25056997 -0.06544985  0.19634954  0.11967028 -0.42307446 -0.25056997  0.19634954 -0.06544985  0.03037538  0.11967028  0.19634954  0.19634954]
+Target eigenvalue: -0.25056996937305254
+Eigenvectors: 
+[[ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  1.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00 -2.70598050e-01 -5.00000000e-01 -5.00000000e-01  6.53281482e-01 -3.06035599e-17  1.58984308e-02  2.39289122e-01  5.81062597e-02
+   1.64472263e-16  4.94338873e-01  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  6.53281482e-01  5.00000000e-01 -5.00000000e-01  2.70598050e-01  1.37534147e-16 -3.83822073e-02  2.39289122e-01 -5.81062597e-02
+  -2.20649332e-19  2.04761865e-01  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  2.21736091e-18  9.89139201e-18 -9.89139201e-18  3.12006357e-17 -1.49429245e-01 -2.70130607e-01 -3.58460334e-01 -3.55742394e-16
+  -5.57677536e-01 -4.27089890e-01  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00 -6.53281482e-01  5.00000000e-01 -5.00000000e-01 -2.70598050e-01 -1.02061509e-16  3.83822073e-02  2.39289122e-01 -5.81062597e-02
+  -1.01473281e-16 -2.04761865e-01  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  1.68785126e-17  7.52931037e-17 -7.52931037e-17  2.37498696e-16  5.57677536e-01  6.52152974e-01 -3.58460334e-01 -6.11587265e-17
+   1.49429245e-01 -1.76906425e-01  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  4.24533075e-18  1.89379322e-17 -1.89379322e-17  5.97363368e-17 -4.08248290e-01  1.66174300e-16 -3.58460334e-01  7.02315688e-01
+   4.08248290e-01  5.23841365e-17  0.00000000e+00  0.00000000e+00]
+ [ 2.70598050e-01  5.00000000e-01 -5.00000000e-01 -6.53281482e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  2.70598050e-01 -5.00000000e-01 -5.00000000e-01 -6.53281482e-01 -2.68145093e-17 -1.58984308e-02  2.39289122e-01  5.81062597e-02
+  -9.73899988e-17 -4.94338873e-01  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  6.04146415e-18  2.69502768e-17 -2.69502768e-17  8.50098517e-17 -4.08248290e-01  1.18013352e-16 -3.58460334e-01 -7.02315688e-01
+   4.08248290e-01 -1.15263207e-16  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00 -8.23823204e-18 -3.67498057e-17  3.67498057e-17 -1.15920722e-16  5.57677536e-01 -6.52152974e-01 -3.58460334e-01 -6.83797971e-17
+   1.49429245e-01  1.76906425e-01  0.00000000e+00  0.00000000e+00]
+ [-6.53281482e-01 -5.00000000e-01 -5.00000000e-01 -2.70598050e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  2.20529780e-18  9.83757986e-18 -9.83757986e-18  3.10308949e-17 -1.49429245e-01  2.70130607e-01 -3.58460334e-01 -2.33163305e-16
+  -5.57677536e-01  4.27089890e-01  0.00000000e+00  0.00000000e+00]
+ [ 6.53281482e-01 -5.00000000e-01 -5.00000000e-01  2.70598050e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [-2.70598050e-01  5.00000000e-01 -5.00000000e-01  6.53281482e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00]]
+
+test_type = T_max, param_array = [ 100  200  400  800 1200 1600 2000 3200]
+Test: T_max = 100, perturb = None
+	finished Z tensor numeric creation in 3.638365 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.699685 seconds
+Test: T_max = 100, perturb = Small
+	finished Z tensor numeric creation in 3.682698 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.653314 seconds
+Test: T_max = 100, perturb = Big
+	finished Z tensor numeric creation in 4.262523 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.643777 seconds
+Test: T_max = 100, perturb = Rand
+	finished Z tensor numeric creation in 4.576713 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.644797 seconds
+Test: T_max = 100, perturb = Stand
+	finished Z tensor numeric creation in 4.327629 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.669849 seconds
+Test: T_max = 200, perturb = None
+	finished Z tensor numeric creation in 3.666511 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.220092 seconds
+Test: T_max = 200, perturb = Small
+	finished Z tensor numeric creation in 3.747691 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.199982 seconds
+Test: T_max = 200, perturb = Big
+	finished Z tensor numeric creation in 3.959214 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.218211 seconds
+Test: T_max = 200, perturb = Rand
+	finished Z tensor numeric creation in 3.592011 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.198527 seconds
+Test: T_max = 200, perturb = Stand
+	finished Z tensor numeric creation in 3.627164 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.196369 seconds
+Test: T_max = 400, perturb = None
+	finished Z tensor numeric creation in 3.902259 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.254696 seconds
+Test: T_max = 400, perturb = Small
+	finished Z tensor numeric creation in 3.728342 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.248030 seconds
+Test: T_max = 400, perturb = Big
+	finished Z tensor numeric creation in 4.710007 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.253658 seconds
+Test: T_max = 400, perturb = Rand
+	finished Z tensor numeric creation in 3.654581 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.241767 seconds
+Test: T_max = 400, perturb = Stand
+	finished Z tensor numeric creation in 3.844104 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.250217 seconds
+Test: T_max = 800, perturb = None
+	finished Z tensor numeric creation in 3.654278 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 4.468021 seconds
+Test: T_max = 800, perturb = Small
+	finished Z tensor numeric creation in 3.704452 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 4.477450 seconds
+Test: T_max = 800, perturb = Big
+	finished Z tensor numeric creation in 4.018324 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 4.494864 seconds
+Test: T_max = 800, perturb = Rand
+	finished Z tensor numeric creation in 3.711145 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 4.483405 seconds
+Test: T_max = 800, perturb = Stand
+	finished Z tensor numeric creation in 4.012497 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 4.482258 seconds
+/home/deolivj/tensor_super_resolution/main.py:220: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 3.5))
+Test: T_max = 1200, perturb = None
+	finished Z tensor numeric creation in 3.727231 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 6.655202 seconds
+/home/deolivj/tensor_super_resolution/main.py:554: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, axes = plt.subplots(L, R, figsize=(2*L + L, 2*R), squeeze=False)
+Test: T_max = 1200, perturb = Small
+	finished Z tensor numeric creation in 3.642353 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 6.645158 seconds
+Test: T_max = 1200, perturb = Big
+	finished Z tensor numeric creation in 3.503755 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 6.600991 seconds
+Test: T_max = 1200, perturb = Rand
+	finished Z tensor numeric creation in 3.776946 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 6.660175 seconds
+Test: T_max = 1200, perturb = Stand
+	finished Z tensor numeric creation in 4.003511 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 6.660082 seconds
+Test: T_max = 1600, perturb = None
+	finished Z tensor numeric creation in 3.665506 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 8.813891 seconds
+Test: T_max = 1600, perturb = Small
+	finished Z tensor numeric creation in 3.704091 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 8.835954 seconds
+Test: T_max = 1600, perturb = Big
+	finished Z tensor numeric creation in 4.545701 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 8.831045 seconds
+Test: T_max = 1600, perturb = Rand
+	finished Z tensor numeric creation in 3.815370 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 8.871994 seconds
+Test: T_max = 1600, perturb = Stand
+	finished Z tensor numeric creation in 3.740034 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 8.847587 seconds
+Test: T_max = 2000, perturb = None
+	finished Z tensor numeric creation in 3.906348 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 10.980450 seconds
+Test: T_max = 2000, perturb = Small
+	finished Z tensor numeric creation in 4.493719 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 10.971235 seconds
+Test: T_max = 2000, perturb = Big
+	finished Z tensor numeric creation in 3.646009 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 11.018143 seconds
+Test: T_max = 2000, perturb = Rand
+	finished Z tensor numeric creation in 3.760895 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 10.977239 seconds
+Test: T_max = 2000, perturb = Stand
+	finished Z tensor numeric creation in 3.385565 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 10.893545 seconds
+Test: T_max = 3200, perturb = None
+	finished Z tensor numeric creation in 3.940987 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.455606 seconds
+Test: T_max = 3200, perturb = Small
+	finished Z tensor numeric creation in 4.572673 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.475306 seconds
+Test: T_max = 3200, perturb = Big
+	finished Z tensor numeric creation in 3.738872 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.465723 seconds
+Test: T_max = 3200, perturb = Rand
+	finished Z tensor numeric creation in 3.835434 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.494232 seconds
+Test: T_max = 3200, perturb = Stand
+	finished Z tensor numeric creation in 4.127369 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.549359 seconds
+XXZ: h = 0.0, delta = 2.0
+XXZ_(h=0)-(d=2)_16x16-4x4_numeric
+My Matrix: 
+[[ 0.27768018  0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.09256006  0.09256006  0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.09256006 -0.09256006  0.          0.09256006  0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.09256006  0.          0.09256006  0.          0.          0.          0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.09256006  0.         -0.09256006  0.          0.          0.          0.09256006  0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.09256006  0.         -0.27768018  0.09256006  0.          0.          0.09256006  0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.09256006 -0.09256006  0.          0.          0.          0.09256006  0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.09256006  0.          0.          0.          0.09256006  0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.09256006  0.          0.          0.          0.09256006  0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.09256006  0.          0.          0.         -0.09256006  0.09256006  0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.09256006  0.          0.          0.09256006 -0.27768018  0.          0.09256006  0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.09256006  0.          0.          0.         -0.09256006  0.          0.09256006  0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.09256006  0.          0.09256006  0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.09256006  0.         -0.09256006  0.09256006  0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.09256006  0.09256006  0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.27768018]]
+
+L = 4, R = 4
+is_unitary: False
+Norm of my matrix: 0.7853981633974484
+Eigenvalues: [-2.13145054e-01 -5.72052638e-02  1.49765325e-01  1.20584993e-01 -2.13145054e-01 -5.72052638e-02  1.49765325e-01 -4.04698627e-01 -2.99530650e-01  1.20584993e-01 -9.25600612e-02  9.45033520e-18
+  1.14410528e-01  1.27018443e-01  2.77680184e-01  2.77680184e-01]
+Target eigenvalue: -0.21314505398512978
+Eigenvectors: 
+[[ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  1.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00 -2.04908337e-01 -3.71748034e-01 -6.01500955e-01  2.06590922e-16  1.58479139e-16  6.76766262e-01 -6.61251243e-17  2.13198074e-17
+  -5.37519331e-16  6.12669829e-16  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  6.76766262e-01  6.01500955e-01 -3.71748034e-01 -1.00539233e-16 -3.62227158e-17  2.04908337e-01 -3.06143588e-17  1.61942821e-17
+  -1.70653478e-16  1.12092626e-16  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  3.49221045e-17  3.52147792e-17  2.43944619e-17  1.11785376e-01  1.62459848e-01  6.06531249e-17 -1.14736535e-16 -2.88675135e-01
+   6.88190960e-01  6.35744207e-01  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00 -6.76766262e-01  6.01500955e-01 -3.71748034e-01 -6.76716752e-17 -1.97092351e-17 -2.04908337e-01  8.84206163e-18 -2.73398053e-17
+   1.43457005e-16 -2.74679028e-16  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00 -1.13901645e-16 -5.16526262e-17 -1.15792664e-16 -6.00542490e-01 -6.88190960e-01 -9.65868304e-17 -3.11504559e-16  2.88675135e-01
+   1.62459848e-01  2.36675695e-01  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  2.30744242e-17  1.72467438e-16  1.50699842e-17  3.56163933e-01  2.91240600e-18  3.34953823e-16 -7.07106781e-01  5.77350269e-01
+  -1.33909083e-15  1.99534256e-01  0.00000000e+00  0.00000000e+00]
+ [ 2.04908337e-01 -3.71748034e-01  6.01500955e-01 -6.76766262e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  2.04908337e-01 -3.71748034e-01 -6.01500955e-01 -2.16966449e-16 -1.59330953e-16 -6.76766262e-01  3.51004591e-17  3.98789027e-17
+   5.53087081e-16 -7.12577390e-16  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  4.01385656e-17  3.73153347e-17  7.24246129e-17  3.56163933e-01 -2.78980158e-16  2.11463195e-16  7.07106781e-01  5.77350269e-01
+  -1.40915367e-15  1.99534256e-01  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  6.24376888e-17  6.89705625e-17 -4.98734703e-17 -6.00542490e-01  6.88190960e-01  5.94076278e-16  2.97773327e-17  2.88675135e-01
+  -1.62459848e-01  2.36675695e-01  0.00000000e+00  0.00000000e+00]
+ [-6.76766262e-01  6.01500955e-01  3.71748034e-01 -2.04908337e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00 -1.89046110e-17 -4.26261487e-17 -1.83229114e-17  1.11785376e-01 -1.62459848e-01  1.90458747e-15 -5.53581057e-17 -2.88675135e-01
+  -6.88190960e-01  6.35744207e-01  0.00000000e+00  0.00000000e+00]
+ [ 6.76766262e-01  6.01500955e-01  3.71748034e-01  2.04908337e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [-2.04908337e-01 -3.71748034e-01  6.01500955e-01  6.76766262e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00]]
+
+test_type = T_max, param_array = [ 100  200  400  800 1200 1600 2000 3200]
+Test: T_max = 100, perturb = None
+	finished Z tensor numeric creation in 4.525361 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.661907 seconds
+Test: T_max = 100, perturb = Small
+	finished Z tensor numeric creation in 4.607293 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.656214 seconds
+Test: T_max = 100, perturb = Big
+	finished Z tensor numeric creation in 3.672347 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.648405 seconds
+Test: T_max = 100, perturb = Rand
+	finished Z tensor numeric creation in 3.703821 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.653551 seconds
+Test: T_max = 100, perturb = Stand
+	finished Z tensor numeric creation in 3.826889 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 0.669409 seconds
+Test: T_max = 200, perturb = None
+	finished Z tensor numeric creation in 3.938375 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.200046 seconds
+Test: T_max = 200, perturb = Small
+	finished Z tensor numeric creation in 4.368320 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.227643 seconds
+Test: T_max = 200, perturb = Big
+	finished Z tensor numeric creation in 3.689697 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.219886 seconds
+Test: T_max = 200, perturb = Rand
+	finished Z tensor numeric creation in 4.206462 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.194474 seconds
+Test: T_max = 200, perturb = Stand
+	finished Z tensor numeric creation in 3.684038 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 1.215508 seconds
+Test: T_max = 400, perturb = None
+	finished Z tensor numeric creation in 3.703270 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.258763 seconds
+Test: T_max = 400, perturb = Small
+	finished Z tensor numeric creation in 4.121015 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.254053 seconds
+Test: T_max = 400, perturb = Big
+	finished Z tensor numeric creation in 3.590661 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.249924 seconds
+Test: T_max = 400, perturb = Rand
+	finished Z tensor numeric creation in 3.747318 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.243072 seconds
+Test: T_max = 400, perturb = Stand
+	finished Z tensor numeric creation in 3.647221 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 2.244053 seconds
+Test: T_max = 800, perturb = None
+	finished Z tensor numeric creation in 4.116123 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 4.422427 seconds
+Test: T_max = 800, perturb = Small
+	finished Z tensor numeric creation in 7.142251 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 4.474782 seconds
+Test: T_max = 800, perturb = Big
+	finished Z tensor numeric creation in 4.167594 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 4.483325 seconds
+Test: T_max = 800, perturb = Rand
+	finished Z tensor numeric creation in 4.053746 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 4.455433 seconds
+Test: T_max = 800, perturb = Stand
+	finished Z tensor numeric creation in 3.720309 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 4.464592 seconds
+/home/deolivj/tensor_super_resolution/main.py:220: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 3.5))
+Test: T_max = 1200, perturb = None
+	finished Z tensor numeric creation in 4.019290 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 6.627750 seconds
+/home/deolivj/tensor_super_resolution/main.py:554: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, axes = plt.subplots(L, R, figsize=(2*L + L, 2*R), squeeze=False)
+Test: T_max = 1200, perturb = Small
+	finished Z tensor numeric creation in 4.557553 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 6.657470 seconds
+Test: T_max = 1200, perturb = Big
+	finished Z tensor numeric creation in 4.847070 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 6.652889 seconds
+Test: T_max = 1200, perturb = Rand
+	finished Z tensor numeric creation in 5.093133 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 6.639239 seconds
+Test: T_max = 1200, perturb = Stand
+	finished Z tensor numeric creation in 4.932311 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 6.602174 seconds
+Test: T_max = 1600, perturb = None
+	finished Z tensor numeric creation in 5.178219 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 8.737475 seconds
+Test: T_max = 1600, perturb = Small
+	finished Z tensor numeric creation in 5.713120 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 8.879716 seconds
+Test: T_max = 1600, perturb = Big
+	finished Z tensor numeric creation in 3.786636 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 8.855802 seconds
+Test: T_max = 1600, perturb = Rand
+	finished Z tensor numeric creation in 3.686775 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 8.834294 seconds
+Test: T_max = 1600, perturb = Stand
+	finished Z tensor numeric creation in 3.709459 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 8.819560 seconds
+Test: T_max = 2000, perturb = None
+	finished Z tensor numeric creation in 3.765903 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 10.984320 seconds
+Test: T_max = 2000, perturb = Small
+	finished Z tensor numeric creation in 3.759384 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 10.957724 seconds
+Test: T_max = 2000, perturb = Big
+	finished Z tensor numeric creation in 3.865988 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 10.910260 seconds
+Test: T_max = 2000, perturb = Rand
+	finished Z tensor numeric creation in 3.847902 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 10.969434 seconds
+Test: T_max = 2000, perturb = Stand
+	finished Z tensor numeric creation in 3.975005 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 10.967932 seconds
+Test: T_max = 3200, perturb = None
+	finished Z tensor numeric creation in 3.634987 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.468547 seconds
+Test: T_max = 3200, perturb = Small
+	finished Z tensor numeric creation in 4.021874 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.449795 seconds
+Test: T_max = 3200, perturb = Big
+	finished Z tensor numeric creation in 3.855389 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.456721 seconds
+Test: T_max = 3200, perturb = Rand
+	finished Z tensor numeric creation in 3.768024 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.571318 seconds
+Test: T_max = 3200, perturb = Stand
+	finished Z tensor numeric creation in 3.881315 seconds; shape of Z is (4, 4, 800)
+	finished QFAMES in 17.460554 seconds

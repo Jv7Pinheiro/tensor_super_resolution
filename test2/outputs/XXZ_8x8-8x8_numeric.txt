@@ -1,0 +1,760 @@
+XXZ: h = 0.0, delta = -1.0
+XXZ_(h=0)-(d=-1)_8x8-8x8_numeric
+My Matrix: 
+[[-0.22672492  0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.22672492  0.          0.          0.          0.          0.        ]
+ [ 0.          0.22672492  0.22672492  0.          0.22672492  0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.22672492  0.          0.        ]
+ [ 0.          0.          0.22672492  0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.22672492  0.          0.22672492  0.22672492  0.        ]
+ [ 0.          0.          0.          0.          0.          0.22672492  0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.         -0.22672492]]
+
+L = 8, R = 8
+is_unitary: False
+Norm of my matrix: 0.7853981633974483
+Eigenvalues: [ 4.53449841e-01  7.46034856e-18 -2.26724921e-01  4.53449841e-01 -2.26724921e-01  0.00000000e+00 -2.26724921e-01 -2.26724921e-01]
+Target eigenvalue: 0.4534498410585547
+Eigenvectors: 
+[[ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  4.08248290e-01 -5.77350269e-01 -7.07106781e-01  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  8.16496581e-01  5.77350269e-01 -4.65206413e-33  0.00000000e+00  0.00000000e+00]
+ [-4.08248290e-01  7.07106781e-01  5.77350269e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  4.08248290e-01 -5.77350269e-01  7.07106781e-01  0.00000000e+00  0.00000000e+00]
+ [-8.16496581e-01 -3.16048986e-17 -5.77350269e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [-4.08248290e-01 -7.07106781e-01  5.77350269e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00]]
+
+test_type = T_max, param_array = [ 100  200  400  800 1200 1600 2000 3200]
+Test: T_max = 100, perturb = None
+	finished Z tensor numeric creation in 4.372291 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 10.966881 seconds
+Test: T_max = 100, perturb = Small
+	finished Z tensor numeric creation in 4.593799 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 10.957551 seconds
+Test: T_max = 100, perturb = Big
+	finished Z tensor numeric creation in 5.239440 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 11.548299 seconds
+Test: T_max = 100, perturb = Rand
+	finished Z tensor numeric creation in 5.057097 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 17.427881 seconds
+Test: T_max = 100, perturb = Stand
+	finished Z tensor numeric creation in 4.440153 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 14.969553 seconds
+Test: T_max = 200, perturb = None
+	finished Z tensor numeric creation in 3.623800 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 29.230420 seconds
+Test: T_max = 200, perturb = Small
+	finished Z tensor numeric creation in 4.054269 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 22.711968 seconds
+Test: T_max = 200, perturb = Big
+	finished Z tensor numeric creation in 3.742700 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 25.151181 seconds
+Test: T_max = 200, perturb = Rand
+	finished Z tensor numeric creation in 4.386181 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 29.514849 seconds
+Test: T_max = 200, perturb = Stand
+	finished Z tensor numeric creation in 4.433832 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 23.879298 seconds
+Test: T_max = 400, perturb = None
+	finished Z tensor numeric creation in 3.531534 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 38.804671 seconds
+Test: T_max = 400, perturb = Small
+	finished Z tensor numeric creation in 3.646997 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 47.296691 seconds
+Test: T_max = 400, perturb = Big
+	finished Z tensor numeric creation in 3.599408 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 39.596463 seconds
+Test: T_max = 400, perturb = Rand
+	finished Z tensor numeric creation in 3.741855 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 44.169742 seconds
+Test: T_max = 400, perturb = Stand
+	finished Z tensor numeric creation in 3.690536 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 46.258454 seconds
+Test: T_max = 800, perturb = None
+	finished Z tensor numeric creation in 3.655402 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 89.849735 seconds
+Test: T_max = 800, perturb = Small
+	finished Z tensor numeric creation in 4.028246 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 82.574175 seconds
+Test: T_max = 800, perturb = Big
+	finished Z tensor numeric creation in 4.938732 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 82.633457 seconds
+Test: T_max = 800, perturb = Rand
+	finished Z tensor numeric creation in 4.967727 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 91.733342 seconds
+Test: T_max = 800, perturb = Stand
+	finished Z tensor numeric creation in 4.369811 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 86.517636 seconds
+/home/deolivj/tensor_super_resolution/main.py:220: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 3.5))
+Test: T_max = 1200, perturb = None
+	finished Z tensor numeric creation in 3.892129 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 119.725672 seconds
+/home/deolivj/tensor_super_resolution/main.py:554: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, axes = plt.subplots(L, R, figsize=(2*L + L, 2*R), squeeze=False)
+Test: T_max = 1200, perturb = Small
+	finished Z tensor numeric creation in 3.869468 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 113.542592 seconds
+Test: T_max = 1200, perturb = Big
+	finished Z tensor numeric creation in 3.618387 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 120.316359 seconds
+Test: T_max = 1200, perturb = Rand
+	finished Z tensor numeric creation in 4.105310 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 116.388047 seconds
+Test: T_max = 1200, perturb = Stand
+	finished Z tensor numeric creation in 3.793676 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 132.789279 seconds
+Test: T_max = 1600, perturb = None
+	finished Z tensor numeric creation in 3.795863 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 169.456232 seconds
+Test: T_max = 1600, perturb = Small
+	finished Z tensor numeric creation in 4.244361 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 140.780064 seconds
+Test: T_max = 1600, perturb = Big
+	finished Z tensor numeric creation in 4.179320 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 140.572664 seconds
+Test: T_max = 1600, perturb = Rand
+	finished Z tensor numeric creation in 3.651991 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 140.690627 seconds
+Test: T_max = 1600, perturb = Stand
+	finished Z tensor numeric creation in 3.743186 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 140.708588 seconds
+Test: T_max = 2000, perturb = None
+	finished Z tensor numeric creation in 3.797952 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 174.948739 seconds
+Test: T_max = 2000, perturb = Small
+	finished Z tensor numeric creation in 3.978166 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 174.868348 seconds
+Test: T_max = 2000, perturb = Big
+	finished Z tensor numeric creation in 3.979412 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 175.280881 seconds
+Test: T_max = 2000, perturb = Rand
+	finished Z tensor numeric creation in 3.721598 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 174.984608 seconds
+Test: T_max = 2000, perturb = Stand
+	finished Z tensor numeric creation in 3.630687 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 174.916779 seconds
+Test: T_max = 3200, perturb = None
+	finished Z tensor numeric creation in 3.570577 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 278.631485 seconds
+Test: T_max = 3200, perturb = Small
+	finished Z tensor numeric creation in 3.814019 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 279.055377 seconds
+Test: T_max = 3200, perturb = Big
+	finished Z tensor numeric creation in 3.720856 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 279.100713 seconds
+Test: T_max = 3200, perturb = Rand
+	finished Z tensor numeric creation in 3.812307 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 279.054293 seconds
+Test: T_max = 3200, perturb = Stand
+	finished Z tensor numeric creation in 3.717641 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 278.971394 seconds
+XXZ: h = 1.0, delta = -1.0
+XXZ_(h=1)-(d=-1)_8x8-8x8_numeric
+My Matrix: 
+[[-0.46280031  0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.         -0.09256006  0.18512012  0.          0.          0.          0.          0.        ]
+ [ 0.          0.18512012  0.09256006  0.          0.18512012  0.          0.          0.        ]
+ [ 0.          0.          0.          0.09256006  0.          0.18512012  0.          0.        ]
+ [ 0.          0.          0.18512012  0.         -0.09256006  0.          0.          0.        ]
+ [ 0.          0.          0.          0.18512012  0.          0.27768018  0.18512012  0.        ]
+ [ 0.          0.          0.          0.          0.          0.18512012  0.09256006  0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.09256006]]
+
+L = 8, R = 8
+is_unitary: False
+Norm of my matrix: 0.7853981633974484
+Eigenvalues: [ 0.46280031  0.09256006 -0.09256006  0.27768018 -0.27768018 -0.09256006 -0.46280031  0.09256006]
+Target eigenvalue: 0.46280030605816325
+Eigenvectors: 
+[[ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  4.08248290e-01 -5.77350269e-01 -7.07106781e-01  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  8.16496581e-01  5.77350269e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [-4.08248290e-01  7.07106781e-01  5.77350269e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  4.08248290e-01 -5.77350269e-01  7.07106781e-01  0.00000000e+00  0.00000000e+00]
+ [-8.16496581e-01 -1.68547749e-16 -5.77350269e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [-4.08248290e-01 -7.07106781e-01  5.77350269e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00]]
+
+test_type = T_max, param_array = [ 100  200  400  800 1200 1600 2000 3200]
+Test: T_max = 100, perturb = None
+	finished Z tensor numeric creation in 3.874243 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 10.994603 seconds
+Test: T_max = 100, perturb = Small
+	finished Z tensor numeric creation in 3.828478 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 10.882418 seconds
+Test: T_max = 100, perturb = Big
+	finished Z tensor numeric creation in 3.570203 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 10.902536 seconds
+Test: T_max = 100, perturb = Rand
+	finished Z tensor numeric creation in 3.682077 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 10.861829 seconds
+Test: T_max = 100, perturb = Stand
+	finished Z tensor numeric creation in 3.473011 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 10.844861 seconds
+Test: T_max = 200, perturb = None
+	finished Z tensor numeric creation in 4.580646 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 19.833790 seconds
+Test: T_max = 200, perturb = Small
+	finished Z tensor numeric creation in 5.018070 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 19.834675 seconds
+Test: T_max = 200, perturb = Big
+	finished Z tensor numeric creation in 5.845334 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 19.831149 seconds
+Test: T_max = 200, perturb = Rand
+	finished Z tensor numeric creation in 4.830286 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 19.832770 seconds
+Test: T_max = 200, perturb = Stand
+	finished Z tensor numeric creation in 4.373675 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 19.819229 seconds
+Test: T_max = 400, perturb = None
+	finished Z tensor numeric creation in 3.996680 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 36.847877 seconds
+Test: T_max = 400, perturb = Small
+	finished Z tensor numeric creation in 3.748450 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 36.886142 seconds
+Test: T_max = 400, perturb = Big
+	finished Z tensor numeric creation in 3.642582 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 36.850878 seconds
+Test: T_max = 400, perturb = Rand
+	finished Z tensor numeric creation in 4.149115 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 36.826217 seconds
+Test: T_max = 400, perturb = Stand
+	finished Z tensor numeric creation in 4.834539 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 36.855885 seconds
+Test: T_max = 800, perturb = None
+	finished Z tensor numeric creation in 3.697015 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 71.231465 seconds
+Test: T_max = 800, perturb = Small
+	finished Z tensor numeric creation in 3.495105 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 71.220954 seconds
+Test: T_max = 800, perturb = Big
+	finished Z tensor numeric creation in 3.769739 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 71.253102 seconds
+Test: T_max = 800, perturb = Rand
+	finished Z tensor numeric creation in 3.680731 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 71.397816 seconds
+Test: T_max = 800, perturb = Stand
+	finished Z tensor numeric creation in 3.601879 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 71.855726 seconds
+/home/deolivj/tensor_super_resolution/main.py:220: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 3.5))
+Test: T_max = 1200, perturb = None
+	finished Z tensor numeric creation in 3.562537 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 105.600423 seconds
+/home/deolivj/tensor_super_resolution/main.py:554: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, axes = plt.subplots(L, R, figsize=(2*L + L, 2*R), squeeze=False)
+Test: T_max = 1200, perturb = Small
+	finished Z tensor numeric creation in 3.601180 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 105.675269 seconds
+Test: T_max = 1200, perturb = Big
+	finished Z tensor numeric creation in 3.709438 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 105.628102 seconds
+Test: T_max = 1200, perturb = Rand
+	finished Z tensor numeric creation in 3.904550 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 105.549721 seconds
+Test: T_max = 1200, perturb = Stand
+	finished Z tensor numeric creation in 4.127646 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 105.560170 seconds
+Test: T_max = 1600, perturb = None
+	finished Z tensor numeric creation in 3.945705 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 140.385009 seconds
+Test: T_max = 1600, perturb = Small
+	finished Z tensor numeric creation in 4.968209 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 140.517728 seconds
+Test: T_max = 1600, perturb = Big
+	finished Z tensor numeric creation in 3.614340 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 140.342057 seconds
+Test: T_max = 1600, perturb = Rand
+	finished Z tensor numeric creation in 4.261123 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 140.068922 seconds
+Test: T_max = 1600, perturb = Stand
+	finished Z tensor numeric creation in 3.894996 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 140.113167 seconds
+Test: T_max = 2000, perturb = None
+	finished Z tensor numeric creation in 3.765217 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 174.709528 seconds
+Test: T_max = 2000, perturb = Small
+	finished Z tensor numeric creation in 3.776396 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 174.421838 seconds
+Test: T_max = 2000, perturb = Big
+	finished Z tensor numeric creation in 3.567085 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 174.844819 seconds
+Test: T_max = 2000, perturb = Rand
+	finished Z tensor numeric creation in 3.845216 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 174.644570 seconds
+Test: T_max = 2000, perturb = Stand
+	finished Z tensor numeric creation in 3.632173 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 175.526887 seconds
+Test: T_max = 3200, perturb = None
+	finished Z tensor numeric creation in 3.607852 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 278.565522 seconds
+Test: T_max = 3200, perturb = Small
+	finished Z tensor numeric creation in 3.789884 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 278.475176 seconds
+Test: T_max = 3200, perturb = Big
+	finished Z tensor numeric creation in 3.558209 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 277.957972 seconds
+Test: T_max = 3200, perturb = Rand
+	finished Z tensor numeric creation in 3.643151 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 278.685721 seconds
+Test: T_max = 3200, perturb = Stand
+	finished Z tensor numeric creation in 4.029796 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 278.375241 seconds
+XXZ: h = 0.0, delta = 0.0
+XXZ_(h=0)-(d=0)_8x8-8x8_numeric
+My Matrix: 
+[[0.         0.         0.         0.         0.         0.         0.         0.        ]
+ [0.         0.         0.27768018 0.         0.         0.         0.         0.        ]
+ [0.         0.27768018 0.         0.         0.27768018 0.         0.         0.        ]
+ [0.         0.         0.         0.         0.         0.27768018 0.         0.        ]
+ [0.         0.         0.27768018 0.         0.         0.         0.         0.        ]
+ [0.         0.         0.         0.27768018 0.         0.         0.27768018 0.        ]
+ [0.         0.         0.         0.         0.         0.27768018 0.         0.        ]
+ [0.         0.         0.         0.         0.         0.         0.         0.        ]]
+
+L = 8, R = 8
+is_unitary: False
+Norm of my matrix: 0.7853981633974483
+Eigenvalues: [-3.92699082e-01  4.60921449e-17  3.92699082e-01  3.92699082e-01 -3.92699082e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+Target eigenvalue: -0.39269908169872436
+Eigenvectors: 
+[[ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  5.00000000e-01 -5.00000000e-01 -7.07106781e-01  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  7.07106781e-01  7.07106781e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 5.00000000e-01  7.07106781e-01  5.00000000e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  5.00000000e-01 -5.00000000e-01  7.07106781e-01  0.00000000e+00  0.00000000e+00]
+ [-7.07106781e-01 -1.80653390e-16  7.07106781e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 5.00000000e-01 -7.07106781e-01  5.00000000e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00]]
+
+test_type = T_max, param_array = [ 100  200  400  800 1200 1600 2000 3200]
+Test: T_max = 100, perturb = None
+	finished Z tensor numeric creation in 3.930315 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 11.335015 seconds
+Test: T_max = 100, perturb = Small
+	finished Z tensor numeric creation in 3.653695 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 10.849135 seconds
+Test: T_max = 100, perturb = Big
+	finished Z tensor numeric creation in 3.573302 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 10.867828 seconds
+Test: T_max = 100, perturb = Rand
+	finished Z tensor numeric creation in 3.668947 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 10.861645 seconds
+Test: T_max = 100, perturb = Stand
+	finished Z tensor numeric creation in 3.690033 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 10.939095 seconds
+Test: T_max = 200, perturb = None
+	finished Z tensor numeric creation in 4.100504 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 19.852902 seconds
+Test: T_max = 200, perturb = Small
+	finished Z tensor numeric creation in 4.145221 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 19.897380 seconds
+Test: T_max = 200, perturb = Big
+	finished Z tensor numeric creation in 4.263875 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 19.837028 seconds
+Test: T_max = 200, perturb = Rand
+	finished Z tensor numeric creation in 4.242062 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 19.847287 seconds
+Test: T_max = 200, perturb = Stand
+	finished Z tensor numeric creation in 4.351670 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 19.838273 seconds
+Test: T_max = 400, perturb = None
+	finished Z tensor numeric creation in 4.245878 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 36.865766 seconds
+Test: T_max = 400, perturb = Small
+	finished Z tensor numeric creation in 3.536873 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 36.807714 seconds
+Test: T_max = 400, perturb = Big
+	finished Z tensor numeric creation in 3.687566 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 36.839518 seconds
+Test: T_max = 400, perturb = Rand
+	finished Z tensor numeric creation in 3.590596 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 36.945170 seconds
+Test: T_max = 400, perturb = Stand
+	finished Z tensor numeric creation in 3.514318 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 37.042608 seconds
+Test: T_max = 800, perturb = None
+	finished Z tensor numeric creation in 3.570437 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 71.226564 seconds
+Test: T_max = 800, perturb = Small
+	finished Z tensor numeric creation in 3.791467 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 71.349049 seconds
+Test: T_max = 800, perturb = Big
+	finished Z tensor numeric creation in 3.831931 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 71.426207 seconds
+Test: T_max = 800, perturb = Rand
+	finished Z tensor numeric creation in 4.291626 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 71.365223 seconds
+Test: T_max = 800, perturb = Stand
+	finished Z tensor numeric creation in 3.636429 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 71.491081 seconds
+/home/deolivj/tensor_super_resolution/main.py:220: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 3.5))
+Test: T_max = 1200, perturb = None
+	finished Z tensor numeric creation in 3.525289 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 105.840248 seconds
+/home/deolivj/tensor_super_resolution/main.py:554: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, axes = plt.subplots(L, R, figsize=(2*L + L, 2*R), squeeze=False)
+Test: T_max = 1200, perturb = Small
+	finished Z tensor numeric creation in 3.665275 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 106.302636 seconds
+Test: T_max = 1200, perturb = Big
+	finished Z tensor numeric creation in 3.806061 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 105.969373 seconds
+Test: T_max = 1200, perturb = Rand
+	finished Z tensor numeric creation in 4.397995 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 105.799376 seconds
+Test: T_max = 1200, perturb = Stand
+	finished Z tensor numeric creation in 3.674161 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 105.920165 seconds
+Test: T_max = 1600, perturb = None
+	finished Z tensor numeric creation in 3.974912 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 140.478950 seconds
+Test: T_max = 1600, perturb = Small
+	finished Z tensor numeric creation in 3.558243 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 140.515817 seconds
+Test: T_max = 1600, perturb = Big
+	finished Z tensor numeric creation in 4.039906 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 140.455559 seconds
+Test: T_max = 1600, perturb = Rand
+	finished Z tensor numeric creation in 3.985273 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 140.773038 seconds
+Test: T_max = 1600, perturb = Stand
+	finished Z tensor numeric creation in 3.682970 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 140.638381 seconds
+Test: T_max = 2000, perturb = None
+	finished Z tensor numeric creation in 8.487473 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 174.726905 seconds
+Test: T_max = 2000, perturb = Small
+	finished Z tensor numeric creation in 3.556163 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 175.413847 seconds
+Test: T_max = 2000, perturb = Big
+	finished Z tensor numeric creation in 3.628303 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 175.236213 seconds
+Test: T_max = 2000, perturb = Rand
+	finished Z tensor numeric creation in 3.819999 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 175.193705 seconds
+Test: T_max = 2000, perturb = Stand
+	finished Z tensor numeric creation in 3.574396 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 174.967920 seconds
+Test: T_max = 3200, perturb = None
+	finished Z tensor numeric creation in 3.691881 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 279.135597 seconds
+Test: T_max = 3200, perturb = Small
+	finished Z tensor numeric creation in 3.883939 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 279.119729 seconds
+Test: T_max = 3200, perturb = Big
+	finished Z tensor numeric creation in 3.544944 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 278.720274 seconds
+Test: T_max = 3200, perturb = Rand
+	finished Z tensor numeric creation in 3.564447 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 278.536177 seconds
+Test: T_max = 3200, perturb = Stand
+	finished Z tensor numeric creation in 3.752713 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 278.947751 seconds
+XXZ: h = 0.0, delta = 1.0
+XXZ_(h=0)-(d=1)_8x8-8x8_numeric
+My Matrix: 
+[[ 0.22672492  0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.22672492  0.          0.          0.          0.          0.        ]
+ [ 0.          0.22672492 -0.22672492  0.          0.22672492  0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.22672492  0.          0.        ]
+ [ 0.          0.          0.22672492  0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.22672492  0.         -0.22672492  0.22672492  0.        ]
+ [ 0.          0.          0.          0.          0.          0.22672492  0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.22672492]]
+
+L = 8, R = 8
+is_unitary: False
+Norm of my matrix: 0.7853981633974483
+Eigenvalues: [-4.53449841e-01 -7.46034856e-18  2.26724921e-01 -4.53449841e-01  2.26724921e-01  0.00000000e+00  2.26724921e-01  2.26724921e-01]
+Target eigenvalue: -0.4534498410585547
+Eigenvectors: 
+[[ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  4.08248290e-01  5.77350269e-01 -7.07106781e-01  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00 -8.16496581e-01  5.77350269e-01  4.65206413e-33  0.00000000e+00  0.00000000e+00]
+ [ 4.08248290e-01  7.07106781e-01  5.77350269e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  4.08248290e-01  5.77350269e-01  7.07106781e-01  0.00000000e+00  0.00000000e+00]
+ [-8.16496581e-01  3.16048986e-17  5.77350269e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 4.08248290e-01 -7.07106781e-01  5.77350269e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00]]
+
+test_type = T_max, param_array = [ 100  200  400  800 1200 1600 2000 3200]
+Test: T_max = 100, perturb = None
+	finished Z tensor numeric creation in 3.612428 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 10.839035 seconds
+Test: T_max = 100, perturb = Small
+	finished Z tensor numeric creation in 4.691911 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 10.864351 seconds
+Test: T_max = 100, perturb = Big
+	finished Z tensor numeric creation in 3.851891 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 10.862324 seconds
+Test: T_max = 100, perturb = Rand
+	finished Z tensor numeric creation in 3.510298 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 10.808458 seconds
+Test: T_max = 100, perturb = Stand
+	finished Z tensor numeric creation in 3.895369 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 10.828885 seconds
+Test: T_max = 200, perturb = None
+	finished Z tensor numeric creation in 9.399772 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 19.857870 seconds
+Test: T_max = 200, perturb = Small
+	finished Z tensor numeric creation in 4.337043 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 19.879195 seconds
+Test: T_max = 200, perturb = Big
+	finished Z tensor numeric creation in 3.642829 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 19.944688 seconds
+Test: T_max = 200, perturb = Rand
+	finished Z tensor numeric creation in 4.226387 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 19.891753 seconds
+Test: T_max = 200, perturb = Stand
+	finished Z tensor numeric creation in 3.797896 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 19.808102 seconds
+Test: T_max = 400, perturb = None
+	finished Z tensor numeric creation in 4.086746 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 36.880344 seconds
+Test: T_max = 400, perturb = Small
+	finished Z tensor numeric creation in 3.945365 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 36.890815 seconds
+Test: T_max = 400, perturb = Big
+	finished Z tensor numeric creation in 3.485850 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 36.994588 seconds
+Test: T_max = 400, perturb = Rand
+	finished Z tensor numeric creation in 3.668726 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 36.920145 seconds
+Test: T_max = 400, perturb = Stand
+	finished Z tensor numeric creation in 3.661879 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 36.989461 seconds
+Test: T_max = 800, perturb = None
+	finished Z tensor numeric creation in 3.719997 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 71.523345 seconds
+Test: T_max = 800, perturb = Small
+	finished Z tensor numeric creation in 4.438650 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 71.733900 seconds
+Test: T_max = 800, perturb = Big
+	finished Z tensor numeric creation in 3.768889 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 71.684759 seconds
+Test: T_max = 800, perturb = Rand
+	finished Z tensor numeric creation in 3.526481 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 71.427937 seconds
+Test: T_max = 800, perturb = Stand
+	finished Z tensor numeric creation in 3.938272 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 71.471039 seconds
+/home/deolivj/tensor_super_resolution/main.py:220: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 3.5))
+Test: T_max = 1200, perturb = None
+	finished Z tensor numeric creation in 3.794438 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 106.014044 seconds
+/home/deolivj/tensor_super_resolution/main.py:554: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, axes = plt.subplots(L, R, figsize=(2*L + L, 2*R), squeeze=False)
+Test: T_max = 1200, perturb = Small
+	finished Z tensor numeric creation in 3.966718 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 106.009180 seconds
+Test: T_max = 1200, perturb = Big
+	finished Z tensor numeric creation in 3.675729 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 106.138216 seconds
+Test: T_max = 1200, perturb = Rand
+	finished Z tensor numeric creation in 3.698051 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 105.920706 seconds
+Test: T_max = 1200, perturb = Stand
+	finished Z tensor numeric creation in 3.658328 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 106.418368 seconds
+Test: T_max = 1600, perturb = None
+	finished Z tensor numeric creation in 3.637951 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 141.226167 seconds
+Test: T_max = 1600, perturb = Small
+	finished Z tensor numeric creation in 3.557502 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 140.422934 seconds
+Test: T_max = 1600, perturb = Big
+	finished Z tensor numeric creation in 3.763091 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 140.660767 seconds
+Test: T_max = 1600, perturb = Rand
+	finished Z tensor numeric creation in 3.723457 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 140.531513 seconds
+Test: T_max = 1600, perturb = Stand
+	finished Z tensor numeric creation in 3.761325 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 140.502934 seconds
+Test: T_max = 2000, perturb = None
+	finished Z tensor numeric creation in 3.620176 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 175.365226 seconds
+Test: T_max = 2000, perturb = Small
+	finished Z tensor numeric creation in 3.840924 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 174.807368 seconds
+Test: T_max = 2000, perturb = Big
+	finished Z tensor numeric creation in 3.903901 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 174.973859 seconds
+Test: T_max = 2000, perturb = Rand
+	finished Z tensor numeric creation in 3.655591 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 175.125581 seconds
+Test: T_max = 2000, perturb = Stand
+	finished Z tensor numeric creation in 4.071878 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 175.011088 seconds
+Test: T_max = 3200, perturb = None
+	finished Z tensor numeric creation in 3.791256 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 278.585812 seconds
+Test: T_max = 3200, perturb = Small
+	finished Z tensor numeric creation in 3.868259 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 279.405737 seconds
+Test: T_max = 3200, perturb = Big
+	finished Z tensor numeric creation in 11.559366 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 278.742542 seconds
+Test: T_max = 3200, perturb = Rand
+	finished Z tensor numeric creation in 3.624815 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 279.640382 seconds
+Test: T_max = 3200, perturb = Stand
+	finished Z tensor numeric creation in 3.584699 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 279.765636 seconds
+XXZ: h = 0.0, delta = 2.0
+XXZ_(h=0)-(d=2)_8x8-8x8_numeric
+My Matrix: 
+[[ 0.32063746  0.          0.          0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.16031873  0.          0.          0.          0.          0.        ]
+ [ 0.          0.16031873 -0.32063746  0.          0.16031873  0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.16031873  0.          0.        ]
+ [ 0.          0.          0.16031873  0.          0.          0.          0.          0.        ]
+ [ 0.          0.          0.          0.16031873  0.         -0.32063746  0.16031873  0.        ]
+ [ 0.          0.          0.          0.          0.          0.16031873  0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.          0.32063746]]
+
+L = 8, R = 8
+is_unitary: False
+Norm of my matrix: 0.7853981633974483
+Eigenvalues: [-4.37998912e-01  2.65632800e-18  1.17361455e-01 -4.37998912e-01  1.17361455e-01  0.00000000e+00  3.20637458e-01  3.20637458e-01]
+Target eigenvalue: -0.43799891240513056
+Eigenvectors: 
+[[ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  3.25057584e-01  6.27963030e-01 -7.07106781e-01  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00 -8.88073834e-01  4.59700843e-01 -4.05116450e-33  0.00000000e+00  0.00000000e+00]
+ [ 3.25057584e-01  7.07106781e-01  6.27963030e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  3.25057584e-01  6.27963030e-01  7.07106781e-01  0.00000000e+00  0.00000000e+00]
+ [-8.88073834e-01 -1.77631901e-16  4.59700843e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 3.25057584e-01 -7.07106781e-01  6.27963030e-01  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00]
+ [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00]]
+
+test_type = T_max, param_array = [ 100  200  400  800 1200 1600 2000 3200]
+Test: T_max = 100, perturb = None
+	finished Z tensor numeric creation in 4.372062 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 10.855918 seconds
+Test: T_max = 100, perturb = Small
+	finished Z tensor numeric creation in 4.436193 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 10.978608 seconds
+Test: T_max = 100, perturb = Big
+	finished Z tensor numeric creation in 4.129842 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 10.919427 seconds
+Test: T_max = 100, perturb = Rand
+	finished Z tensor numeric creation in 4.501138 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 10.806429 seconds
+Test: T_max = 100, perturb = Stand
+	finished Z tensor numeric creation in 4.118439 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 10.867056 seconds
+Test: T_max = 200, perturb = None
+	finished Z tensor numeric creation in 3.714140 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 19.816644 seconds
+Test: T_max = 200, perturb = Small
+	finished Z tensor numeric creation in 3.969125 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 19.869204 seconds
+Test: T_max = 200, perturb = Big
+	finished Z tensor numeric creation in 4.046591 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 19.897906 seconds
+Test: T_max = 200, perturb = Rand
+	finished Z tensor numeric creation in 3.633412 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 19.770121 seconds
+Test: T_max = 200, perturb = Stand
+	finished Z tensor numeric creation in 3.562389 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 19.827932 seconds
+Test: T_max = 400, perturb = None
+	finished Z tensor numeric creation in 3.552457 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 36.782310 seconds
+Test: T_max = 400, perturb = Small
+	finished Z tensor numeric creation in 3.736851 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 36.933217 seconds
+Test: T_max = 400, perturb = Big
+	finished Z tensor numeric creation in 3.621583 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 36.826157 seconds
+Test: T_max = 400, perturb = Rand
+	finished Z tensor numeric creation in 6.284733 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 36.738593 seconds
+Test: T_max = 400, perturb = Stand
+	finished Z tensor numeric creation in 3.908299 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 36.888899 seconds
+Test: T_max = 800, perturb = None
+	finished Z tensor numeric creation in 4.046939 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 71.479533 seconds
+Test: T_max = 800, perturb = Small
+	finished Z tensor numeric creation in 9.419695 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 71.299556 seconds
+Test: T_max = 800, perturb = Big
+	finished Z tensor numeric creation in 3.645140 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 71.511440 seconds
+Test: T_max = 800, perturb = Rand
+	finished Z tensor numeric creation in 5.406756 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 71.407567 seconds
+Test: T_max = 800, perturb = Stand
+	finished Z tensor numeric creation in 3.564758 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 71.387723 seconds
+/home/deolivj/tensor_super_resolution/main.py:220: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 3.5))
+Test: T_max = 1200, perturb = None
+	finished Z tensor numeric creation in 3.627578 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 105.777354 seconds
+/home/deolivj/tensor_super_resolution/main.py:554: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, axes = plt.subplots(L, R, figsize=(2*L + L, 2*R), squeeze=False)
+Test: T_max = 1200, perturb = Small
+	finished Z tensor numeric creation in 3.926313 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 106.014396 seconds
+Test: T_max = 1200, perturb = Big
+	finished Z tensor numeric creation in 3.686254 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 105.926277 seconds
+Test: T_max = 1200, perturb = Rand
+	finished Z tensor numeric creation in 10.186798 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 105.862139 seconds
+Test: T_max = 1200, perturb = Stand
+	finished Z tensor numeric creation in 3.797605 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 106.084407 seconds
+Test: T_max = 1600, perturb = None
+	finished Z tensor numeric creation in 3.886334 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 140.697402 seconds
+Test: T_max = 1600, perturb = Small
+	finished Z tensor numeric creation in 3.993636 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 141.015773 seconds
+Test: T_max = 1600, perturb = Big
+	finished Z tensor numeric creation in 3.831227 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 140.586953 seconds
+Test: T_max = 1600, perturb = Rand
+	finished Z tensor numeric creation in 3.787828 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 140.785015 seconds
+Test: T_max = 1600, perturb = Stand
+	finished Z tensor numeric creation in 3.840181 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 140.415871 seconds
+Test: T_max = 2000, perturb = None
+	finished Z tensor numeric creation in 6.524525 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 174.881644 seconds
+Test: T_max = 2000, perturb = Small
+	finished Z tensor numeric creation in 3.607789 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 175.064260 seconds
+Test: T_max = 2000, perturb = Big
+	finished Z tensor numeric creation in 4.019419 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 175.150622 seconds
+Test: T_max = 2000, perturb = Rand
+	finished Z tensor numeric creation in 3.765388 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 175.165947 seconds
+Test: T_max = 2000, perturb = Stand
+	finished Z tensor numeric creation in 3.802796 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 174.932800 seconds
+Test: T_max = 3200, perturb = None
+	finished Z tensor numeric creation in 3.949070 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 278.985080 seconds
+Test: T_max = 3200, perturb = Small
+	finished Z tensor numeric creation in 3.649587 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 279.587228 seconds
+Test: T_max = 3200, perturb = Big
+	finished Z tensor numeric creation in 3.588298 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 279.108462 seconds
+Test: T_max = 3200, perturb = Rand
+	finished Z tensor numeric creation in 3.618687 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 278.987789 seconds
+Test: T_max = 3200, perturb = Stand
+	finished Z tensor numeric creation in 3.849381 seconds; shape of Z is (8, 8, 3200)
+	finished QFAMES in 279.637522 seconds

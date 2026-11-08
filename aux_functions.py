@@ -226,7 +226,7 @@ def QFAMES_setup(M, LR, U_list, V_list, eps=None, T_max=None, is_unitary=True, s
         tau = p_tail
     else:
         N = np.ceil(L * R * 50)  # practical default
-        tau = 0.1 * np.sqrt(L * R)
+        tau = 0.01 * np.sqrt(L * R)
     dx = q / T_max  # grid step, q << alpha, and grid step q/T is the resolution
 
     t_list = np.ascontiguousarray(np.asarray(generate_t_list(N, T_max, sigma)))

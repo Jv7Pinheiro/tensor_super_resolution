@@ -93,8 +93,8 @@ def parse_args():
     )
     parser.add_argument(
         "--genG",
-        type=bool,
-        default=True,
+        type=int,
+        default=0,
         help="Comuptes G signaling tensor from G tensor (default: True)",
     )
     args = parser.parse_args()
@@ -185,10 +185,10 @@ def record_result(name, df, test_type, param_value, perturb, algorithm, shots, t
 def plot_G(thetas, G, eigenvalues, tau, LR, path, perturb, peak_height=0.5, title=""):
     """
     Left panel : ||G(theta)||_F^2 versus theta, one vertical dashed line per
-                 eigenvalue, and a red star at the first peak theta*_1.
-    Right panel: singular values of the matrix G(theta*_1) as bars, with the
-                 threshold tau as a red dashed horizontal line. Bars above the
-                 line are the eigenvalues QFAMES counts in that cluster.
+                 eigenvalue, and an orange dotted line at each detected peak.
+    Right panels: one panel per detected peak (up to LR), arranged in rows of
+                  3 columns, showing singular values of G(theta*_k) as bars
+                  with the threshold tau as a red dashed horizontal line.
 
     Parameters
     ----------
@@ -204,40 +204,63 @@ def plot_G(thetas, G, eigenvalues, tau, LR, path, perturb, peak_height=0.5, titl
 
     Returns
     -------
-    theta_star : float      location of the first peak
-    sv : (min(L, R),) array singular values of G(theta_star), largest first
+    theta_stars : list of float      locations of all detected peaks
+    svs : list of arrays             singular values of G(theta*_k) for each peak, largest first
     """
+    import matplotlib.gridspec as gridspec
 
-    # ||G(theta)||_F^2 = sum over all (l, r) of |G[l, r, theta]|^2 -- one number per theta.
     norm2 = np.sum(np.abs(G) ** 2, axis=(0, 1))
 
     peaks, _ = find_peaks(norm2, height=peak_height)
-    star = int(peaks[2]) if len(peaks) > 0 else int(np.argmax(norm2))
 
-    # G(theta*_1) is already inside G, so nothing needs recomputing.
-    sv = np.linalg.svd(G[:, :, star], compute_uv=False)
+    if len(peaks) == 0:
+        peak_indices = [int(np.argmax(norm2))]
+    else:
+        peaks_sorted = sorted(peaks, key=lambda i: norm2[i], reverse=True)
+        peak_indices = [int(i) for i in peaks_sorted[:LR]]
+        peak_indices.sort()
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 3.5))
-    if title: fig.suptitle(title, fontsize=16)
+    n_panels = len(peak_indices)
+    svs = [np.linalg.svd(G[:, :, idx], compute_uv=False) for idx in peak_indices]
+
+    n_sv_cols = 3
+    n_sv_rows = max(1, (n_panels + n_sv_cols - 1) // n_sv_cols)
+
+    fig = plt.figure(figsize=(13, 3.5 + 3.5 * (n_sv_rows - 1)))
+    if title:
+        fig.suptitle(title, fontsize=16)
+
+    gs_left = gridspec.GridSpec(1, 1, left=0.05, right=0.28, top=0.88, bottom=0.12)
+    gs_right = gridspec.GridSpec(
+        n_sv_rows, n_sv_cols,
+        left=0.35, right=0.97,
+        top=0.88, bottom=0.12,
+        hspace=0.55, wspace=0.4
+    )
+
+    ax1 = fig.add_subplot(gs_left[0, 0])
+    sv_axes = [fig.add_subplot(gs_right[i // n_sv_cols, i % n_sv_cols]) for i in range(n_panels)]
 
     ax1.plot(thetas, norm2, lw=2)
     ax1.set_title(rf"$\|G(\theta)\|_F^2$")
     add_eigenvalue_lines(ax1, eigenvalues, LR, perturb)
     ax1.set_xlabel(rf"$\theta$")
-    # ax1.legend(frameon=False, loc='upper right', fontsize=10, handlelength=1)
+    for idx in peak_indices:
+        ax1.axvline(thetas[idx], color='orange', linestyle=':', linewidth=1.5)
 
-    x = np.arange(1, len(sv) + 1)
-    ax2.axhline(tau, color='red', linestyle='--', linewidth=2, label=r'$\tau$')
-    ax2.bar(x, sv, width=0.4, color='blue', label=rf"$\sigma(G(\theta^\star_1))$")
-    ax2.set_xticks(x)
-    ax2.legend(fontsize=12)
-    ax2.set_title(rf"SV of $G$ at $\lambda \approx {thetas[star]:.4f}$")
+    for ax2, idx, sv in zip(sv_axes, peak_indices, svs):
+        x = np.arange(1, len(sv) + 1)
+        ax2.axhline(tau, color='red', linestyle='--', linewidth=2, label=r'$\tau$')
+        ax2.bar(x, sv, width=0.4, color='blue', label=rf"$\sigma(G(\theta^\star))$")
+        ax2.set_xticks(x)
+        ax2.legend(fontsize=10)
+        ax2.set_title(rf"SV of $G$ at $\lambda \approx {thetas[idx]:.4f}$")
 
-    fig.tight_layout()
     fig.savefig(path, bbox_inches='tight')
     plt.close(fig)
 
-    return thetas[star], sv
+    theta_stars = [thetas[idx] for idx in peak_indices]
+    return theta_stars, svs
 
 def add_eigenvalue_lines(ax, eigenvalues, L, perturb):
     red_count = L if perturb in ["None", "Small", "Big"] else len(eigenvalues)
@@ -316,7 +339,8 @@ def main():
         i = j
     unique_evals = np.array(groups)
     true_multiplicities = np.array(counts)
-    
+    dict_multiplicities = dict(zip(unique_evals.tolist(), true_multiplicities.tolist()))
+
     # Print Information about my matrix
     name = f"{name}-{L}x{R}_{method}"
     print(name)
@@ -357,7 +381,7 @@ def main():
 
     # Test configurations: iterate through eps_array and T_max_array separately
     # eps_array = np.array([0.5, 0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001])
-    T_max_array = np.array([400]) # , 200, 400, 800, 1200, 1600, 2000, 3200
+    T_max_array = np.array([1000]) # , 200, 400, 800, 1200, 1600, 2000, 3200
     test_configs = {
         # "eps": {"array": eps_array, "name": "eps"},
         "T_max": {"array": T_max_array, "name": "T_max"}
@@ -389,7 +413,7 @@ def main():
         "T_total": None,
         "eval(s)": unique_evals.tolist(),
         "errors": None,
-        "multiplicities": str(dict(zip(unique_evals.tolist(), true_multiplicities.tolist())))
+        "multiplicities": str(dict_multiplicities)
     }
     results_df = pd.concat([results_df, pd.DataFrame([true_evals_row])], ignore_index=True)
 
@@ -478,7 +502,7 @@ def main():
                     ####################################
                     else:
                         # Obtain t_list and other QFAMES required arguments
-                        dx, tau, t_list, T_max_alg, T_total, torN = aux_functions.QFAMES_setup(M, min(L, R), U_list, V_list, eps=eps, T_max=T_max, is_unitary=is_unitary, q=0.0005, verbose=verbose)
+                        dx, tau, t_list, T_max_alg, T_total, torN = aux_functions.QFAMES_setup(M, min(L, R), U_list, V_list, eps=eps, T_max=T_max, is_unitary=is_unitary, q=0.05, verbose=verbose)
                         # This function runs all selected Z_tensor_methods
                         def run_Z_tensor_methods(shots):
                             nonlocal results_df
@@ -534,7 +558,7 @@ def main():
                             if "QFAMES" in Z_tensor_methods:
                                 # Run Algorithm
                                 start_time = time.perf_counter()
-                                clusters = algorithms.QFAMES(Z, dx, t_list, min(L, R), T_max_alg, tau, alpha=0.005, verbose=False)
+                                clusters = algorithms.QFAMES(Z, dx, t_list, min(L, R), T_max_alg, tau, alpha=0.0005, verbose=False, true_multiplicities=dict_multiplicities)
                                 end_time = time.perf_counter()
                                 print(f"\tfinished QFAMES in {end_time - start_time:.6f} seconds")
 
