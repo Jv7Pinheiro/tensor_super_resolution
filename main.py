@@ -3,7 +3,6 @@ import os
 import sys
 import time
 
-import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 np.set_printoptions(linewidth=200)
@@ -14,14 +13,6 @@ import aux_functions
 import hamiltonians
 import par_comp
 
-from scipy.signal import find_peaks
-
-
-# TODO:
-# Mess with TAU
-# Get the bar figures
-# Somehow test T_Total scaling
-# Take a look at Zhang's notes
 
 PERTURBATION_OPTIONS = ("None", "Small", "Big", "Rand", "Stand")
 ALGORITHM_OPTIONS = ("QPE", "KQPE", "QMEGS", "Jennrich_V1", "Jennrich_V2", "CP_ALS", "QFAMES")
@@ -90,12 +81,6 @@ def parse_args():
         type=str,
         default="circuit",
         help="Z-tensor's generation method for QFAMES and TSRHSE (default: circuit)",
-    )
-    parser.add_argument(
-        "--genG",
-        type=int,
-        default=0,
-        help="Comuptes G signaling tensor from G tensor (default: True)",
     )
     args = parser.parse_args()
     args.perturbations = parse_csv_options(args.perturbations, PERTURBATION_OPTIONS, "--perturbations")
@@ -182,104 +167,49 @@ def record_result(name, df, test_type, param_value, perturb, algorithm, shots, t
 
     return df
 
-def plot_G(thetas, G, eigenvalues, tau, LR, path, perturb, peak_height=0.5, title=""):
+def select_diverse_columns(PHI, eigenvalues, target_count, tol=1e-6):
     """
-    Left panel : ||G(theta)||_F^2 versus theta, one vertical dashed line per
-                 eigenvalue, and an orange dotted line at each detected peak.
-    Right panels: one panel per detected peak (up to LR), arranged in rows of
-                  3 columns, showing singular values of G(theta*_k) as bars
-                  with the threshold tau as a red dashed horizontal line.
+    Select `target_count` columns from PHI such that the first min(target_count,
+    n_unique) columns come from distinct eigenvalues (one per eigenvalue, in the
+    order they appear after sorting). Remaining slots are filled by cycling
+    through the eigenvalues again in the same order.
 
     Parameters
     ----------
-    thetas : (J,) array     the theta grid G was evaluated on
-    G : (L, R, J) array     output of par_comp.generate_G_tensor
-    eigenvalues : array     eigenvalues of M (any order; complex is fine, the real part is used)
-    tau : float             singular-value threshold (the one QFAMES_setup returns)
-    path : str              where to save the figure
-    peak_height : float     a peak of ||G||_F^2 must be at least this tall to count.
-                            This is an absolute number, so it depends on how G is
-                            normalized; lower it if no peak is found.
-    title : str             optional title for the left panel
+    PHI         : (n, n) array of eigenvectors (columns), as returned by np.linalg.eig
+    eigenvalues : (n,) array of corresponding eigenvalues (same order as PHI columns)
+    target_count: int, number of columns to select (L or R)
+    tol         : float, tolerance for grouping near-duplicate eigenvalues
 
     Returns
     -------
-    theta_stars : list of float      locations of all detected peaks
-    svs : list of arrays             singular values of G(theta*_k) for each peak, largest first
+    selected : (n, target_count) array
     """
-    import matplotlib.gridspec as gridspec
+    # Group column indices by eigenvalue (sorted order)
+    sorted_idx = np.argsort(eigenvalues)
+    sorted_evals = eigenvalues[sorted_idx]
 
-    norm2 = np.sum(np.abs(G) ** 2, axis=(0, 1))
+    groups = []  # each entry is a list of column indices sharing one eigenvalue
+    i = 0
+    while i < len(sorted_evals):
+        j = i + 1
+        while j < len(sorted_evals) and abs(sorted_evals[j] - sorted_evals[i]) < tol:
+            j += 1
+        groups.append(sorted_idx[i:j].tolist())
+        i = j
 
-    peaks, _ = find_peaks(norm2, height=peak_height)
+    # Build selection by cycling: one from each group, then repeat
+    pointers = [0] * len(groups)  # next unused index within each group
+    selected_cols = []
+    group_cycle = 0
+    while len(selected_cols) < target_count:
+        g = group_cycle % len(groups)
+        col = groups[g][pointers[g] % len(groups[g])]
+        selected_cols.append(col)
+        pointers[g] += 1
+        group_cycle += 1
 
-    if len(peaks) == 0:
-        peak_indices = [int(np.argmax(norm2))]
-    else:
-        peaks_sorted = sorted(peaks, key=lambda i: norm2[i], reverse=True)
-        peak_indices = [int(i) for i in peaks_sorted[:LR]]
-        peak_indices.sort()
-
-    n_panels = len(peak_indices)
-    svs = [np.linalg.svd(G[:, :, idx], compute_uv=False) for idx in peak_indices]
-
-    n_sv_cols = 3
-    n_sv_rows = max(1, (n_panels + n_sv_cols - 1) // n_sv_cols)
-
-    fig = plt.figure(figsize=(13, 3.5 + 3.5 * (n_sv_rows - 1)))
-    if title:
-        fig.suptitle(title, fontsize=16)
-
-    gs_left = gridspec.GridSpec(1, 1, left=0.05, right=0.28, top=0.88, bottom=0.12)
-    gs_right = gridspec.GridSpec(
-        n_sv_rows, n_sv_cols,
-        left=0.35, right=0.97,
-        top=0.88, bottom=0.12,
-        hspace=0.55, wspace=0.4
-    )
-
-    ax1 = fig.add_subplot(gs_left[0, 0])
-    sv_axes = [fig.add_subplot(gs_right[i // n_sv_cols, i % n_sv_cols]) for i in range(n_panels)]
-
-    ax1.plot(thetas, norm2, lw=2)
-    ax1.set_title(rf"$\|G(\theta)\|_F^2$")
-    add_eigenvalue_lines(ax1, eigenvalues, LR, perturb)
-    ax1.set_xlabel(rf"$\theta$")
-    for idx in peak_indices:
-        ax1.axvline(thetas[idx], color='orange', linestyle=':', linewidth=1.5)
-
-    for ax2, idx, sv in zip(sv_axes, peak_indices, svs):
-        x = np.arange(1, len(sv) + 1)
-        ax2.axhline(tau, color='red', linestyle='--', linewidth=2, label=r'$\tau$')
-        ax2.bar(x, sv, width=0.4, color='blue', label=rf"$\sigma(G(\theta^\star))$")
-        ax2.set_xticks(x)
-        ax2.legend(fontsize=10)
-        ax2.set_title(rf"SV of $G$ at $\lambda \approx {thetas[idx]:.4f}$")
-
-    fig.savefig(path, bbox_inches='tight')
-    plt.close(fig)
-
-    theta_stars = [thetas[idx] for idx in peak_indices]
-    return theta_stars, svs
-
-def add_eigenvalue_lines(ax, eigenvalues, L, perturb):
-    red_count = L if perturb in ["None", "Small", "Big"] else len(eigenvalues)
-
-    for eigenvalue in eigenvalues[:red_count]:
-        ax.axvline(
-            eigenvalue,
-            color="red",
-            linestyle="--",
-            linewidth=1
-        )
-
-    for eigenvalue in eigenvalues[red_count:]:
-        ax.axvline(
-            eigenvalue,
-            color="gray",
-            linestyle="--",
-            linewidth=0.5
-        )
+    return PHI[:, selected_cols]
 
 def main():
     # Parse Arguments
@@ -450,8 +380,15 @@ def main():
                     # Create the new Init state and U_list unitaries
                     PHI = eigenvectors + np.random.uniform(-perturb_range, perturb_range) * perturb_scale
 
-                U_list = PHI[:, 0:L]
-                V_list = PHI[:, 0:R]
+                if perturb in ("None", "Small", "Big"):
+                    # PHI columns correspond to eigenvalues — pick diverse ones
+                    U_list = select_diverse_columns(PHI, eigenvalues, L)
+                    V_list = select_diverse_columns(PHI, eigenvalues, R)
+                else:
+                    # Rand and Stand have no eigenvalue structure — just take first L/R columns
+                    U_list = PHI[:, 0:L]
+                    V_list = PHI[:, 0:R]
+                
                 Init = PHI[:, lambda_i]
 
                 # Print information about current test
@@ -587,29 +524,6 @@ def main():
 
                         else:
                             raise ValueError(f"Method {method} is unsurported, choose either \"numeric\" or \"circuit\"")
-
-                        if args.genG:
-                            margin = 5 / T_max
-                            thetas = thetas = np.arange(eigenvalues.min() - margin, eigenvalues.max() + margin, dx)
-                            G = par_comp.generate_G_tensor(Z, t_list, thetas, workers=workers)
-
-                            title = f"{name}\ntau = {tau}, Tmax={T_max}, Perturbation={perturb}"
-                            
-                            # Plot matrix elements of G
-                            fig, axes = plt.subplots(L, R, figsize=(2*L + L, 2*R), squeeze=False)
-                            fig.suptitle(title, fontsize=16)
-                            for i in range(L):
-                                for j in range(R):
-                                    ax = axes[i, j]
-                                    ax.plot(thetas, np.abs(G[i,j,:]), linewidth=2)
-                                    ax.set_title(f"|G_[{i},{j}]|", fontsize=12)
-                                    add_eigenvalue_lines(ax, eigenvalues, L, perturb)
-
-                            plt.tight_layout()
-                            plt.savefig(f"data/figures/{name}_tau-{tau}_Tmax-{T_max}_perturb-{perturb}_G_elements.pdf")
-
-                            path = f"data/figures/{name}_tau-{tau}_Tmax-{T_max}_perturb-{perturb}_G.pdf"
-                            theta_star, sv = plot_G(thetas, G, eigenvalues, tau, L, path, perturb, title=title)
 
 if __name__ == "__main__":
     main()

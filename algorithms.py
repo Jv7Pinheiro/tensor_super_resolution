@@ -607,8 +607,7 @@ def QMEGS(Z, dx, t_list, K, T_max, alpha=5):
         G=np.multiply(G,x_rough>interval_max)+np.multiply(G,x_rough<interval_min) #eliminate interval
     return Dominant_freq
 
-def QFAMES(Z, dx, t_list, K, T, tau, alpha=5, verbose=False, prod_imag=True, true_multiplicities=None,
-):
+def QFAMES(Z, dx, t_list, K, T, tau, alpha=5, verbose=False, prod_imag=True, true_multiplicities=None):
     """
     nonorthogonal QMEGS algorithm
 

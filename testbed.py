@@ -11,15 +11,17 @@ PARTITION = "cpu"
 OUTPUT_DIR = Path("data/bash")
 
 HAMILTONIANS = ["XXZ", "TFIM"]
-METHODS = ["numeric", "circuit"]
+METHODS = ["numeric"]
 
-TFIM_params = [0.5, 1, 1.5]
-XXZ_params = [[-1, 0], [-1, 1], [0, 0], [1, 0], [2, 0]]
+TFIM_params = [0.5]
+XXZ_params = [[1, 0]]
+# TFIM_params = [0.5, 1, 1.5]
+# XXZ_params = [[-1, 0], [-1, 1], [0, 0], [1, 0], [2, 0]]
 
-MIN_SIZE = 8
+MIN_SIZE = 16
 MAX_SIZE = 16
 
-LR_VALUES = [1, 2, 4, 8, 16]
+LR_VALUES = [1, 2, 4, 6, 8, 16]
 
 
 #####################
@@ -35,24 +37,26 @@ def get_resources(lr, size, method):
 
     if size == 8:
         if lr == 1:
-            return 64, "standby", "01:00:00"
+            return 64, "standby", "04:00:00"
         elif lr == 2:
-            return 64, "standby", "03:00:00"
+            return 64, "standby", "04:00:00"
         elif lr == 4:
             return 64, "normal", "24:00:00"
         elif lr == 8:
             return 64, "normal", "48:00:00"
     if size == 16:
         if lr == 1:
-            return 64, "standby", "01:00:00"
+            return 64, "standby", "04:00:00"
         elif lr == 2:
-            return 64, "standby", "03:00:00"
+            return 64, "standby", "04:00:00"
         elif lr == 4:
-            return 64, "normal", "24:00:00"
+            return 64, "standby", "04:00:00"
+        elif lr == 6:
+            return 64, "standby", "04:00:00"
         elif lr == 8:
-            return 64, "normal", "48:00:00"
+            return 64, "normal", "08:00:00"
         elif lr == 16:
-            return 64, "normal", "48:00:00"
+            return 64, "normal", "08:00:00"
 
     raise ValueError(
         f"No resource policy defined for size={size}, method={method}, L=R={lr}"
@@ -102,13 +106,13 @@ def make_slurm_script(
 
     for hamiltonian_name in hamiltonian_names:
         python_calls.append(
-            f'python3 main.py \\\n'
+            f'python3 QFAMES_SV.py \\\n'
             f'    --workers {cores} \\\n'
             f'    --H "{hamiltonian_name}" \\\n'
             f'    --method {method} \\\n'
             f'    --L {lr} \\\n'
             f'    --R {lr} \\\n'
-            f'    --algorithms "QFAMES"'
+            f'    --perturbations "None,Small,Big,Rand"'
         )
 
     # Run all parameter configurations sequentially in one Slurm job.
