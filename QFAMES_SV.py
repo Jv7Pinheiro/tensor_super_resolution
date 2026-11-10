@@ -69,6 +69,12 @@ def parse_args():
         help="Z-tensor's generation method for QFAMES and TSRHSE (default: circuit)",
     )
     parser.add_argument(
+        "--plotting",
+        type=int,
+        default="0",
+        help="Z-tensor's generation method for QFAMES and TSRHSE (default: circuit)",
+    )
+    parser.add_argument(
         "--perturbations",
         type=str,
         default=",".join(PERTURBATION_OPTIONS),
@@ -123,7 +129,7 @@ def select_diverse_columns(PHI, eigenvalues, target_count, tol=1e-6):
 
     return PHI[:, selected_cols]
 
-def QFAMES_WITH_PLOTS(Z, dx, t_list, K, T, tau, alpha, true_multiplicities, path, verbose=False):
+def QFAMES_WITH_PLOTS(Z, dx, t_list, K, T, tau, alpha, true_multiplicities, path, verbose=False, plotting=False):
     """
     nonorthogonal QMEGS algorithm
 
@@ -189,7 +195,227 @@ def QFAMES_WITH_PLOTS(Z, dx, t_list, K, T, tau, alpha, true_multiplicities, path
         # print('interval_min=',interval_min,'interval_max=',interval_max)
         G=np.multiply(G,x_rough>interval_max)+np.multiply(G,x_rough<interval_min) #eliminate interval
 
-    plotting.plot_G(Dominant_freq, svs, tau, path, true_multiplicities=true_multiplicities)
+    if plotting:
+        plotting.plot_G(Dominant_freq, svs, tau, path, true_multiplicities=true_multiplicities)
+
+    # Bundle each eigenvalue with its multiplicity so the pairing is never lost
+    clusters = [
+        EigenCluster(eigenvalue=float(np.real(Dominant_freq[k])), multiplicity=int(Dominant_num[k]))
+        for k in range(K)
+        if Dominant_num[k] > 0 or not np.isnan(Dominant_freq[k])
+    ]
+    clusters.sort(key=lambda c: c.eigenvalue)
+
+    if verbose:
+        return clusters, Dominant_vector
+    else:
+        return clusters
+
+def naive_adaptive_multiplicity(S, gap_threshold=0.3):
+    """
+    S: singular values in descending order, from np.linalg.svd
+    gap_threshold: minimum relative drop to declare the gap
+    
+    For each consecutive pair, compute the relative drop:
+        drop_j = 1 - S[j+1]/S[j]
+    The multiplicity is the position of the first drop exceeding gap_threshold.
+    """
+    if len(S) == 0 or S[0] < 1e-10:
+        return 0
+    # Normalize by S[0]
+    s = S / S[0]
+    # Find the first large relative drop
+    for j in range(len(s) - 1):
+        if s[j+1] / s[j] < (1 - gap_threshold):
+            return j + 1
+    return len(s)  # all SVs are signal
+
+def naive_adaptive_QFAMES(Z, dx, t_list, K, T, alpha, adaptivity, true_multiplicities, verbose=False):
+    """
+    nonorthogonal QMEGS algorithm
+
+    To avoid long classical running time, we first do a rough search
+    then do a detailed search around the rough maximal point.
+    """
+    L = len(Z[:,0,0])
+    R = len(Z[0,:,0])
+    N = len(Z[0,0,:])
+    W = np.zeros((L, R), dtype='complex') #Store data matrix
+    num_x=int(2*np.pi/(dx*10))
+    num_x_detail=int(2/dx/T)
+    x_rough=np.arange(0,num_x)*dx*10-np.pi
+    G = np.zeros(len(x_rough), dtype='complex') #Store Frobenius norm of the data matrix (for rough search)
+    for l in range(L):
+        for r in range(R):
+            G += np.abs(Z[l, r, :].dot(np.exp(1j*np.outer(t_list,x_rough)))/N)**2
+    Dominant_freq=np.zeros(K,dtype='complex')
+    Dominant_num=np.zeros(K,dtype='int')
+    Dominant_vector=[]
+    num_found = 0
+    svs = np.zeros([L, K], dtype=complex)
+    for k in range(K):
+        max_idx_rough = np.argmax(G) # Rough search
+        # print('maxG',max(G))
+        if G[max_idx_rough] < 1e-6:
+            if verbose: print('No more clusters found, exiting early.')
+            break
+        num_found += 1
+        Dominant_potential=x_rough[max_idx_rough]
+        x=np.arange(0,num_x_detail)*dx+Dominant_potential-1/T
+        G_detail = np.zeros(len(x), dtype='complex') #Store Frobenius norm of the data matrix (for detail search)
+        for l in range(L):
+            for r in range(R):
+                G_detail += np.abs(Z[l, r, :].dot(np.exp(1j*np.outer(t_list,x)))/N)**2
+        max_idx_detail = np.argmax(G_detail) # Detail search
+        Dominant_freq[k]=x[max_idx_detail] #one cluster found
+
+        # Calculate the number of eigenvalues in the cluster
+        for l in range(L):
+            for r in range(R):
+                W[l,r] = Z[l, r, :].dot(np.exp(1j*t_list*Dominant_freq[k]))/N
+        U, S, V = np.linalg.svd(W)
+        svs[:, k] = S
+        V = V.conj().T
+
+        Dominant_num[k] = naive_adaptive_multiplicity(S, adaptivity)
+
+        if Dominant_num[k]>0: #if there is a cluster, calculate the orthogonal vector space
+        #    print('k=',k,'S=',S)
+            # Calculate the orthogonal vector space of the cluster
+           if verbose:
+                if L>R:
+                    Dominant_vector.append(U[:,Dominant_num[k]:])
+                else:
+                    Dominant_vector.append(V[:,Dominant_num[k]:])
+        # interval_max=x[max_idx_detail]+alpha/T
+        # interval_min=x[max_idx_detail]-alpha/T
+        min_exclusion = 6 * dx * 10  # at minimum exclude 3 rough grid steps on each side
+        interval_half = max(alpha / T, min_exclusion)
+        interval_max = x[max_idx_detail] + interval_half
+        interval_min = x[max_idx_detail] - interval_half
+
+        # print('interval_min=',interval_min,'interval_max=',interval_max)
+        G=np.multiply(G,x_rough>interval_max)+np.multiply(G,x_rough<interval_min) #eliminate interval
+
+    # Bundle each eigenvalue with its multiplicity so the pairing is never lost
+    clusters = [
+        EigenCluster(eigenvalue=float(np.real(Dominant_freq[k])), multiplicity=int(Dominant_num[k]))
+        for k in range(K)
+        if Dominant_num[k] > 0 or not np.isnan(Dominant_freq[k])
+    ]
+    clusters.sort(key=lambda c: c.eigenvalue)
+
+    if verbose:
+        return clusters, Dominant_vector
+    else:
+        return clusters
+
+def robust_adaptive_multiplicity(Z, t_list, theta_star, N, L, R, T, relative_floor=0.05):
+    """
+    Count signal SVs using local maximality at theta_star.
+    
+    Genuine degenerate SVs peak AT theta_star.
+    Aliased SVs from neighbors peak AWAY from theta_star.
+    
+    Parameters
+    ----------
+    relative_floor : float
+        Minimum σ_j / σ_1 to consider a SV as potentially signal (default 0.05).
+        Filters out floating-point noise SVs that might accidentally be local maxima.
+    """
+    eps = 1.0 / (4.0 * T)   # quarter-resolution step; much smaller than any eigenvalue gap
+    
+    def compute_W_at(theta):
+        W = np.zeros((L, R), dtype='complex')
+        for l in range(L):
+            for r in range(R):
+                W[l, r] = Z[l, r, :].dot(np.exp(1j * t_list * theta)) / N
+        return W
+    
+    S0 = np.linalg.svd(compute_W_at(theta_star),         compute_uv=False)
+    Sp = np.linalg.svd(compute_W_at(theta_star + eps),   compute_uv=False)
+    Sm = np.linalg.svd(compute_W_at(theta_star - eps),   compute_uv=False)
+    
+    if S0[0] < 1e-10:
+        return 0
+    
+    count = 0
+    for j in range(len(S0)):
+        is_local_max = (S0[j] >= Sp[j]) and (S0[j] >= Sm[j])
+        is_above_floor = (S0[j] / S0[0]) > relative_floor
+        if is_local_max and is_above_floor:
+            count += 1
+        else:
+            break   # SVs are sorted — once we hit non-signal, all subsequent are too
+    
+    return max(count, 1)   # always at least 1 since we found a G peak
+
+def robust_adaptive_QFAMES(Z, dx, t_list, K, T, alpha, adaptivity, true_multiplicities, verbose=False):
+    """
+    nonorthogonal QMEGS algorithm
+
+    To avoid long classical running time, we first do a rough search
+    then do a detailed search around the rough maximal point.
+    """
+    L = len(Z[:,0,0])
+    R = len(Z[0,:,0])
+    N = len(Z[0,0,:])
+    W = np.zeros((L, R), dtype='complex') #Store data matrix
+    num_x=int(2*np.pi/(dx*10))
+    num_x_detail=int(2/dx/T)
+    x_rough=np.arange(0,num_x)*dx*10-np.pi
+    G = np.zeros(len(x_rough), dtype='complex') #Store Frobenius norm of the data matrix (for rough search)
+    for l in range(L):
+        for r in range(R):
+            G += np.abs(Z[l, r, :].dot(np.exp(1j*np.outer(t_list,x_rough)))/N)**2
+    Dominant_freq=np.zeros(K,dtype='complex')
+    Dominant_num=np.zeros(K,dtype='int')
+    Dominant_vector=[]
+    num_found = 0
+    svs = np.zeros([L, K], dtype=complex)
+    for k in range(K):
+        max_idx_rough = np.argmax(G) # Rough search
+        # print('maxG',max(G))
+        if G[max_idx_rough] < 1e-6:
+            if verbose: print('No more clusters found, exiting early.')
+            break
+        num_found += 1
+        Dominant_potential=x_rough[max_idx_rough]
+        x=np.arange(0,num_x_detail)*dx+Dominant_potential-1/T
+        G_detail = np.zeros(len(x), dtype='complex') #Store Frobenius norm of the data matrix (for detail search)
+        for l in range(L):
+            for r in range(R):
+                G_detail += np.abs(Z[l, r, :].dot(np.exp(1j*np.outer(t_list,x)))/N)**2
+        max_idx_detail = np.argmax(G_detail) # Detail search
+        Dominant_freq[k]=x[max_idx_detail] #one cluster found
+
+        # Calculate the number of eigenvalues in the cluster
+        for l in range(L):
+            for r in range(R):
+                W[l,r] = Z[l, r, :].dot(np.exp(1j*t_list*Dominant_freq[k]))/N
+        U, S, V = np.linalg.svd(W)
+        svs[:, k] = S
+        V = V.conj().T
+
+        Dominant_num[k] = robust_adaptive_multiplicity(Z, t_list, Dominant_freq[k], N, L, R, T, relative_floor=adaptivity)
+
+        if Dominant_num[k]>0: #if there is a cluster, calculate the orthogonal vector space
+        #    print('k=',k,'S=',S)
+            # Calculate the orthogonal vector space of the cluster
+           if verbose:
+                if L>R:
+                    Dominant_vector.append(U[:,Dominant_num[k]:])
+                else:
+                    Dominant_vector.append(V[:,Dominant_num[k]:])
+        # interval_max=x[max_idx_detail]+alpha/T
+        # interval_min=x[max_idx_detail]-alpha/T
+        min_exclusion = 6 * dx * 10  # at minimum exclude 3 rough grid steps on each side
+        interval_half = max(alpha / T, min_exclusion)
+        interval_max = x[max_idx_detail] + interval_half
+        interval_min = x[max_idx_detail] - interval_half
+
+        # print('interval_min=',interval_min,'interval_max=',interval_max)
+        G=np.multiply(G,x_rough>interval_max)+np.multiply(G,x_rough<interval_min) #eliminate interval
 
     # Bundle each eigenvalue with its multiplicity so the pairing is never lost
     clusters = [
@@ -279,6 +505,9 @@ def main():
     print(f"Target eigenvalue: {eigenvalue}")
     # print(f"Eigenvectors: \n{eigenvectors}")
 
+    adaptive_tolerance_1 = np.sqrt(L*R)*np.array([0.1, 0.01])
+    adaptive_tolerance_2 = np.array([0.15, 0.3, 0.5, 0.7, 0.75, 0.8])
+    adaptive_tolerance_3 = np.array([0.025, 0.05, 0.75, 0.1, 0.15])
     T_max_array = np.array([200]) # scaling T_max
     all_perturbation_params = { # scale perturbations
         "None": {"range": None, "scale": None},
@@ -347,17 +576,41 @@ def main():
             else:
                 raise ValueError(f"Method {method} is unsurported, choose either \"numeric\" or \"circuit\"")
 
-            # QFAMES
-            start_time = time.perf_counter()
-            clusters = QFAMES_WITH_PLOTS(Z, dx, t_list, min(L, R), T_max_alg, tau, alpha, dict_multiplicities, f"{path}_EXP1.png")
-            plotting.plot_sv_vs_theta(Z, t_list, T_max_alg, tau, dict_multiplicities, path=f"{path}_EXP2.png")
-            end_time = time.perf_counter()
+            # Original QFAMES
+            for val in adaptive_tolerance_1:
+                start_time = time.perf_counter()
+                clusters = QFAMES_WITH_PLOTS(Z, dx, t_list, min(L, R), T_max_alg, val, alpha, dict_multiplicities, f"{path}_EXP1.png", False)
+                end_time = time.perf_counter()
 
-            print(f"\t\tfinished QFAMES with plots in {end_time - start_time:.6f} seconds")
+                est_eigenvalue = [c.eigenvalue for c in clusters] # already sorted by eigenvalue
+                multiplicities = str({c.eigenvalue: c.multiplicity for c in clusters})
 
-            est_eigenvalue = [c.eigenvalue for c in clusters] # already sorted by eigenvalue
-            multiplicities = str({c.eigenvalue: c.multiplicity for c in clusters})
+                print(f"\t\tfinished original QFAMES with tau = {val:g} in {end_time - start_time:.6f} seconds")
+                print(f"\t\t\t{multiplicities}")
 
-            print(f"\t\t{multiplicities}")
+            # Naive Adaptive QFAMES
+            for val in adaptive_tolerance_2:
+                start_time = time.perf_counter()
+                clusters = naive_adaptive_QFAMES(Z, dx, t_list, min(L, R), T_max_alg, alpha, val, dict_multiplicities)
+                end_time = time.perf_counter()
+                
+                est_eigenvalue = [c.eigenvalue for c in clusters] # already sorted by eigenvalue
+                multiplicities = str({c.eigenvalue: c.multiplicity for c in clusters})
+
+                print(f"\t\tfinished naive adaptive QFAMES with adaptive tolerance = {val} in {end_time - start_time:.6f} seconds")
+                print(f"\t\t\t{multiplicities}")
+
+            # Robust Adaptive QFAMES
+            for val in adaptive_tolerance_3:
+                start_time = time.perf_counter()
+                clusters = robust_adaptive_QFAMES(Z, dx, t_list, min(L, R), T_max_alg, alpha, val, dict_multiplicities)
+                end_time = time.perf_counter()
+
+                est_eigenvalue = [c.eigenvalue for c in clusters] # already sorted by eigenvalue
+                multiplicities = str({c.eigenvalue: c.multiplicity for c in clusters})
+
+                print(f"\t\tfinished robust adaptive QFAMES with adaptive tolerance = {val} in {end_time - start_time:.6f} seconds")
+                print(f"\t\t\t{multiplicities}")
+
 if __name__ == "__main__":
     main()
