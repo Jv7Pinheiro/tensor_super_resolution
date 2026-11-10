@@ -19,9 +19,9 @@ XXZ_params = [[1, 0]]
 # XXZ_params = [[-1, 0], [-1, 1], [0, 0], [1, 0], [2, 0]]
 
 MIN_SIZE = 16
-MAX_SIZE = 16
+MAX_SIZE = 512
 
-LR_VALUES = [1, 2, 4, 6, 8, 16]
+LR_VALUES = [6, 8, 10, 12, 16, 32]
 
 
 #####################
@@ -57,6 +57,21 @@ def get_resources(lr, size, method):
             return 64, "normal", "08:00:00"
         elif lr == 16:
             return 64, "normal", "08:00:00"
+
+    if lr <= 16:
+        quality = "standby"
+    else:
+        quality = "normal"
+
+    if quality == "standby":
+        hours = "04:00:00"
+    elif quality == "normal":
+        if lr <= 16:
+            hours = "06:00:00"
+        else:
+            hours ="24:00:00"
+
+    return 64, quality, hours
 
     raise ValueError(
         f"No resource policy defined for size={size}, method={method}, L=R={lr}"

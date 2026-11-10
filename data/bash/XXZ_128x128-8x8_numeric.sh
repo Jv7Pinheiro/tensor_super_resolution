@@ -1,6 +1,6 @@
 #!/bin/bash -l
 
-#SBATCH --job-name=TFIM_16x16-4x4_numeric
+#SBATCH --job-name=XXZ_128x128-8x8_numeric
 #SBATCH --account=csit
 #SBATCH --partition=cpu
 #SBATCH --qos=standby
@@ -8,8 +8,8 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=64
 #SBATCH --time=04:00:00
-#SBATCH --output=data/outputs/TFIM_16x16-4x4_numeric.txt
-#SBATCH --error=data/outputs/TFIM_16x16-4x4_numeric.txt
+#SBATCH --output=data/outputs/XXZ_128x128-8x8_numeric.txt
+#SBATCH --error=data/outputs/XXZ_128x128-8x8_numeric.txt
 #SBATCH --mail-user=deolivj@purdue.edu
 #SBATCH --mail-type=END,FAIL
 
@@ -21,8 +21,8 @@ cd "$HOME/tensor_super_resolution" || exit 1
 
 python3 QFAMES_SV.py \
     --workers 64 \
-    --H "TFIM_(g=0.5)_16x16" \
+    --H "XXZ_(h=0)-(d=1)_128x128" \
     --method numeric \
-    --L 4 \
-    --R 4 \
+    --L 8 \
+    --R 8 \
     --perturbations "None,Small,Big,Rand"

@@ -1,6 +1,6 @@
 #!/bin/bash -l
 
-#SBATCH --job-name=XXZ_16x16-1x1_numeric
+#SBATCH --job-name=XXZ_16x16-10x10_numeric
 #SBATCH --account=csit
 #SBATCH --partition=cpu
 #SBATCH --qos=standby
@@ -8,8 +8,8 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=64
 #SBATCH --time=04:00:00
-#SBATCH --output=data/outputs/XXZ_16x16-1x1_numeric.txt
-#SBATCH --error=data/outputs/XXZ_16x16-1x1_numeric.txt
+#SBATCH --output=data/outputs/XXZ_16x16-10x10_numeric.txt
+#SBATCH --error=data/outputs/XXZ_16x16-10x10_numeric.txt
 #SBATCH --mail-user=deolivj@purdue.edu
 #SBATCH --mail-type=END,FAIL
 
@@ -23,6 +23,6 @@ python3 QFAMES_SV.py \
     --workers 64 \
     --H "XXZ_(h=0)-(d=1)_16x16" \
     --method numeric \
-    --L 1 \
-    --R 1 \
+    --L 10 \
+    --R 10 \
     --perturbations "None,Small,Big,Rand"
