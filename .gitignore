@@ -1,5 +1,5 @@
 # Python cache and generated files
-__pycache__/
+python/__pycache__/
 *.py[cod]
 .pytest_cache/
 .mypy_cache
@@ -16,3 +16,6 @@ environment.yml
 data/dataframes/
 data/figures/
 data/outputs/
+
+# Ignore everything inside QFAMES_figs
+data/QFAMES_figs/experiments
